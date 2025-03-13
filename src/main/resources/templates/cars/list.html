@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cars &ndash; Car Rental Service</title>
+</head>
+<body>
+<div data-th-each="car : ${cars}">
+    <ul>
+    <li data-th-text="${car.id}"></li>
+    <li data-th-text="${car.make}"></li>
+    <li data-th-text="${car.model}"></li>
+    <li data-th-text="${car.year}"></li>
+    <li data-th-text="${car.licensePlate}"></li>
+    <li data-th-text="${car.isAvailable}"></li>
+    </ul>
+</div>
+</body>
+</html>

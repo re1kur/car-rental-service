@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: Rental Service
+
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml
+    liquibase-schema: liquibase
+    default-schema: ${custom.datasource.schema}
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rentalservice2?currentSchema=${custom.datasource.schema}
+    username: postgres
+    password: 123456778
+    driver-class-name: org.postgresql.Driver
+
+
+  jpa:
+    generate-ddl: false
+  security:
+    user:
+      password: 123
+
+custom:
+  datasource:
+    schema: common
+
+
