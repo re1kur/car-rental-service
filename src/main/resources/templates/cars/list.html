@@ -1,19 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Cars &ndash; Car Rental Service</title>
 </head>
 <body>
 <div data-th-each="car : ${cars}">
-    <ul>
-    <li data-th-text="${car.id}"></li>
-    <li data-th-text="${car.make}"></li>
-    <li data-th-text="${car.model}"></li>
-    <li data-th-text="${car.year}"></li>
-    <li data-th-text="${car.licensePlate}"></li>
-    <li data-th-text="${car.isAvailable}"></li>
-    </ul>
+    <article>
+        <header>
+            <span style="font-size: 20px; font-weight: bold"
+                  data-th-text="${car.make} + ' ' + ${car.model}"></span><br>
+        </header>
+
+        <section>
+            <span data-th-text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></span><br>
+            <span data-th-text="'Year: ' + ${car.year}"></span><br>
+            <span data-th-text="'License plate: ' + ${car.licensePlate}"></span><br>
+        </section>
+
+        <footer>
+            <a data-th-href="@{/cars/{id}(id=${car.id})}">
+                Details
+            </a>
+        </footer>
+    </article>
+    <hr>
 </div>
 </body>
 </html>

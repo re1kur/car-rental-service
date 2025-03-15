@@ -26,12 +26,13 @@ public class Car {
 
     private String licensePlate;
 
+    @Column(insertable = false)
     private boolean isAvailable;
 
-    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private CarDetails details;
 
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Collection<CarImage> images;
 
 }

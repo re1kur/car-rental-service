@@ -8,7 +8,9 @@ import java.util.Collection;
 import java.util.List;
 
 public interface CarImagesMapper {
-    CarImage write(CarImageWriteDto writeCarImage);
+    List<CarImage> writeImages(List<CarImageWriteDto> carImageWriteDto);
+
+    CarImage writeImage(CarImageWriteDto writeCarImage);
 
     List<CarImageReadDto> read(Collection<CarImage> images);
 }
