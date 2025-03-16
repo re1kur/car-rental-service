@@ -24,7 +24,10 @@ public class DefaultCarImagesMapper implements CarImagesMapper {
 
     @Override
     public CarImage writeImage(CarImageWriteDto writeCarImage) {
-        return CarImage.builder().build();
+        return CarImage.builder()
+                .car(writeCarImage.getCar())
+                .imageUrl(writeCarImage.getUrl())
+                .build();
     }
 
     @Override

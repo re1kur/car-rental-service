@@ -6,6 +6,8 @@ import lombok.*;
 
 import java.util.Collection;
 
+import static jakarta.persistence.CascadeType.*;
+
 @Entity
 @Table(name = "cars")
 @Getter
@@ -29,10 +31,10 @@ public class Car {
     @Column(insertable = false)
     private boolean isAvailable;
 
-    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = PERSIST)
     private CarDetails details;
 
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = PERSIST)
     private Collection<CarImage> images;
 
 }

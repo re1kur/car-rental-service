@@ -18,6 +18,7 @@ public class CarDetails {
     private Integer id;
 
     @OneToOne
+    @JoinColumn(name = "car_id")
     private Car car;
 
     private String color;

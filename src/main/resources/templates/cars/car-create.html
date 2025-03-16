@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>New Car &ndash; Car Rental Service </title>
 </head>
+<header th:insert="~{/fragments/header :: car-header}">
+
+</header>
+
 <body>
 <div>
     <h2>Common information.</h2>
@@ -78,14 +82,12 @@
             </select>
         </label><br>
         <br>
-        <label for="image">Image:
-            <input type="file" id="image" name="image" accept="image/*">
+        <label for="url">Image:
+            <input type="file" id="url" name="url" accept="image/*">
         </label><br>
 
         <button type="submit">Create</button>
     </form>
-
-
 </div>
 </body>
 </html>

@@ -32,5 +32,5 @@ public class CarWriteDto {
     private String licensePlate;
 
     private CarDetailsWriteDto details;
-//    private CarImageWriteDto image;
+    private CarImageWriteDto image;
 }

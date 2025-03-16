@@ -23,8 +23,9 @@ public class CarsController {
     private final MakeService makeService;
 
     @Autowired
-    public CarsController(CarService service,
-                          MakeService makeService) {
+    public CarsController(
+            CarService service,
+            MakeService makeService) {
         this.service = service;
         this.makeService = makeService;
     }
@@ -40,15 +41,16 @@ public class CarsController {
     public String createCar(
             @Validated CarWriteDto carForm,
             @Validated CarDetailsWriteDto carDetailsForm,
-//            @Validated CarImageWriteDto carImageForm,
+            CarImageWriteDto carImageForm,
             Model model,
             BindingResult bindingResult) {
         carForm.setDetails(carDetailsForm);
-//        carForm.setImage(carImageForm);
+        carForm.setImage(carImageForm);
         if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
             model.addAttribute("car", carForm);
             model.addAttribute("makes", makeService.findAll());
-            return "cars/create.html";
+            return "cars/car-create.html";
         }
         CarReadDto created = service.writeCar(carForm);
         model.addAttribute("car", created);
@@ -59,6 +61,6 @@ public class CarsController {
     public String getCreateCar(Model model) {
         model.addAttribute("makes",
                 makeService.findAll());
-        return "cars/create.html";
+        return "cars/car-create.html";
     }
 }

@@ -2,11 +2,13 @@ package re1kur.rentalservice.dto.car.details;
 
 import jakarta.validation.constraints.*;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import re1kur.rentalservice.entity.Car;
 
-@Data
 @Builder
+@Getter
+@Setter
 public class CarDetailsWriteDto {
     private Car car;
 

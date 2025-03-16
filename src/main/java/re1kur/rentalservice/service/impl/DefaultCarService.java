@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
 import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
+import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.entity.Car;
 import re1kur.rentalservice.mapper.CarDetailsMapper;
 import re1kur.rentalservice.mapper.CarImagesMapper;
@@ -20,10 +21,10 @@ import java.util.List;
 public class DefaultCarService implements CarService {
     private final CarRepository repo;
     private final CarDetailsRepository detailsRepo;
-//    private final CarImageRepository imageRepo;
+    private final CarImageRepository imageRepo;
     private final CarMapper mapper;
     private final CarDetailsMapper detailsMapper;
-//    private final CarImagesMapper imagesMapper;
+    private final CarImagesMapper imagesMapper;
 
     @Autowired
     public DefaultCarService
@@ -37,9 +38,9 @@ public class DefaultCarService implements CarService {
         this.repo = repo;
         this.mapper = mapper;
         this.detailsRepo = detailsRepo;
-//        this.imageRepo = imageRepo;
+        this.imageRepo = imageRepo;
         this.detailsMapper = detailsMapper;
-//        this.imagesMapper = imagesMapper;
+        this.imagesMapper = imagesMapper;
     }
 
 
@@ -60,12 +61,16 @@ public class DefaultCarService implements CarService {
         Car mapped = mapper.write(newCar);
         Car saved = repo.save(mapped);
 
-//        imageRepo.save(imagesMapper.writeImage(newCar.getImages().get(0)));
         if (newCar.getDetails() != null) {
             CarDetailsWriteDto newDetails = newCar.getDetails();
             newDetails.setCar(saved);
             detailsRepo.save(detailsMapper.write(newDetails));
 
+        }
+        if (newCar.getImage() != null) {
+            CarImageWriteDto newImage = newCar.getImage();
+            newImage.setCar(saved);
+            imageRepo.save(imagesMapper.writeImage(newImage));
         }
         return mapper.read(saved, true, true);
     }

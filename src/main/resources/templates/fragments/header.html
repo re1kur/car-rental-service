@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<a th:fragment="to-list" th:href="@{/cars/list}" style="float: left; margin-right: 10px; font-size: 20px">
+    &#8592; To list
+</a>
+<a th:fragment="car-edit" th:href="@{/cars/{id}/edit(id=${car.id})}" style="float: left; margin-right: 10px; font-size: 20px">
+    Edit
+</a>
+
+<div th:fragment="car-header"
+     style="width: 100%; position: relative; background-color: lightslategray;
+     height: 30px; font-family: Calibri, serif; z-index: 1;">
+    <a th:insert="~{fragments/header :: to-list}"></a>
+    <a th:insert="~{fragments/header :: car-edit}"></a>
+    <div style="clear: both;"></div>
+</div>
+
+<div th:fragment="main-header"
+     style="position: fixed; background-color: lightslategray;
+      width: 100%; height: 30px; font-family: Calibri,serif; z-index: 1;">
+    <a th:href="@{/cars/create}" style="float: left; margin-right: 10px; font-size: 20px">New car</a>
+    <a th:href="@{/cars/list}" style="float: left; margin-right: 10px; font-size: 20px">All cars</a>
+    <a th:href="@{/makes/list}" style="float: left; margin-right: 10px; font-size: 20px">Makes</a>
+    <div style="clear: both;"></div>
+</div>
+
+</body>
+</html>
