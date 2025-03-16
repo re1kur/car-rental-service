@@ -2,6 +2,7 @@ package re1kur.rentalservice.mapper.impl;
 
 import re1kur.rentalservice.annotations.Mapper;
 import re1kur.rentalservice.dto.make.MakeReadDto;
+import re1kur.rentalservice.dto.make.MakeWriteDto;
 import re1kur.rentalservice.entity.Make;
 import re1kur.rentalservice.mapper.MakeMapper;
 
@@ -17,4 +18,14 @@ public class DefaultMakeMapper implements MakeMapper {
                 .description(make.getDescription())
                 .build();
     }
+
+    @Override
+    public Make write(MakeWriteDto make) {
+        return Make.builder()
+                .name(make.getName())
+                .country(make.getCountry())
+                .description(make.getDescription())
+                .build();
+    }
+
 }

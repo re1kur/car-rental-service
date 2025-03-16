@@ -1,10 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="'Editing ' + ${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service' "></title>
 </head>
+<header th:insert="~{/fragments/header :: to-car}"
+        style="width: 100%; position: relative; background-color: lightslategray;
+     height: 30px; font-family: Calibri, serif; z-index: 1;">
+</header>
 <body>
+<div>
+    <h2>Common information.</h2>
+    <form method="post" th:action="@{/cars/{id}/edit(id=${car.id})}">
+        <label for="makeId">Make:
+            <select id="makeId" name="makeId" required th:field="*{car.make.id}">
+                <option th:each="make : ${makes}" th:text="${make.name}" th:value="${make.id}"></option>
+            </select>
+        </label><br>
 
+        <label for="model"><br>Model name:
+            <input th:field="*{car.model}" type="text" name="model" id="model" placeholder="F.e. Camry" required>
+        </label><br>
+
+        <label for="year">Year of release:
+            <input th:field="*{car.year}" type="number" name="year" id="year" placeholder="____" required max="4">
+        </label><br>
+
+        <label for="licensePlate">License plate:
+            <input th:field="*{car.licensePlate}" type="text" name="licensePlate" id="licensePlate" placeholder="F.e. AAA111" required>
+        </label><br>
+
+        <h3>Details</h3>
+        <label for="color">Color:
+            <input th:field="*{car.details.color}" type="text" name="color" id="color" placeholder="F.e. Red">
+        </label><br>
+
+        <label for="mileage">Mileage:
+            <input th:field="*{car.details.mileage}" type="text" name="mileage" id="mileage" placeholder="Mileage">
+        </label><br>
+
+        <label for="fuelType">Fuel type:
+            <select id="fuelType" name="fuelType" th:field="*{car.details.fuelType}">
+                <option th:unless="${car.details.fuelType}" selected disabled></option>
+                <option>Gasoline</option>
+                <option>Diesel</option>
+                <option>Ethanol</option>
+                <option>Electric</option>
+                <option>Hybrid electric</option>
+                <option>Natural gas</option>
+            </select>
+        </label><br>
+
+        <label for="transmission">Transmission:
+            <select id="transmission" name="transmission" th:field="*{car.details.transmission}">
+                <option th:unless="${car.details.transmission}" selected disabled></option>
+                <option>Automatic transmission</option>
+                <option>Manual transmission</option>
+                <option>Semi-automatic transmission</option>
+            </select>
+        </label><br>
+        <br>
+        <!--        <label for="url">Image:-->
+        <!--            <input type="file" id="url" name="url" accept="image/*">-->
+        <!--        </label><br>-->
+
+        <button type="submit">Update</button>
+    </form>
+</div>
 </body>
 </html>

@@ -31,10 +31,10 @@ public class Car {
     @Column(insertable = false)
     private boolean isAvailable;
 
-    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = PERSIST)
+    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY)
     private CarDetails details;
 
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = PERSIST)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
     private Collection<CarImage> images;
 
 }

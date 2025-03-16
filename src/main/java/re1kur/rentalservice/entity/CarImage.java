@@ -24,5 +24,6 @@ public class CarImage {
 
     private String imageUrl;
 
+    @Column(insertable = false)
     private LocalDateTime uploadedAt;
 }

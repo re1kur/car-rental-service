@@ -7,13 +7,17 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
-import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
+import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
+import re1kur.rentalservice.dto.car.images.CarImageUpdateDto;
+
+import java.util.List;
 
 @Builder
 @Getter
 @Setter
-public class CarWriteDto {
+public class CarUpdateDto {
+    private int id;
+
     @NotNull
     private int makeId;
 
@@ -30,7 +34,7 @@ public class CarWriteDto {
     @NotBlank
     private String licensePlate;
 
-    private CarDetailsWriteDto details;
+    private CarDetailsUpdateDto details;
 
-    private CarImageWriteDto image;
+//    private List<CarImageUpdateDto> images;
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cars &ndash; Car Rental Service</title>
+</head>
+<header th:insert="~{/fragments/header :: main-header}">
+</header>
+<body>
+<div th:each="make : ${makes}" style="position: relative; top: 30px">
+    <article>
+        <a th:href="@{/makes/{id}(id=${make.id})}">
+            <span style="font-size: 20px; font-weight: bold"
+                  th:text="${make.name}"></span><br>
+        </a>
+        <section>
+            <span th:text="'Country: ' + ${make.country}"></span><br>
+            <span th:text="'Description: ' + ${make.description}"></span><br>
+        </section>
+        <footer>
+            <a th:href="@{/cars/make/{id}(id=${make.id})}">
+                Cars
+            </a>
+        </footer>
+    </article>
+    <hr>
+</div>
+</body>
+</html>

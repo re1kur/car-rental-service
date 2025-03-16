@@ -14,8 +14,6 @@ import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.service.CarService;
 import re1kur.rentalservice.service.MakeService;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("cars")
 public class CarsController {
@@ -32,8 +30,8 @@ public class CarsController {
 
     @GetMapping("list")
     public String listCars(Model model) {
-        model.addAttribute("cars", service.findAll(false, false));
-        return "cars/list.html";
+        model.addAttribute("cars", service.readAll(false, false));
+        return "cars/cars-list.html";
     }
 
     @PostMapping("/create")
@@ -44,12 +42,14 @@ public class CarsController {
             CarImageWriteDto carImageForm,
             Model model,
             BindingResult bindingResult) {
+
         carForm.setDetails(carDetailsForm);
         carForm.setImage(carImageForm);
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             model.addAttribute("car", carForm);
-            model.addAttribute("makes", makeService.findAll());
+            model.addAttribute("makes", makeService.readAll());
             return "cars/car-create.html";
         }
         CarReadDto created = service.writeCar(carForm);
@@ -60,7 +60,13 @@ public class CarsController {
     @GetMapping("/create")
     public String getCreateCar(Model model) {
         model.addAttribute("makes",
-                makeService.findAll());
+                makeService.readAll());
         return "cars/car-create.html";
+    }
+
+    @GetMapping("/make/{id}")
+    public String getCarsByMake(Model model, @PathVariable int id) {
+        model.addAttribute("cars", service.readAllByMake(id, false, false));
+        return "/cars/cars-list.html";
     }
 }

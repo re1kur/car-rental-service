@@ -3,10 +3,13 @@ package re1kur.rentalservice.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import re1kur.rentalservice.dto.car.CarReadDto;
+import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
+import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
 import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
 import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.entity.Car;
+import re1kur.rentalservice.entity.CarDetails;
 import re1kur.rentalservice.mapper.CarDetailsMapper;
 import re1kur.rentalservice.mapper.CarImagesMapper;
 import re1kur.rentalservice.mapper.CarMapper;
@@ -16,6 +19,7 @@ import re1kur.rentalservice.repository.CarRepository;
 import re1kur.rentalservice.service.CarService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DefaultCarService implements CarService {
@@ -45,12 +49,12 @@ public class DefaultCarService implements CarService {
 
 
     @Override
-    public List<CarReadDto> findAll(boolean isInformative, boolean isRender) {
+    public List<CarReadDto> readAll(boolean isInformative, boolean isRender) {
         return repo.findAll().stream().map(car -> mapper.read(car, isInformative, isRender)).toList();
     }
 
     @Override
-    public CarReadDto findById(int id, boolean isInformative, boolean isRender) {
+    public CarReadDto readById(int id, boolean isInformative, boolean isRender) {
         return repo.findById(id).map(
                         car -> mapper.read(car, isInformative, isRender))
                 .orElse(null);
@@ -73,5 +77,17 @@ public class DefaultCarService implements CarService {
             imageRepo.save(imagesMapper.writeImage(newImage));
         }
         return mapper.read(saved, true, true);
+    }
+
+    @Override
+    public CarReadDto updateCar(CarUpdateDto updateDto) {
+        repo.save(mapper.update(updateDto));
+        return mapper.read(repo.findById(updateDto.getId()).get(), true, true);
+    }
+
+    @Override
+    public List<CarReadDto> readAllByMake(int id, boolean isInformative, boolean isRender) {
+        return repo.findAllByMakeId(id).stream()
+                .map(car -> mapper.read(car, isInformative, isRender)).toList();
     }
 }

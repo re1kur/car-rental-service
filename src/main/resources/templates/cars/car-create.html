@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>New Car &ndash; Car Rental Service </title>
 </head>
-<header th:insert="~{/fragments/header :: car-header}">
-
+<header th:insert="~{/fragments/header :: to-cars-list}"
+        style="width: 100%; position: relative; background-color: lightslategray;
+        height: 30px; font-family: Calibri, serif; z-index: 1;">
 </header>
 
 <body>
@@ -14,36 +15,42 @@
     <form method="post" th:action="@{/cars/create}">
 
         <label for="makeId">Make:
-            <select id="makeId" name="makeId" required th:selected="${car != null ? car.makeId : ''}">
-                <option selected disabled>
+            <select id="makeId" name="makeId" required th:selected="${car != null ? car.make.id : ''}">
+                <option th:unless="${car}" selected disabled>
                 </option>
                 <option th:each="make : ${makes}" th:text="${make.name}" th:value="${make.id}"></option>
             </select>
         </label><br>
 
         <label for="model"><br>Model name:
-            <input th:value="${car != null ? car.model : ''}" type="text" name="model" id="model" placeholder="F.e. Camry" required>
+            <input th:value="${car != null ? car.model : ''}" type="text" name="model" id="model"
+                   placeholder="F.e. Camry" required>
         </label><br>
 
         <label for="year">Year of release:
-            <input th:value="${car != null ? car.year : ''}" type="text" name="year" id="year" placeholder="____" required max="4">
+            <input th:value="${car != null ? car.year : ''}" type="text" name="year" id="year" placeholder="____"
+                   required max="4">
         </label><br>
 
         <label for="licensePlate">License plate:
-            <input th:value="${car != null ? car.licensePlate : ''}" type="text" name="licensePlate" id="licensePlate" placeholder="F.e. AAA111" required>
+            <input th:value="${car != null ? car.licensePlate : ''}" type="text" name="licensePlate" id="licensePlate"
+                   placeholder="F.e. AAA111" required>
         </label><br>
 
         <h3>Details</h3>
         <label for="color">Color:
-            <input th:value="${car != null && car.details != null ? car.details.color : ''}" type="text" name="color" id="color" placeholder="F.e. Red">
+            <input th:value="${car != null && car.details != null ? car.details.color : ''}" type="text" name="color"
+                   id="color" placeholder="F.e. Red">
         </label><br>
 
         <label for="mileage">Mileage:
-            <input th:value="${car != null && car.details != null ? car.details.mileage : ''}" type="text" name="mileage" id="mileage" placeholder="Mileage">
+            <input th:value="${car != null && car.details != null ? car.details.mileage : ''}" type="text"
+                   name="mileage" id="mileage" placeholder="Mileage">
         </label><br>
 
         <label for="fuelType">Fuel type:
-            <select id="fuelType" name="fuelType" th:selected="${car != null && car.details != null ? car.details.fuelType : ''}">
+            <select id="fuelType" name="fuelType"
+                    th:selected="${car != null && car.details != null ? car.details.fuelType : ''}">
                 <option selected disabled>
                 </option>
                 <option>
@@ -67,7 +74,8 @@
             </select>
         </label><br>
         <label for="transmission">Transmission:
-            <select id="transmission" name="transmission" th:selected="${car != null && car.details != null ? car.details.transmission : ''}">
+            <select id="transmission" name="transmission"
+                    th:selected="${car != null && car.details != null ? car.details.transmission : ''}">
                 <option selected disabled>
                 </option>
                 <option>
@@ -81,9 +89,10 @@
                 </option>
             </select>
         </label><br>
-        <br>
+
         <label for="url">Image:
-            <input type="file" id="url" name="url" accept="image/*">
+            <input type="file" id="url" name="url" accept="image/*"
+                   th:value="${car != null && car.images != null ? car.images.url : ''}">
         </label><br>
 
         <button type="submit">Create</button>
