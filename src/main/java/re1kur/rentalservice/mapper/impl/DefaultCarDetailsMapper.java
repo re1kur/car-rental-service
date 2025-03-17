@@ -5,6 +5,7 @@ import re1kur.rentalservice.annotations.Mapper;
 import re1kur.rentalservice.dto.car.details.CarDetailsReadDto;
 import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
 import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
+import re1kur.rentalservice.entity.Car;
 import re1kur.rentalservice.entity.CarDetails;
 import re1kur.rentalservice.mapper.CarDetailsMapper;
 import re1kur.rentalservice.repository.CarRepository;
@@ -14,18 +15,24 @@ public class DefaultCarDetailsMapper implements CarDetailsMapper {
     CarRepository carRepo;
 
     @Autowired
-    public DefaultCarDetailsMapper(CarRepository carRepo) {
+    public DefaultCarDetailsMapper(
+            CarRepository carRepo
+    ) {
         this.carRepo = carRepo;
     }
 
     @Override
-    public CarDetails write(CarDetailsWriteDto writeCarDetails) {
-        return CarDetails.builder()
-                .car(writeCarDetails.getCar())
-                .mileage(writeCarDetails.getMileage())
-                .color(writeCarDetails.getColor())
-                .transmission(writeCarDetails.getTransmission())
-                .fuelType(writeCarDetails.getFuelType())
+    public CarDetails write(CarDetailsWriteDto details) {
+        if (details.getMileage() == null &&
+            details.getColor().isEmpty() &&
+            details.getTransmission() == null &&
+            details.getFuelType() == null)
+        return null;
+        else return CarDetails.builder()
+                .fuelType(details.getFuelType())
+                .transmission(details.getTransmission())
+                .color(details.getColor())
+                .mileage(details.getMileage())
                 .build();
     }
 
@@ -43,14 +50,30 @@ public class DefaultCarDetailsMapper implements CarDetailsMapper {
     }
 
     @Override
-    public CarDetails update(CarDetailsUpdateDto details) {
-        return CarDetails.builder()
-                .id(details.getId())
-                .car(carRepo.getReferenceById(details.getCar().getId()))
+    public CarDetailsUpdateDto readUpdate(CarDetails details) {
+        if (details == null)
+            return new CarDetailsUpdateDto();
+        return CarDetailsUpdateDto.builder()
                 .color(details.getColor())
                 .fuelType(details.getFuelType())
                 .mileage(details.getMileage())
                 .transmission(details.getTransmission())
                 .build();
+    }
+
+    @Override
+    public CarDetails update(CarDetailsUpdateDto details, int id) {
+        Car car = carRepo.getReferenceById(id);
+        CarDetails build = CarDetails.builder()
+                .mileage(details.getMileage())
+                .transmission(details.getTransmission())
+                .color(details.getColor())
+                .fuelType(details.getFuelType())
+                .car(car)
+                .build();
+        if (car.getDetails() != null) {
+            build.setId(car.getDetails().getId());
+        }
+        return build;
     }
 }

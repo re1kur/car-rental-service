@@ -1,36 +1,32 @@
 package re1kur.rentalservice.dto.car;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
-import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 
 @Builder
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CarWriteDto {
     @NotNull
-    private int makeId;
+    private Integer makeId;
 
     @NotBlank
-    @NotNull
     @Size(min = 2, max = 64)
     private String model;
 
-    @Positive
-    private int year;
+    @Min(1960)
+    @Max(2025)
+    private Integer year;
 
-    @Size(min = 6, max = 6)
-    @NotNull
+
     @NotBlank
+    @Size(min = 6, max = 6)
     private String licensePlate;
 
     private CarDetailsWriteDto details;
-
-    private CarImageWriteDto image;
 }

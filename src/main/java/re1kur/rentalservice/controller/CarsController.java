@@ -8,9 +8,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import re1kur.rentalservice.dto.car.CarReadDto;
+import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
+import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
 import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
-import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.service.CarService;
 import re1kur.rentalservice.service.MakeService;
 
@@ -34,35 +35,34 @@ public class CarsController {
         return "cars/cars-list.html";
     }
 
-    @PostMapping("/create")
-    @Transactional
-    public String createCar(
-            @Validated CarWriteDto carForm,
-            @Validated CarDetailsWriteDto carDetailsForm,
-            CarImageWriteDto carImageForm,
-            Model model,
-            BindingResult bindingResult) {
-
-        carForm.setDetails(carDetailsForm);
-        carForm.setImage(carImageForm);
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            model.addAttribute("car", carForm);
-            model.addAttribute("makes", makeService.readAll());
-            return "cars/car-create.html";
-        }
-        CarReadDto created = service.writeCar(carForm);
-        model.addAttribute("car", created);
-        return "redirect:/cars/" + created.getId();
-    }
-
     @GetMapping("/create")
     public String getCreateCar(Model model) {
-        model.addAttribute("makes",
-                makeService.readAll());
+        model.addAttribute("makes", makeService.readAll());
+        model.addAttribute("write", new CarWriteDto());
+        model.addAttribute("carDetails", new CarDetailsWriteDto());
         return "cars/car-create.html";
     }
+
+    @Transactional
+    @PostMapping("/create")
+    public String createCar(
+            @Validated @ModelAttribute("write") CarWriteDto car,
+            @Validated @ModelAttribute("carDetails") CarDetailsWriteDto carDetails,
+            Model model,
+            BindingResult bindingResult) {
+        car.setDetails(carDetails);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("makes", makeService.readAll());
+            model.addAttribute("update", car);
+            model.addAttribute("carDetails", carDetails);
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "cars/car-create.html";
+        }
+        Integer id = service.writeCar(car);
+        return "redirect:/cars/" + id;
+    }
+
 
     @GetMapping("/make/{id}")
     public String getCarsByMake(Model model, @PathVariable int id) {

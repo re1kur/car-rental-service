@@ -10,12 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
-import re1kur.rentalservice.dto.make.MakeReadDto;
-import re1kur.rentalservice.mapper.CarMapper;
 import re1kur.rentalservice.service.CarService;
 import re1kur.rentalservice.service.MakeService;
 
-import java.util.List;
 
 @Controller
 @RequestMapping("cars/{id}")
@@ -23,54 +20,64 @@ public class CarController {
     private final CarService service;
     private final MakeService makeService;
 
+
     @Autowired
     public CarController(
             CarService service,
-            MakeService makeService,
-            CarMapper mapper
+            MakeService makeService
             ) {
         this.service = service;
         this.makeService = makeService;
     }
 
+    @ModelAttribute("car")
+    public CarReadDto car(@PathVariable int id) {
+        return service.readById(id, true, true);
+    }
 
     @GetMapping
-    public String getCar(
-            @PathVariable int id,
-            Model model) {
-        CarReadDto byId = service.readById(id, true, true);
-        model.addAttribute("car", byId);
+    public String getCar() {
         return "/cars/car.html";
     }
 
     @GetMapping("edit")
-    public String editCar(@PathVariable int id, Model model) {
-        CarReadDto byId = service.readById(id, true, true);
-        List<MakeReadDto> makes = makeService.readAll();
-        model.addAttribute("car", byId);
-        model.addAttribute("makes", makes);
+    public String editCar(
+            @PathVariable int id,
+            Model model
+    ) {
+        CarUpdateDto car = service.readUpdateById(id);
+        model.addAttribute("makes", makeService.readAll());
+        model.addAttribute("update", car);
+        model.addAttribute("carDetails", car.getDetails());
+
         return "/cars/car-edit.html";
     }
 
     @PostMapping("edit")
     @Transactional
-    public String editCar(
+    public String updateCar(
+            @PathVariable int id,
+            @Validated @ModelAttribute("update") CarUpdateDto car,
+            @Validated @ModelAttribute("carDetails") CarDetailsUpdateDto carDetails,
             Model model,
-            @ModelAttribute("car") @Validated CarUpdateDto car,
-            @ModelAttribute("details") @Validated CarDetailsUpdateDto details,
             BindingResult bindingResult
             ) {
-        System.out.println();
-        details.setCar(car);
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("car", car);
+        car.setDetails(carDetails);
+        if (carDetails.getMileage() == null && carDetails.getColor().isEmpty() && carDetails.getTransmission() == null && carDetails.getFuelType() == null ) {
             model.addAttribute("makes", makeService.readAll());
+            model.addAttribute("update", car);
+            model.addAttribute("carDetails", carDetails);
+            model.addAttribute("errors", "All details parameters are empty");
+            return "/cars/car-edit.html";
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("makes", makeService.readAll());
+            model.addAttribute("update", car);
+            model.addAttribute("carDetails", carDetails);
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "/cars/car-edit.html";
         }
-        CarReadDto updated  = service.updateCar(car);
-        model.addAttribute("car", updated);
-        return "/cars/car.html";
+        service.updateCar(car, id);
+        return "redirect:/cars/" + id;
     }
 }

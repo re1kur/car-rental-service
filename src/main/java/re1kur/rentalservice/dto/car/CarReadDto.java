@@ -1,22 +1,22 @@
 package re1kur.rentalservice.dto.car;
 
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
 import re1kur.rentalservice.dto.car.details.CarDetailsReadDto;
 import re1kur.rentalservice.dto.car.images.CarImageReadDto;
 import re1kur.rentalservice.dto.make.MakeReadDto;
 
 import java.util.List;
 
-@Value
 @Builder
+@Data
 public class CarReadDto {
-    int id;
-    MakeReadDto make;
-    String model;
-    int year;
-    String licensePlate;
+    private int id;
+    private MakeReadDto make;
+    private String model;
+    private int year;
+    private String licensePlate;
     boolean isAvailable;
-    CarDetailsReadDto details;
-    List<CarImageReadDto> images;
+    private CarDetailsReadDto details;
+    private List<CarImageReadDto> images;
 }
