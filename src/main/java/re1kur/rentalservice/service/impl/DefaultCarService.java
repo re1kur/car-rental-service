@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
-import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
 import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
-import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.entity.Car;
 import re1kur.rentalservice.entity.CarDetails;
 import re1kur.rentalservice.mapper.CarDetailsMapper;
@@ -19,7 +17,6 @@ import re1kur.rentalservice.repository.CarRepository;
 import re1kur.rentalservice.service.CarService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DefaultCarService implements CarService {
@@ -48,6 +45,24 @@ public class DefaultCarService implements CarService {
     }
 
 
+//    @Override
+//    public void writeCarDetails(CarDetailsWriteDto carDetails, int id) {
+//        CarDetails details = detailsMapper.write(carDetails, id);
+//        detailsRepo.save(details);
+//    }
+
+    @Override
+    public CarUpdateDto readUpdateById(int id) {
+        return repo.findById(id).map(mapper::readUpdate)
+                .orElse(null);
+    }
+
+    @Override
+    public void updateCar(CarUpdateDto car, int id) {
+        Car update = mapper.update(car, id);
+        repo.save(update);
+    }
+
     @Override
     public List<CarReadDto> readAll(boolean isInformative, boolean isRender) {
         return repo.findAll().stream().map(car -> mapper.read(car, isInformative, isRender)).toList();
@@ -61,33 +76,34 @@ public class DefaultCarService implements CarService {
     }
 
     @Override
-    public CarReadDto writeCar(CarWriteDto newCar) {
-        Car mapped = mapper.write(newCar);
+    public Integer writeCar(CarWriteDto car) {
+        Car mapped = mapper.write(car);
         Car saved = repo.save(mapped);
-
-        if (newCar.getDetails() != null) {
-            CarDetailsWriteDto newDetails = newCar.getDetails();
-            newDetails.setCar(saved);
-            detailsRepo.save(detailsMapper.write(newDetails));
-
-        }
-        if (newCar.getImage() != null) {
-            CarImageWriteDto newImage = newCar.getImage();
-            newImage.setCar(saved);
-            imageRepo.save(imagesMapper.writeImage(newImage));
-        }
-        return mapper.read(saved, true, true);
+        return saved.getId();
     }
 
-    @Override
-    public CarReadDto updateCar(CarUpdateDto updateDto) {
-        repo.save(mapper.update(updateDto));
-        return mapper.read(repo.findById(updateDto.getId()).get(), true, true);
-    }
 
     @Override
     public List<CarReadDto> readAllByMake(int id, boolean isInformative, boolean isRender) {
         return repo.findAllByMakeId(id).stream()
                 .map(car -> mapper.read(car, isInformative, isRender)).toList();
     }
+
+//    @Override
+//    public void updateCar(int id, CarUpdateDto updateDto) {
+//        Optional<Car> mayBeCar = repo.findById(id);
+//        mayBeCar.ifPresent(car -> {
+//            car.setModel(updateDto.getModel());
+//            car.setYear(updateDto.getYear());
+//            car.setLicensePlate(updateDto.getLicensePlate());
+//            CarDetails details = car.getDetails();
+//            if (details != null) {
+//                CarDetailsUpdateDto updateDetails = updateDto.getDetails();
+//                details.setColor(updateDetails.getColor());
+//                details.setMileage(updateDetails.getMileage());
+//                details.setFuelType(updateDetails.getFuelType());
+//                details.setTransmission(updateDetails.getTransmission());
+//            }
+//        });
+//    }
 }

@@ -10,5 +10,8 @@ public interface CarMapper {
 
     CarReadDto read(Car car, boolean isInformative, boolean isRender);
 
-    Car update(CarUpdateDto car);
+    CarUpdateDto readUpdate(Car car);
+
+    Car update(CarUpdateDto car, int id);
+
 }

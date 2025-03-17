@@ -2,64 +2,99 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Editing ' + ${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service' "></title>
+    <title th:text="'Editing ' + ${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service'"></title>
 </head>
 <header th:insert="~{/fragments/header :: to-car}"
         style="width: 100%; position: relative; background-color: lightslategray;
      height: 30px; font-family: Calibri, serif; z-index: 1;">
 </header>
+
 <body>
+<section th:if="${errors}">
+    <span style="color: red" th:each="error : ${errors}" th:text="${error}"></span>
+</section>
 <div>
     <h2>Common information.</h2>
     <form method="post" th:action="@{/cars/{id}/edit(id=${car.id})}">
         <label for="makeId">Make:
-            <select id="makeId" name="makeId" required th:field="*{car.make.id}">
-                <option th:each="make : ${makes}" th:text="${make.name}" th:value="${make.id}"></option>
+            <select id="makeId" name="makeId" required th:field="*{update.makeId}">
+                <option value="" disabled selected>Choose the make</option>
+                <option th:each="make : ${makes}"
+                        th:value="${make.id}"
+                        th:text="${make.name}"
+                        th:selected="${update.makeId == make.id}">
+                </option>
             </select>
         </label><br>
 
-        <label for="model"><br>Model name:
-            <input th:field="*{car.model}" type="text" name="model" id="model" placeholder="F.e. Camry" required>
+        <label for="model">Model:
+            <input th:field="*{update.model}"
+                   type="text" name="model" id="model"
+                   th:value="${update.model}"
+                   placeholder="Camry" required>
         </label><br>
 
-        <label for="year">Year of release:
-            <input th:field="*{car.year}" type="number" name="year" id="year" placeholder="____" required max="4">
+        <label for="year">Year:
+            <input th:field="*{update.year}"
+                   type="text" name="year" id="year"
+                   th:value="${update.year}"
+                   placeholder="____" required max="4">
         </label><br>
 
         <label for="licensePlate">License plate:
-            <input th:field="*{car.licensePlate}" type="text" name="licensePlate" id="licensePlate" placeholder="F.e. AAA111" required>
+            <input th:field="*{update.licensePlate}"
+                   type="text" name="licensePlate" id="licensePlate"
+                   th:value="${update.licensePlate}"
+                   placeholder="AAA111" required>
         </label><br>
 
-        <h3>Details</h3>
-        <label for="color">Color:
-            <input th:field="*{car.details.color}" type="text" name="color" id="color" placeholder="F.e. Red">
-        </label><br>
+        <section th:object="${carDetails}">
+            <h3>Details</h3>
 
-        <label for="mileage">Mileage:
-            <input th:field="*{car.details.mileage}" type="text" name="mileage" id="mileage" placeholder="Mileage">
-        </label><br>
+            <label for="color">Color:
+                <input th:field="*{color}" type="text" name="color" id="color" placeholder="Red">
+            </label><br>
 
-        <label for="fuelType">Fuel type:
-            <select id="fuelType" name="fuelType" th:field="*{car.details.fuelType}">
-                <option th:unless="${car.details.fuelType}" selected disabled></option>
-                <option>Gasoline</option>
-                <option>Diesel</option>
-                <option>Ethanol</option>
-                <option>Electric</option>
-                <option>Hybrid electric</option>
-                <option>Natural gas</option>
-            </select>
-        </label><br>
+            <label for="mileage">Mileage:
+                <input th:field="*{mileage}" type="text" name="mileage" id="mileage" placeholder="Mileage">
+            </label><br>
 
-        <label for="transmission">Transmission:
-            <select id="transmission" name="transmission" th:field="*{car.details.transmission}">
-                <option th:unless="${car.details.transmission}" selected disabled></option>
-                <option>Automatic transmission</option>
-                <option>Manual transmission</option>
-                <option>Semi-automatic transmission</option>
-            </select>
-        </label><br>
-        <br>
+            <label for="fuelType">Fuel type:
+                <select id="fuelType" name="fuelType">
+                    <option value="" disabled selected>Choose fuel type</option>
+                    <option th:value="'Gasoline'" th:text="'Gasoline'"
+                            th:selected="${carDetails.fuelType == 'Gasoline'}"></option>
+                    <option th:value="'Diesel'" th:text="'Diesel'"
+                            th:selected="${carDetails.fuelType == 'Diesel'}"></option>
+                    <option th:value="'Ethanol'" th:text="'Ethanol'"
+                            th:selected="${carDetails.fuelType == 'Ethanol'}"></option>
+                    <option th:value="'Electric'" th:text="'Electric'"
+                            th:selected="${carDetails.fuelType == 'Electric'}"></option>
+                    <option th:value="'Hybrid electric'" th:text="'Hybrid electric'"
+                            th:selected="${carDetails.fuelType == 'Hybrid electric'}"></option>
+                    <option th:value="'Natural gas'" th:text="'Natural gas'"
+                            th:selected="${carDetails.fuelType == 'Natural gas'}"></option>
+                </select>
+            </label><br>
+
+            <label for="transmission">Transmission:
+                <select id="transmission" name="transmission">
+                    <option value="" selected disabled>Choose transmission</option>
+                    <option th:value="'Automatic transmission'"
+                            th:selected="${carDetails.transmission == 'Automatic transmission'}">
+                        Automatic transmission
+                    </option>
+                    <option th:value="'Manual transmission'"
+                            th:selected="${carDetails.transmission == 'Manual transmission'}">Manual
+                        transmission
+                    </option>
+                    <option th:value="'Semi-automatic transmission'"
+                            th:selected="${carDetails.transmission == 'Semi-automatic transmission'}">Semi-automatic
+                        transmission
+                    </option>
+                </select>
+            </label><br>
+        </section>
         <!--        <label for="url">Image:-->
         <!--            <input type="file" id="url" name="url" accept="image/*">-->
         <!--        </label><br>-->

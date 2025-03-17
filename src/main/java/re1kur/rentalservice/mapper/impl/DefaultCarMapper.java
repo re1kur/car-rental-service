@@ -1,12 +1,12 @@
 package re1kur.rentalservice.mapper.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import re1kur.rentalservice.annotations.Mapper;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
 import re1kur.rentalservice.entity.Car;
+import re1kur.rentalservice.entity.CarDetails;
 import re1kur.rentalservice.mapper.CarDetailsMapper;
 import re1kur.rentalservice.mapper.CarImagesMapper;
 import re1kur.rentalservice.mapper.CarMapper;
@@ -36,12 +36,13 @@ public class DefaultCarMapper implements CarMapper {
     }
 
     @Override
-    public Car write(CarWriteDto writeCar) {
+    public Car write(CarWriteDto car) {
         return Car.builder()
-                .make(makeRepo.getReferenceById(writeCar.getMakeId()))
-                .model(writeCar.getModel())
-                .year(writeCar.getYear())
-                .licensePlate(writeCar.getLicensePlate())
+                .make(makeRepo.getReferenceById(car.getMakeId()))
+                .model(car.getModel())
+                .year(car.getYear())
+                .licensePlate(car.getLicensePlate())
+                .details(detailsMapper.write(car.getDetails()))
                 .build();
     }
 
@@ -60,13 +61,26 @@ public class DefaultCarMapper implements CarMapper {
     }
 
     @Override
-    public Car update(CarUpdateDto car) {
-        return Car.builder()
-                .id(car.getId())
-                .make(makeRepo.getReferenceById(car.getMakeId()))
+    public CarUpdateDto readUpdate(Car car) {
+        return CarUpdateDto.builder()
+                .makeId(car.getMake().getId())
                 .model(car.getModel())
                 .year(car.getYear())
                 .licensePlate(car.getLicensePlate())
+                .details(detailsMapper.readUpdate(car.getDetails()))
                 .build();
     }
+
+    @Override
+    public Car update(CarUpdateDto car, int id) {
+        return Car.builder()
+                .id(id)
+                .make(makeRepo.getReferenceById(car.getMakeId()))
+                .model(car.getModel())
+                .licensePlate(car.getLicensePlate())
+                .year(car.getYear())
+                .details(detailsMapper.update(car.getDetails(), id))
+                .build();
+    }
+
 }

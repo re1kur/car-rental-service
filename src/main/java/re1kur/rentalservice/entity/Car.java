@@ -6,12 +6,11 @@ import lombok.*;
 
 import java.util.Collection;
 
-import static jakarta.persistence.CascadeType.*;
 
 @Entity
 @Table(name = "cars")
-@Getter
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Car {
@@ -31,7 +30,7 @@ public class Car {
     @Column(insertable = false)
     private boolean isAvailable;
 
-    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private CarDetails details;
 
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)

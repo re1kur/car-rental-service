@@ -8,32 +8,38 @@
 <header th:insert="~{fragments/header :: car-header}">
         <span style="font-size: 20px; font-weight: bold"
               th:text="${car.make.name} + ' ' + ${car.model}"></span><br>
+
 </header>
 
 <body>
-<div>
-    <section th:if="${car.images}">
-        <h3>Images</h3>
-        <div th:each="image : ${car.images}">
-            <span th:text="${image.url}"></span><br>
-            <span th:text="${image.uploadedAt}"></span><br>
-        </div>
-    </section>
+<h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>
+<section>
+    <h2>Common Information</h2>
+    <span th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></span><br>
+    <span th:text="'Year: ' + ${car.year}"></span><br>
+    <span th:text="'License plate: ' + ${car.licensePlate}"></span><br>
+</section>
 
-    <section>
-        <h3>Car Details</h3>
-        <span th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></span><br>
-        <span th:text="'Year: ' + ${car.year}"></span><br>
-        <span th:text="'License plate: ' + ${car.licensePlate}"></span><br>
-    </section>
+<section th:if="${car.details}">
+    <h2>Details</h2>
+    <span th:if="${car.details.color}" th:text="'Color: ' + ${car.details.color}"></span><br>
+    <span th:if="${car.details.mileage}" th:text="'Mileage: ' + ${car.details.mileage}"></span><br>
+    <span th:if="${car.details.fuelType}" th:text="'Fuel type: ' + ${car.details.fuelType}"></span><br>
+    <span th:if="${car.details.transmission}" th:text="'Transmission: ' + ${car.details.transmission}"></span><br>
+</section>
 
-    <section th:if="${car.details}">
-        <h3>Additional Details</h3>
-        <span th:text="'Color: ' + ${car.details.color}"></span><br>
-        <span th:text="'Mileage: ' + ${car.details.mileage}"></span><br>
-        <span th:text="'Fuel type: ' + ${car.details.fuelType}"></span><br>
-        <span th:text="'Transmission: ' + ${car.details.transmission}"></span><br>
-    </section>
-</div>
+<section th:unless="${car.details}"><br>
+    <hr>
+    <span style="color: black; font-style: italic">You doesnt have details.
+    <br>You can edit car in header.</span><br>
+</section>
+
+<section th:if="${car.images}">
+    <h2>Images</h2>
+    <div th:each="image : ${car.images}">
+        <span th:text="${image.url}"></span><br>
+        <span th:text="${image.uploadedAt}"></span><br>
+    </div>
+</section>
 </body>
 </html>

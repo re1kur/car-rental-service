@@ -3,6 +3,7 @@ package re1kur.rentalservice.mapper.impl;
 import re1kur.rentalservice.annotations.Mapper;
 import re1kur.rentalservice.dto.car.images.CarImageReadDto;
 import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
+import re1kur.rentalservice.entity.Car;
 import re1kur.rentalservice.entity.CarImage;
 import re1kur.rentalservice.mapper.CarImagesMapper;
 
@@ -23,10 +24,10 @@ public class DefaultCarImagesMapper implements CarImagesMapper {
     }
 
     @Override
-    public CarImage writeImage(CarImageWriteDto writeCarImage) {
+    public CarImage writeImage(String url, Car car) {
         return CarImage.builder()
-                .car(writeCarImage.getCar())
-                .imageUrl(writeCarImage.getUrl())
+                .car(car)
+                .imageUrl(url)
                 .build();
     }
 
