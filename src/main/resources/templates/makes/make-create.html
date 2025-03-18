@@ -3,25 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>New Make &ndash; Car Rental Service </title>
+    <link rel="stylesheet" th:href="@{/css/styles-car-edit.css}">
+    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/main-header.css}">
 </head>
-<header th:insert="~{/fragments/header :: to-makes-list}">
+<header th:insert="~{/fragments/header :: makes-header}">
 </header>
 <body>
-<div>
-    <h2>Make information.</h2>
-    <form method="post" th:action="@{/makes/create}">
-        <label for="name"><br>Name:
+<div class="container">
+    <form class="edit-form" method="post" th:action="@{/makes/create}">
+        <h2>Make information.</h2>
+        <h4>Name:</h4>
+        <label for="name">
             <input th:field="*{make.name}" type="text" name="name" id="name"
                    placeholder="Toyota" required>
         </label><br>
 
-        <label for="country"><br>Country:
+        <h4>Country:</h4>
+        <label for="country">
             <input th:field="*{make.country}" type="text" name="country" id="country"
                    placeholder="Japan" required>
-        </label><br>
-
-        <label for="description"><br>Description:
-            <br>
+        </label>
+        <h4>Description:</h4>
+        <label for="description"><br>
             <textarea th:field="*{make.description}" name="description" id="description"
                       placeholder="Japanese multinational automotive manufacturer" rows="4" cols="80" style="resize: none">
             </textarea>
@@ -30,4 +34,6 @@
     </form>
 </div>
 </body>
+<footer th:insert="~{/fragments/footer :: main-footer}"    >
+</footer>
 </html>

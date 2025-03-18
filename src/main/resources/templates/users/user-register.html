@@ -1,27 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+    <link rel="stylesheet" th:href="@{/css/styles-login.css}">
 </head>
 <body>
-<section th:object="${user}">
-    <h2>Registration</h2>
-    <form th:action="@{/users/register}" method="post">
-        <label for="email">
-            Email:
-            <input th:field="*{email}" type="text" name="email" id="email">
-        </label><br>
-        Username:
-        <label for="username">
-            <input th:field="*{username}" type="text" name="username" id="username">
-        </label><br>
-        Password
-        <label for="password">
-            <input th:field="*{password}" type="password" name="password" id="password">
-        </label><br>
-        <button type="submit">Register</button>
+<div class="container">
+    <h1>Registration</h1>
+
+    <form th:action="@{/users/register}" method="post" class="login-form" th:object="${user}">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input th:field="*{email}" type="text" name="email" id="email" placeholder="Enter your email" required />
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input th:field="*{username}" type="text" name="username" id="username" placeholder="Enter your username" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input th:field="*{password}" type="password" name="password" id="password" placeholder="Enter your password" required />
+        </div>
+        <button type="submit" class="btn">Register</button>
     </form>
-</section>
+
+    <div class="login-link">
+        <p>Already have an account? <a th:href="@{/users/login}">Log in here</a></p>
+    </div>
+</div>
 </body>
 </html>

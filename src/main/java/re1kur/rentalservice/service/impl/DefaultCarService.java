@@ -5,11 +5,8 @@ import org.springframework.stereotype.Service;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
-import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
 import re1kur.rentalservice.entity.Car;
-import re1kur.rentalservice.entity.CarDetails;
 import re1kur.rentalservice.mapper.CarDetailsMapper;
-import re1kur.rentalservice.mapper.CarImagesMapper;
 import re1kur.rentalservice.mapper.CarMapper;
 import re1kur.rentalservice.repository.CarDetailsRepository;
 import re1kur.rentalservice.repository.CarImageRepository;
@@ -22,10 +19,10 @@ import java.util.List;
 public class DefaultCarService implements CarService {
     private final CarRepository repo;
     private final CarDetailsRepository detailsRepo;
-    private final CarImageRepository imageRepo;
+//    private final CarImageRepository imageRepo;
     private final CarMapper mapper;
     private final CarDetailsMapper detailsMapper;
-    private final CarImagesMapper imagesMapper;
+//    private final CarImagesMapper imagesMapper;
 
     @Autowired
     public DefaultCarService
@@ -33,15 +30,15 @@ public class DefaultCarService implements CarService {
              CarMapper mapper,
              CarDetailsRepository detailsRepo,
              CarImageRepository imageRepo,
-             CarDetailsMapper detailsMapper,
-             CarImagesMapper imagesMapper
+             CarDetailsMapper detailsMapper
+//             CarImagesMapper imagesMapper
              ) {
         this.repo = repo;
         this.mapper = mapper;
         this.detailsRepo = detailsRepo;
-        this.imageRepo = imageRepo;
+//        this.imageRepo = imageRepo;
         this.detailsMapper = detailsMapper;
-        this.imagesMapper = imagesMapper;
+//        this.imagesMapper = imagesMapper;
     }
 
 
@@ -64,15 +61,19 @@ public class DefaultCarService implements CarService {
     }
 
     @Override
-    public List<CarReadDto> readAll(boolean isInformative, boolean isRender) {
-        return repo.findAll().stream().map(car -> mapper.read(car, isInformative, isRender)).toList();
+    public List<CarReadDto> readAll() {
+        return repo.findAll().stream().map(mapper::read).toList();
     }
 
+//    @Override
+//    public List<CarReadDto> readAllWithDetails() {
+//        return repo.findAll().stream().map(mapper::readWithDetails).toList();
+//    }
+
     @Override
-    public CarReadDto readById(int id, boolean isInformative, boolean isRender) {
+    public CarReadDto readByIdWithDetails(int id) {
         return repo.findById(id).map(
-                        car -> mapper.read(car, isInformative, isRender))
-                .orElse(null);
+                mapper::readWithDetails).orElse(null);
     }
 
     @Override
@@ -84,9 +85,9 @@ public class DefaultCarService implements CarService {
 
 
     @Override
-    public List<CarReadDto> readAllByMake(int id, boolean isInformative, boolean isRender) {
+    public List<CarReadDto> readAllByMake(int id) {
         return repo.findAllByMakeId(id).stream()
-                .map(car -> mapper.read(car, isInformative, isRender)).toList();
+                .map(mapper::read).toList();
     }
 
 //    @Override

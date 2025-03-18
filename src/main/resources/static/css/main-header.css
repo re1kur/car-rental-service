@@ -1,0 +1,26 @@
+.header {
+    background: #333;
+    color: #fff;
+    padding-top: 30px;
+    min-height: 70px;
+    border-bottom: 3px solid #e8491d;
+    text-align: center;
+}
+
+a.header-link {
+    color: #eee;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-radius: 5px;
+    background-color: #333;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    margin: 5px;
+    font-size: 20px;
+}
+
+a.header-link:hover {
+    background-color: #555;
+    color: #fff;
+}

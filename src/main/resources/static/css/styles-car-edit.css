@@ -14,14 +14,6 @@ body {
     padding: 20px;
 }
 
-header {
-    background: #333;
-    color: #fff;
-    padding: 10px;
-    border-bottom: 3px solid #e8491d;
-    text-align: center;
-}
-
 .edit-form {
     background-color: #fff;
     padding: 20px;
@@ -30,17 +22,14 @@ header {
 }
 
 .form-group {
-    margin-bottom: 15px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
     font-weight: bold;
 }
 
-.form-group input[type="text"],
-.form-group input[type="number"],
+.form-group input,
 .form-group select {
     width: 100%;
     padding: 8px;
@@ -50,14 +39,14 @@ header {
     font-size: 14px;
 }
 
-.edit-form h3 {
+.edit-form h3, h2 {
     color: #e8491d;
     margin-bottom: 15px;
     border-bottom: 1px solid #ccc;
     padding-bottom: 10px;
 }
 
-.edit-form button[type="submit"] {
+.edit-form button {
     background-color: #e8491d;
     color: #fff;
     padding: 10px 15px;
@@ -68,27 +57,6 @@ header {
     transition: background-color 0.3s ease;
 }
 
-.edit-form button[type="submit"]:hover {
+.edit-form button:hover {
     background-color: #c73810;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-    }
-
-    .form-group {
-        margin-bottom: 10px;
-    }
-
-    .form-group input[type="text"],
-    .form-group input[type="number"],
-    .form-group select {
-        font-size: 12px;
-    }
-
-    .edit-form button[type="submit"] {
-        font-size: 14px;
-    }
 }

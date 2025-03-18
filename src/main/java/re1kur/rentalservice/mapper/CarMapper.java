@@ -8,10 +8,11 @@ import re1kur.rentalservice.entity.Car;
 public interface CarMapper {
     Car write(CarWriteDto writeCar);
 
-    CarReadDto read(Car car, boolean isInformative, boolean isRender);
+    CarReadDto read(Car car);
 
     CarUpdateDto readUpdate(Car car);
 
     Car update(CarUpdateDto car, int id);
 
+    CarReadDto readWithDetails(Car car);
 }

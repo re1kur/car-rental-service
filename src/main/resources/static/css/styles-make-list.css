@@ -1,23 +1,21 @@
-/* styles-list.css */
-
-/* Общие настройки */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
 }
 
-/* Список производителей */
 .makes-list {
     margin: 20px;
     padding: 0;
 }
 
 .make-item {
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: white;
+    background-color: #fff;
+    margin: 20px 0;
+    padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -27,7 +25,6 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Название производителя */
 .make-name {
     font-size: 20px;
     font-weight: bold;
@@ -40,10 +37,9 @@ body {
 }
 
 .make-link:hover .make-name {
-    color: #007bff;
+    color: #e8491d;
 }
 
-/* Детали производителя */
 .make-details {
     margin-top: 10px;
     font-size: 14px;
@@ -60,14 +56,13 @@ body {
     margin-top: 5px;
 }
 
-/* Ссылка на автомобили */
 .make-footer {
     margin-top: 10px;
 }
 
 .make-cars-link {
     font-size: 14px;
-    color: #007bff;
+    color: #e8491d;
     text-decoration: none;
 }
 
@@ -75,14 +70,12 @@ body {
     text-decoration: underline;
 }
 
-/* Разделитель */
 .make-separator {
     border: none;
     border-top: 1px solid #ccc;
     margin-top: 10px;
 }
 
-/* Сообщение при отсутствии данных */
 .no-makes-message {
     text-align: center;
     margin-top: 50px;

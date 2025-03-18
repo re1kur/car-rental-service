@@ -30,7 +30,7 @@ public class CarsController {
     @GetMapping("list")
     public String listCars(Model model) {
         model.addAttribute("cars",
-                service.readAll(false, false));
+                service.readAll());
         return "cars/cars-list.html";
     }
 
@@ -56,7 +56,7 @@ public class CarsController {
     @GetMapping("/make/{id}")
     public String getCarsByMake(Model model, @PathVariable int id) {
         model.addAttribute("cars",
-                service.readAllByMake(id, false, false));
+                service.readAllByMake(id));
         return "/cars/cars-list.html";
     }
 }

@@ -16,16 +16,19 @@ spring:
 
   jpa:
     generate-ddl: false
-  mvc:
-    hiddenmethod:
-      filter:
-        enabled: true
-#  security:
-#    user:
-#      password: 123
+    open-in-view: false
+
+#  mvc:
+#    hiddenmethod:
+#      filter:
+#        enabled: true
 
 custom:
   datasource:
     schema: common
 
-
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

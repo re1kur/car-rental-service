@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>New Car &ndash; Car Rental Service</title>
+    <link rel="stylesheet" th:href="@{/css/styles-car-edit.css}">
+    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/main-header.css}">
 </head>
-<header th:insert="~{/fragments/header :: to-cars-list}">
+<header th:replace="~{/fragments/header :: cars-header}">
 </header>
 
 <body>
-<div>
-    <h2>Common information.</h2>
-    <form method="post" th:action="@{/cars/create}">
-        <section th:object="${write}">
+<div class="container">
+    <form class="edit-form" method="post" th:action="@{/cars/create}">
+        <h2>Common information</h2>
+        <section class="form-group" th:object="${write}">
             <label for="makeId">Make:
                 <select id="makeId" name="makeId" required th:field="*{makeId}">
                     <option value="" disabled selected>Choose the make</option>
@@ -45,7 +48,7 @@
             </label><br>
         </section>
 
-        <section th:object="${carDetails}">
+        <section  class="form-group" th:object="${carDetails}">
             <h3>Details</h3>
 
             <label for="color">Color:
@@ -100,4 +103,6 @@
     </form>
 </div>
 </body>
+<footer th:replace="~{/fragments/footer :: main-footer}">
+</footer>
 </html>

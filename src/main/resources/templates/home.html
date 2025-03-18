@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Car Rental Service</title>
-    <link rel="stylesheet" href="styles-home.css">
+    <link rel="stylesheet" th:href="@{/css/styles-home.css}">
+    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
 </head>
 <body>
 
@@ -54,9 +55,7 @@
         </div>
     </section>
 </div>
-
-<footer>
-    <p>&copy; 2023 Car Rental Service. All rights reserved.</p>
-</footer>
 </body>
+<footer th:replace="~{/fragments/footer :: main-footer}">
+</footer>
 </html>

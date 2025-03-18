@@ -1,9 +1,9 @@
 package re1kur.rentalservice.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import re1kur.rentalservice.dto.security.SecurityUser;
 import re1kur.rentalservice.dto.user.UserReadDto;
 import re1kur.rentalservice.dto.user.UserWriteDto;
 import re1kur.rentalservice.entity.User;
@@ -23,13 +23,13 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return repo.findByEmail(email)
+    public SecurityUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        return repo.findByEmail(email).map(mapper::security)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
     }
 
     @Override
-    public Integer write(UserWriteDto user) {
+    public int write(UserWriteDto user) {
         User write = mapper.write(user);
         return repo.save(write).getId();
     }

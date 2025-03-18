@@ -1,0 +1,18 @@
+
+.bottom {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 5px solid #e8491d;
+}
+
+.bottom p {
+    margin: 0;
+    font-size: 0.9em;
+}

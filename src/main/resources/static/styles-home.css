@@ -1,0 +1,137 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 50px 0;
+    text-align: center;
+    border-bottom: 5px solid #e8491d;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+header p {
+    margin: 10px 0 0;
+    font-size: 1.2em;
+    color: #e8491d;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    overflow: hidden;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.intro .hello {
+    font-size: 1.1em;
+    line-height: 1.8;
+    color: #555;
+}
+
+.intro .name {
+    font-weight: bold;
+    color: #e8491d;
+}
+
+.refs {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #e8491d;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #333;
+}
+
+.features {
+    margin: 40px 0;
+}
+
+.features h2 {
+    color: #e8491d;
+    border-bottom: 2px solid #e8491d;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.features li {
+    background: #f4f4f4;
+    margin: 10px 0;
+    padding: 10px;
+    border-left: 5px solid #e8491d;
+}
+
+.testimonials {
+    margin: 40px 0;
+}
+
+.testimonials h2 {
+    color: #e8491d;
+    border-bottom: 2px solid #e8491d;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.testimonial {
+    background: #f4f4f4;
+    padding: 15px;
+    margin: 15px 0;
+    border-left: 5px solid #e8491d;
+}
+
+.testimonial p {
+    margin: 0;
+    font-style: italic;
+    color: #555;
+}
+
+.testimonial .author {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    border-top: 5px solid #e8491d;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9em;
+}

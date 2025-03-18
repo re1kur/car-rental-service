@@ -3,48 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="'Editing ' + ${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service'"></title>
-    <link rel="stylesheet" href="/cars/styles-edit.css">
+    <link rel="stylesheet" th:href="@{/css/styles-car-edit.css}">
+    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/main-header.css}">
 </head>
 <header th:insert="~{/fragments/header :: to-car}">
 </header>
 
 <body>
-<div>
-    <h2>Common information.</h2>
-    <form method="post" th:action="@{/cars/{id}/edit(id=${car.id})}">
-        <label for="makeId">Make:
-            <select id="makeId" name="makeId" required th:field="*{update.makeId}">
-                <option value="" disabled selected>Choose the make</option>
-                <option th:each="make : ${makes}"
-                        th:value="${make.id}"
-                        th:text="${make.name}"
-                        th:selected="${update.makeId == make.id}">
-                </option>
-            </select>
-        </label><br>
+<div class="container">
+    <form class="edit-form" method="post" th:action="@{/cars/{id}/edit(id=${car.id})}">
+        <h2>Common information</h2>
+        <section class="form-group">
+            <label for="makeId">Make:
+                <select id="makeId" name="makeId" required th:field="*{update.makeId}">
+                    <option value="" disabled selected>Choose the make</option>
+                    <option th:each="make : ${makes}"
+                            th:value="${make.id}"
+                            th:text="${make.name}"
+                            th:selected="${update.makeId == make.id}">
+                    </option>
+                </select>
+            </label><br>
 
-        <label for="model">Model:
-            <input th:field="*{update.model}"
-                   type="text" name="model" id="model"
-                   th:value="${update.model}"
-                   placeholder="Camry" required>
-        </label><br>
+            <label for="model">Model:
+                <input th:field="*{update.model}"
+                       type="text" name="model" id="model"
+                       th:value="${update.model}"
+                       placeholder="Camry" required>
+            </label><br>
 
-        <label for="year">Year:
-            <input th:field="*{update.year}"
-                   type="text" name="year" id="year"
-                   th:value="${update.year}"
-                   placeholder="____" required max="4">
-        </label><br>
+            <label for="year">Year:
+                <input th:field="*{update.year}"
+                       type="text" name="year" id="year"
+                       th:value="${update.year}"
+                       placeholder="____" required max="4">
+            </label><br>
 
-        <label for="licensePlate">License plate:
-            <input th:field="*{update.licensePlate}"
-                   type="text" name="licensePlate" id="licensePlate"
-                   th:value="${update.licensePlate}"
-                   placeholder="AAA111" required>
-        </label><br>
+            <label for="licensePlate">License plate:
+                <input th:field="*{update.licensePlate}"
+                       type="text" name="licensePlate" id="licensePlate"
+                       th:value="${update.licensePlate}"
+                       placeholder="AAA111" required>
+            </label><br>
+        </section>
 
-        <section th:object="${carDetails}">
+        <section class="form-group" th:object="${carDetails}">
             <h3>Details</h3>
 
             <label for="color">Color:
@@ -99,4 +103,6 @@
     </form>
 </div>
 </body>
+<footer th:replace="~{/fragments/footer :: main-footer}">
+</footer>
 </html>

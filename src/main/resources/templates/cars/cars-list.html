@@ -3,28 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Cars &ndash; Car Rental Service</title>
-    <link rel="stylesheet" href="/cars/styles-list.css">
+    <link rel="stylesheet" th:href="@{/css/styles-car-list.css}">
+    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/main-header.css}">
+
 </head>
-<header th:insert="~{/fragments/header :: main-header}">
+<header th:replace="~{/fragments/header :: cars-header}">
 </header>
 <body>
-<div th:each="car : ${cars}" class="car-item">
-    <article>
-        <section class="car-info">
-            <h2 th:text="${car.make.name} + ' ' + ${car.model}"></h2>
-        </section>
+<div class="cars-list">
+    <div th:each="car : ${cars}" class="car-item">
+        <article>
+            <section class="car-info">
+                <h2 th:text="${car.make.name} + ' ' + ${car.model}"></h2>
+            </section>
 
-        <section class="car-details">
-            <p th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></p>
-            <p th:text="'Year: ' + ${car.year}"></p>
-            <p th:text="'License plate: ' + ${car.licensePlate}"></p>
-        </section>
+            <section class="car-details">
+                <p th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></p>
+                <p th:text="'Year: ' + ${car.year}"></p>
+                <p th:text="'License plate: ' + ${car.licensePlate}"></p>
+            </section>
 
-        <footer class="car-footer">
-            <a th:href="@{/cars/{id}(id=${car.id})}">Details</a>
-        </footer>
-    </article>
-    <hr>
+            <footer class="car-footer">
+                <a th:href="@{/cars/{id}(id=${car.id})}">Details</a>
+            </footer>
+        </article>
+        <hr>
+    </div>
 </div>
 </body>
+<footer th:replace="~{/fragments/footer :: main-footer}">
+</footer>
 </html>

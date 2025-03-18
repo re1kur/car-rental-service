@@ -3,24 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service' "></title>
-    <link rel="stylesheet" href="/cars/styles-car.css">
-</head>
-<body>
-<header th:insert="~{fragments/header :: car-header}">
-    <h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>
-</header>
+    <link rel="stylesheet" th:href="@{/css/styles-car.css}">
+    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/main-header.css}">
 
-<main>
-    <section class="car-info">
+</head>
+<header th:replace="~{fragments/header :: car-header}">
+</header>
+<body>
+<div class="container">
+    <h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>
+    <section class="common">
         <h2>Common Information</h2>
-        <ul>
-            <li th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></li>
-            <li th:text="'Year: ' + ${car.year}"></li>
-            <li th:text="'License plate: ' + ${car.licensePlate}"></li>
-        </ul>
+        <label>
+            <span class="field">Is available: </span>
+            <span th:text="(${car.isAvailable} ? 'Yes' : 'No')"></span>
+        </label><br>
+        <label>
+            <span class="field">Year: </span>
+            <span th:text="${car.year}"></span>
+        </label><br>
+        <label>
+            <span class="field">License plate: </span>
+            <span th:text="${car.licensePlate}"></span>
+        </label>
     </section>
 
-    <section th:if="${car.details}" class="car-details">
+    <section th:if="${car.details}" class="details">
         <h2>Details</h2>
         <ul>
             <li th:if="${car.details.color}" th:text="'Color: ' + ${car.details.color}"></li>
@@ -35,15 +44,17 @@
         <p style="font-style: italic">Car doesn't have details. Edit the car in the header.</p>
     </section>
 
-    <section th:if="${car.images}" class="car-images">
-        <h2>Images</h2>
-        <ul>
-            <li th:each="image : ${car.images}">
-                <span th:text="${image.url}"></span><br>
-                <span th:text="${image.uploadedAt}"></span><br>
-            </li>
-        </ul>
-    </section>
-</main>
+    <!--    <section th:if="${car.images}" class="car-images">-->
+    <!--        <h2>Images</h2>-->
+    <!--        <ul>-->
+    <!--            <li th:each="image : ${car.images}">-->
+    <!--                <span th:text="${image.url}"></span><br>-->
+    <!--                <span th:text="${image.uploadedAt}"></span><br>-->
+    <!--            </li>-->
+    <!--        </ul>-->
+    <!--    </section>-->
+</div>
 </body>
+<footer th:replace="~{/fragments/footer :: main-footer}">
+</footer>
 </html>

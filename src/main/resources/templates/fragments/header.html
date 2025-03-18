@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Navigation</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div th:fragment="to-car">
@@ -22,21 +21,30 @@
     <a th:href="@{/makes/{id}/edit(id=${make.id})}" class="header-link">Edit</a>
 </div>
 
-<div th:fragment="car-header" class="header">
-    <a th:insert="~{fragments/header :: to-cars-list}"></a>
-    <a th:insert="~{fragments/header :: car-edit}"></a>
-</div>
-
-<div th:fragment="make-header" class="header">
-    <a th:insert="~{fragments/header :: to-makes-list}"></a>
-    <a th:insert="~{fragments/header :: make-edit}"></a>
-</div>
-
-<div th:fragment="main-header" class="header">
-    <a th:href="@{/cars/create}" class="header-link">New car</a>
-    <a th:href="@{/makes/create}" class="header-link">New make</a>
-    <a th:href="@{/cars/list}" class="header-link">All cars</a>
+<div class="header">
+    <a th:href="@{/cars/list}" class="header-link">Cars</a>
     <a th:href="@{/makes/list}" class="header-link">Makes</a>
+    <a th:href="@{/makes/{id}/edit(id=${make.id})}" class="header-link">Edit</a>
+</div>
+
+<div th:fragment="cars-header" class="header">
+    <a th:href="@{/}" class="header-link">Home</a>
+    <a th:href="@{/cars/create}" class="header-link">New car</a>
+    <a th:href="@{/cars/list}" class="header-link">Cars</a>
+    <a th:href="@{/makes/list}" class="header-link">Makes</a>
+</div>
+
+<div th:fragment="makes-header" class="header">
+    <a th:href="@{/}" class="header-link">Home</a>
+    <a th:href="@{/makes/create}" class="header-link">New Make</a>
+    <a th:href="@{/cars/list}" class="header-link">Cars</a>
+    <a th:href="@{/makes/list}" class="header-link">Makes</a>
+</div>
+
+<div th:fragment="car-header" class="header">
+    <a th:href="@{/cars/list}" class="header-link">Cars</a>
+    <a th:href="@{/makes/list}" class="header-link">Makes</a>
+    <a th:href="@{/cars/{id}/edit(id=${car.id})}" class="header-link">Edit</a>
 </div>
 </body>
 </html>

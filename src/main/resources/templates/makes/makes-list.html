@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Makes &ndash; Car Rental Service</title>
-    <link rel="stylesheet" th:href="@{/makes/styles-list.css}" href="/makes/styles-list.css">
+    <link rel="stylesheet" th:href="@{/css/styles-make-list.css}">
+    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/main-header.css}">
 </head>
 <body>
-<header th:insert="~{/fragments/header :: main-header}">
+<header th:replace="~{/fragments/header :: makes-header}">
 </header>
 
 <div class="makes-list" th:if="${not #lists.isEmpty(makes)}">
@@ -31,4 +33,6 @@
     <p>No makes available.</p>
 </div>
 </body>
+<footer th:replace="~{/fragments/footer :: main-footer}">
+</footer>
 </html>

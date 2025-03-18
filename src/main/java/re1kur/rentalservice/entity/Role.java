@@ -17,7 +17,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role implements GrantedAuthority {
+public class Role {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
@@ -29,11 +29,5 @@ public class Role implements GrantedAuthority {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Collection<User> users;
-
-
-    @Override
-    public String getAuthority() {
-        return name;
-    }
 
 }

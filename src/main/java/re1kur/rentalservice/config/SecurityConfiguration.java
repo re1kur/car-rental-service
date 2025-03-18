@@ -13,16 +13,29 @@ public class SecurityConfiguration {
     @Bean
     public DefaultSecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http
+                .csrf(
+                        csrfConfig -> {
+                            csrfConfig
+                                    .ignoringRequestMatchers(
+                                            "/users/register",
+                                            "/users/login",
+                                            "/users/logout");
+                        })
                 .formLogin(loginConfig ->
-                        loginConfig.successForwardUrl("/cars/list"))
-                .csrf(csrfConfig -> {
-                    csrfConfig.ignoringRequestMatchers("/users/register", "/login");
-                })
+                        loginConfig
+                                .loginPage("/users/login")
+                                .defaultSuccessUrl("/cars/list", true))
+                .logout(logoutConfig ->
+                        logoutConfig
+                                .logoutUrl("/users/logout")
+                                .logoutSuccessUrl("/users/login?logout"))
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(manager ->
                         manager
-                                .requestMatchers("/users/register")
-                                .not().authenticated()
+                                .requestMatchers("/css/**").permitAll()
+                                .requestMatchers(
+                                        "/users/register",
+                                        "/users/login").not().authenticated()
                                 .requestMatchers(
                                         "/cars/create",
                                         "/cars/edit",

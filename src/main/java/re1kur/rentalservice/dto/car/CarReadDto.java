@@ -3,7 +3,7 @@ package re1kur.rentalservice.dto.car;
 import lombok.Builder;
 import lombok.Data;
 import re1kur.rentalservice.dto.car.details.CarDetailsReadDto;
-import re1kur.rentalservice.dto.car.images.CarImageReadDto;
+//import re1kur.rentalservice.dto.car.images.CarImageReadDto;
 import re1kur.rentalservice.dto.make.MakeReadDto;
 
 import java.util.List;
@@ -18,5 +18,5 @@ public class CarReadDto {
     private String licensePlate;
     boolean isAvailable;
     private CarDetailsReadDto details;
-    private List<CarImageReadDto> images;
+//    private List<CarImageReadDto> images;
 }

@@ -8,7 +8,7 @@ import re1kur.rentalservice.dto.car.CarWriteDto;
 import re1kur.rentalservice.entity.Car;
 import re1kur.rentalservice.entity.CarDetails;
 import re1kur.rentalservice.mapper.CarDetailsMapper;
-import re1kur.rentalservice.mapper.CarImagesMapper;
+//import re1kur.rentalservice.mapper.CarImagesMapper;
 import re1kur.rentalservice.mapper.CarMapper;
 import re1kur.rentalservice.mapper.MakeMapper;
 import re1kur.rentalservice.repository.MakeRepository;
@@ -19,18 +19,18 @@ import java.util.ArrayList;
 public class DefaultCarMapper implements CarMapper {
     MakeRepository makeRepo;
     CarDetailsMapper detailsMapper;
-    CarImagesMapper imagesMapper;
+//    CarImagesMapper imagesMapper;
     MakeMapper makeMapper;
 
     @Autowired
     public DefaultCarMapper(
             CarDetailsMapper detailsMapper,
-            CarImagesMapper imagesMapper,
+//            CarImagesMapper imagesMapper,
             MakeRepository makeRepo,
             MakeMapper makeMapper
     ) {
         this.detailsMapper = detailsMapper;
-        this.imagesMapper = imagesMapper;
+//        this.imagesMapper = imagesMapper;
         this.makeRepo = makeRepo;
         this.makeMapper = makeMapper;
     }
@@ -47,7 +47,7 @@ public class DefaultCarMapper implements CarMapper {
     }
 
     @Override
-    public CarReadDto read(Car car, boolean isInformative, boolean isRender) {
+    public CarReadDto read(Car car) {
         return CarReadDto.builder()
                 .id(car.getId())
                 .make(makeMapper.read(car.getMake()))
@@ -55,8 +55,20 @@ public class DefaultCarMapper implements CarMapper {
                 .year(car.getYear())
                 .isAvailable(car.isAvailable())
                 .licensePlate(car.getLicensePlate())
-                .details(isInformative ? detailsMapper.read(car.getDetails()) : null)
-                .images(isRender ? imagesMapper.read(car.getImages()) : new ArrayList<>())
+                .build();
+    }
+
+    @Override
+    public CarReadDto readWithDetails(Car car) {
+        return CarReadDto.builder()
+                .id(car.getId())
+                .make(makeMapper.read(car.getMake()))
+                .model(car.getModel())
+                .year(car.getYear())
+                .isAvailable(car.isAvailable())
+                .licensePlate(car.getLicensePlate())
+                .details(detailsMapper.read(car.getDetails()))
+//                .images(imagesMapper.read(car.getImages()))
                 .build();
     }
 
