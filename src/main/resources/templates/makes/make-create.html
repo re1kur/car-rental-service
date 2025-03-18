@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <title>New Make &ndash; Car Rental Service </title>
 </head>
-<header th:insert="~{/fragments/header :: to-makes-list}"
-        style="width: 100%; position: relative; background-color: lightslategray;
-        height: 30px; font-family: Calibri, serif; z-index: 1;">
+<header th:insert="~{/fragments/header :: to-makes-list}">
 </header>
 <body>
 <div>
@@ -23,8 +21,9 @@
         </label><br>
 
         <label for="description"><br>Description:
+            <br>
             <textarea th:field="*{make.description}" name="description" id="description"
-                      placeholder="Japanese multinational automotive manufacturer">
+                      placeholder="Japanese multinational automotive manufacturer" rows="4" cols="80" style="resize: none">
             </textarea>
         </label><br>
         <button type="submit">Create</button>

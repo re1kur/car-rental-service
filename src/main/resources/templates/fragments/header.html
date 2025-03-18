@@ -2,50 +2,41 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Navigation</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<a th:fragment="to-car" th:href="@{/cars/{id}(id=${car.id})}" style="float: left; margin-right: 10px; font-size: 20px">
-    &#8592; To car
-</a>
-<a th:fragment="to-cars-list" th:href="@{/cars/list}" style="float: left; margin-right: 10px; font-size: 20px">
-    &#8592; To list
-</a>
-<a th:fragment="to-makes-list" th:href="@{/makes/list}" style="float: left; margin-right: 10px; font-size: 20px">
-    &#8592; To list
-</a>
-<a th:fragment="car-edit" th:href="@{/cars/{id}/edit(id=${car.id})}" style="float: left; margin-right: 10px; font-size: 20px">
-    Edit
-</a>
-<a th:fragment="make-edit" th:href="@{/makes/{id}/edit(id=${make.id})}" style="float: left; margin-right: 10px; font-size: 20px">
-    Edit
-</a>
+<div th:fragment="to-car">
+    <a th:href="@{/cars/{id}(id=${car.id})}" class="header-link">&#8592; To car</a>
+</div>
+<div th:fragment="to-cars-list">
+    <a th:href="@{/cars/list}" class="header-link">&#8592; To list</a>
+</div>
+<div th:fragment="to-makes-list">
+    <a th:href="@{/makes/list}" class="header-link">&#8592; To list</a>
+</div>
+<div th:fragment="car-edit">
+    <a th:href="@{/cars/{id}/edit(id=${car.id})}" class="header-link">Edit</a>
+</div>
+<div th:fragment="make-edit">
+    <a th:href="@{/makes/{id}/edit(id=${make.id})}" class="header-link">Edit</a>
+</div>
 
-<div th:fragment="car-header"
-     style="width: 100%; position: relative; background-color: lightslategray;
-     height: 30px; font-family: Calibri, serif; z-index: 1;">
+<div th:fragment="car-header" class="header">
     <a th:insert="~{fragments/header :: to-cars-list}"></a>
     <a th:insert="~{fragments/header :: car-edit}"></a>
-    <div style="clear: both;"></div>
 </div>
 
-<div th:fragment="make-header"
-     style="width: 100%; position: relative; background-color: lightslategray;
-     height: 30px; font-family: Calibri, serif; z-index: 1;">
+<div th:fragment="make-header" class="header">
     <a th:insert="~{fragments/header :: to-makes-list}"></a>
     <a th:insert="~{fragments/header :: make-edit}"></a>
-    <div style="clear: both;"></div>
 </div>
 
-<div th:fragment="main-header"
-     style="position: fixed; background-color: lightslategray;
-      width: 100%; height: 30px; font-family: Calibri,serif; z-index: 1;">
-    <a th:href="@{/cars/create}" style="float: left; margin-right: 10px; font-size: 20px">New car</a>
-    <a th:href="@{/makes/create}" style="float: left; margin-right: 10px; font-size: 20px">New make</a>
-    <a th:href="@{/cars/list}" style="float: left; margin-right: 10px; font-size: 20px">All cars</a>
-    <a th:href="@{/makes/list}" style="float: left; margin-right: 10px; font-size: 20px">Makes</a>
-    <div style="clear: both;"></div>
+<div th:fragment="main-header" class="header">
+    <a th:href="@{/cars/create}" class="header-link">New car</a>
+    <a th:href="@{/makes/create}" class="header-link">New make</a>
+    <a th:href="@{/cars/list}" class="header-link">All cars</a>
+    <a th:href="@{/makes/list}" class="header-link">Makes</a>
 </div>
-
 </body>
 </html>

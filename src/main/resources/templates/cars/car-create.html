@@ -4,15 +4,10 @@
     <meta charset="UTF-8">
     <title>New Car &ndash; Car Rental Service</title>
 </head>
-<header th:insert="~{/fragments/header :: to-cars-list}"
-        style="width: 100%; position: relative; background-color: lightslategray;
-        height: 30px; font-family: Calibri, serif; z-index: 1;">
+<header th:insert="~{/fragments/header :: to-cars-list}">
 </header>
 
 <body>
-<!--<section th:if="${errors}">-->
-<!--    <span style="color: red" th:each="error : ${errors}" th:text="${error}"></span>-->
-<!--</section>-->
 <div>
     <h2>Common information.</h2>
     <form method="post" th:action="@{/cars/create}">

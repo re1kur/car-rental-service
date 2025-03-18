@@ -2,28 +2,33 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cars &ndash; Car Rental Service</title>
+    <title>Makes &ndash; Car Rental Service</title>
+    <link rel="stylesheet" th:href="@{/makes/styles-list.css}" href="/makes/styles-list.css">
 </head>
+<body>
 <header th:insert="~{/fragments/header :: main-header}">
 </header>
-<body>
-<div th:each="make : ${makes}" style="position: relative; top: 30px">
-    <article>
-        <a th:href="@{/makes/{id}(id=${make.id})}">
-            <span style="font-size: 20px; font-weight: bold"
-                  th:text="${make.name}"></span><br>
-        </a>
-        <section>
-            <span th:text="'Country: ' + ${make.country}"></span><br>
-            <span th:text="'Description: ' + ${make.description}"></span><br>
-        </section>
-        <footer>
-            <a th:href="@{/cars/make/{id}(id=${make.id})}">
-                Cars
+
+<div class="makes-list" th:if="${not #lists.isEmpty(makes)}">
+    <div th:each="make : ${makes}" class="make-item">
+        <article>
+            <a th:href="@{/makes/{id}(id=${make.id})}" class="make-link">
+                <span class="make-name" th:text="${make.name}"></span><br>
             </a>
-        </footer>
-    </article>
-    <hr>
+            <section class="make-details">
+                <span class="make-country" th:text="'Country: ' + ${make.country}"></span><br>
+                <span class="make-description" th:text="'Description: ' + ${make.description}"></span><br>
+            </section>
+            <footer class="make-footer">
+                <a th:href="@{/cars/make/{id}(id=${make.id})}" class="make-cars-link">Cars</a>
+            </footer>
+        </article>
+        <hr class="make-separator">
+    </div>
+</div>
+
+<div class="no-makes-message" th:if="${#lists.isEmpty(makes)}">
+    <p>No makes available.</p>
 </div>
 </body>
 </html>

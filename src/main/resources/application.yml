@@ -16,9 +16,13 @@ spring:
 
   jpa:
     generate-ddl: false
-  security:
-    user:
-      password: 123
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+#  security:
+#    user:
+#      password: 123
 
 custom:
   datasource:

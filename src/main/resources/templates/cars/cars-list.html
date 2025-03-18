@@ -3,28 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Cars &ndash; Car Rental Service</title>
+    <link rel="stylesheet" href="/cars/styles-list.css">
 </head>
 <header th:insert="~{/fragments/header :: main-header}">
-
 </header>
 <body>
-<div th:each="car : ${cars}" style="position: relative; top: 30px">
+<div th:each="car : ${cars}" class="car-item">
     <article>
-        <section>
-            <span style="font-size: 20px; font-weight: bold"
-                  th:text="${car.make.name} + ' ' + ${car.model}"></span><br>
+        <section class="car-info">
+            <h2 th:text="${car.make.name} + ' ' + ${car.model}"></h2>
         </section>
 
-        <section>
-            <span th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></span><br>
-            <span th:text="'Year: ' + ${car.year}"></span><br>
-            <span th:text="'License plate: ' + ${car.licensePlate}"></span><br>
+        <section class="car-details">
+            <p th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></p>
+            <p th:text="'Year: ' + ${car.year}"></p>
+            <p th:text="'License plate: ' + ${car.licensePlate}"></p>
         </section>
 
-        <footer>
-            <a th:href="@{/cars/{id}(id=${car.id})}">
-                Details
-            </a>
+        <footer class="car-footer">
+            <a th:href="@{/cars/{id}(id=${car.id})}">Details</a>
         </footer>
     </article>
     <hr>

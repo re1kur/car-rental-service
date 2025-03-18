@@ -3,43 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service' "></title>
+    <link rel="stylesheet" href="/cars/styles-car.css">
 </head>
-
+<body>
 <header th:insert="~{fragments/header :: car-header}">
-        <span style="font-size: 20px; font-weight: bold"
-              th:text="${car.make.name} + ' ' + ${car.model}"></span><br>
-
+    <h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>
 </header>
 
-<body>
-<h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>
-<section>
-    <h2>Common Information</h2>
-    <span th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></span><br>
-    <span th:text="'Year: ' + ${car.year}"></span><br>
-    <span th:text="'License plate: ' + ${car.licensePlate}"></span><br>
-</section>
+<main>
+    <section class="car-info">
+        <h2>Common Information</h2>
+        <ul>
+            <li th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></li>
+            <li th:text="'Year: ' + ${car.year}"></li>
+            <li th:text="'License plate: ' + ${car.licensePlate}"></li>
+        </ul>
+    </section>
 
-<section th:if="${car.details}">
-    <h2>Details</h2>
-    <span th:if="${car.details.color}" th:text="'Color: ' + ${car.details.color}"></span><br>
-    <span th:if="${car.details.mileage}" th:text="'Mileage: ' + ${car.details.mileage}"></span><br>
-    <span th:if="${car.details.fuelType}" th:text="'Fuel type: ' + ${car.details.fuelType}"></span><br>
-    <span th:if="${car.details.transmission}" th:text="'Transmission: ' + ${car.details.transmission}"></span><br>
-</section>
+    <section th:if="${car.details}" class="car-details">
+        <h2>Details</h2>
+        <ul>
+            <li th:if="${car.details.color}" th:text="'Color: ' + ${car.details.color}"></li>
+            <li th:if="${car.details.mileage}" th:text="'Mileage: ' + ${car.details.mileage}"></li>
+            <li th:if="${car.details.fuelType}" th:text="'Fuel type: ' + ${car.details.fuelType}"></li>
+            <li th:if="${car.details.transmission}" th:text="'Transmission: ' + ${car.details.transmission}"></li>
+        </ul>
+    </section>
 
-<section th:unless="${car.details}"><br>
-    <hr>
-    <span style="color: black; font-style: italic">You doesnt have details.
-    <br>You can edit car in header.</span><br>
-</section>
+    <section th:unless="${car.details}" class="no-details">
+        <hr>
+        <p style="font-style: italic">Car doesn't have details. Edit the car in the header.</p>
+    </section>
 
-<section th:if="${car.images}">
-    <h2>Images</h2>
-    <div th:each="image : ${car.images}">
-        <span th:text="${image.url}"></span><br>
-        <span th:text="${image.uploadedAt}"></span><br>
-    </div>
-</section>
+    <section th:if="${car.images}" class="car-images">
+        <h2>Images</h2>
+        <ul>
+            <li th:each="image : ${car.images}">
+                <span th:text="${image.url}"></span><br>
+                <span th:text="${image.uploadedAt}"></span><br>
+            </li>
+        </ul>
+    </section>
+</main>
 </body>
 </html>

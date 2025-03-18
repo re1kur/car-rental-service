@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="'Editing ' + ${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service'"></title>
+    <link rel="stylesheet" href="/cars/styles-edit.css">
 </head>
-<header th:insert="~{/fragments/header :: to-car}"
-        style="width: 100%; position: relative; background-color: lightslategray;
-     height: 30px; font-family: Calibri, serif; z-index: 1;">
+<header th:insert="~{/fragments/header :: to-car}">
 </header>
 
 <body>
-<!--<section th:if="${errors}">-->
-<!--    <span style="color: red" th:each="error : ${errors}" th:text="${error}"></span>-->
-<!--</section>-->
 <div>
     <h2>Common information.</h2>
     <form method="post" th:action="@{/cars/{id}/edit(id=${car.id})}">

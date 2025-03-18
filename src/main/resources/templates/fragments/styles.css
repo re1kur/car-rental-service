@@ -1,0 +1,69 @@
+/* styles-list.css */
+
+/* General Link Styles */
+a.header-link {
+    color: #eee; /* Light grey for better visibility */
+    text-decoration: none;
+    padding: 8px 12px; /* Good spacing */
+    border-radius: 5px;  /* Rounded corners */
+    background-color: #333; /* Dark background */
+    transition: background-color 0.3s ease; /* Smooth hover */
+    display: inline-block; /* Makes padding and margins work properly */
+    margin: 5px; /* Small margin for spacing links apart */
+    font-size: 14px; /* Readable font size */
+}
+
+a.header-link:hover {
+    background-color: #555; /* Slightly lighter on hover */
+    color: #fff; /* White text on hover */
+}
+
+/* Header Container Styles */
+.header {
+    background-color: #444; /* Darker background for the whole header */
+    color: #eee; /* Light text color */
+    padding: 10px;
+    margin-bottom: 15px; /* Space between header and content */
+    border-radius: 5px;
+    display: flex;          /* Use flexbox for layout */
+    align-items: center;   /* Vertically center items */
+    justify-content: flex-start; /* Align items to the start (left) */
+    gap: 10px;             /* Space between elements in the header */
+}
+
+/* Specific Header Fragment Styling (optional) */
+/*  You can target specific headers if needed */
+.header.car-header {
+    border-bottom: 2px solid #e8491d; /* Highlight color */
+}
+
+.header.make-header {
+    border-bottom: 2px solid #1d7ae8; /* Another highlight color */
+}
+
+/* Styles for the "To car" and "To list" links */
+.header-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #555; /* Slightly darker background */
+    transition: background-color 0.3s ease;
+}
+
+.header-link:hover {
+    background-color: #777; /* Even lighter on hover */
+}
+
+/* Improved Responsiveness */
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Align to the left */
+    }
+
+    .header a {
+        margin-bottom: 5px;   /* Add space between stacked links */
+    }
+}
+
