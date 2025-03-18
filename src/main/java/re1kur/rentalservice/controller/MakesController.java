@@ -21,16 +21,12 @@ public class MakesController {
     MakeService service;
 
     @Autowired
-    public MakesController(
-            MakeService service
-    ) {
+    public MakesController(MakeService service) {
         this.service = service;
     }
 
     @GetMapping("list")
-    public String getList(
-            Model model
-    ) {
+    public String getList(Model model) {
         List<MakeReadDto> makes = service.readAll();
         model.addAttribute("makes", makes);
         return "/makes/makes-list.html";
@@ -43,17 +39,8 @@ public class MakesController {
     }
 
     @PostMapping("create")
-    public String createMake(
-            Model model,
-            @Validated MakeWriteDto make,
-            BindingResult bindingResult
-    ) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("make", make);
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            return "/makes/make-create.html";
-        }
-        model.addAttribute("make", service.write(make));
-        return "makes/make.html";
+    public String createMake(@Validated MakeWriteDto make) {
+        MakeReadDto write = service.write(make);
+        return "redirect:/makes/" + write.getId();
     }
 }

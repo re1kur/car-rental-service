@@ -12,16 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarDetailsWriteDto {
-
-    @Size(max = 20)
+    @Size(max = 20, message = "The color have to be name lesser than 20 chars.")
     private String color;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "The mileage cannot be negative.")
     private Integer mileage;
 
-    @Size(max = 20)
+    @Size(max = 20, message = "The fuel type have to be name lesser than 20 chars.")
     private String fuelType;
 
-    @Size(max = 30)
+    @Size(max = 30, message = "The transmission have to be name lesser than 30 chars.")
     private String transmission;
 }

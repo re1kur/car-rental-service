@@ -2,8 +2,8 @@ package re1kur.rentalservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import re1kur.rentalservice.dto.make.MakeReadDto;
@@ -15,24 +15,18 @@ public class MakeController {
     MakeService service;
 
     @Autowired
-    public MakeController(
-            MakeService service
-    ) {
+    public MakeController(MakeService service) {
         this.service = service;
     }
 
-    @GetMapping
-    public String make(
-            @PathVariable("id") int id,
-            Model model
-    ) {
-     MakeReadDto make = service.read(id);
-     model.addAttribute("make", make);
-     return "/makes/make.html";
+    @ModelAttribute("make")
+    public MakeReadDto make(@PathVariable int id) {
+        return service.read(id);
     }
 
-//    @PostMapping("edit")
-//    public String edit() {
-//
-//    }
+    @GetMapping
+    public String getMake() {
+        return "/makes/make.html";
+    }
+
 }

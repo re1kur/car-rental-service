@@ -11,13 +11,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MakeWriteDto {
-    @NotBlank
-    @NotNull
-    @Size(min = 3, max = 64)
+    @NotBlank(message = "The make name mustn't only name with backspace chars.")
+    @NotNull(message = "The make name have to be.")
+    @Size(message = "The make name have to be lesser and greater than 64 and 3 chars respectively.", min = 3, max = 64)
     private String name;
 
-    @NotBlank
-    @Size(min = 3, max = 32)
+    @NotBlank(message = "The country haven't to be only name with backspace chars.")
+    @Size(message = "The country haven't to be lesser and greater than 32 and 3 chars respectively. ", min = 3, max = 32)
     private String country;
 
     private String description;

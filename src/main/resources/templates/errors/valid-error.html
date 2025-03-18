@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Validation Error</title>
+</head>
+<body>
+    <div style="color: red;">
+        <h3>Validation failed</h3>
+        <p th:each="error : ${errors}" th:text="${error}">
+        </p>
+        <a th:href="${referer}">Back</a>
+    </div>
+</body>
+</html>

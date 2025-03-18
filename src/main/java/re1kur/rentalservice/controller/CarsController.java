@@ -22,16 +22,15 @@ public class CarsController {
     private final MakeService makeService;
 
     @Autowired
-    public CarsController(
-            CarService service,
-            MakeService makeService) {
+    public CarsController(CarService service, MakeService makeService) {
         this.service = service;
         this.makeService = makeService;
     }
 
     @GetMapping("list")
     public String listCars(Model model) {
-        model.addAttribute("cars", service.readAll(false, false));
+        model.addAttribute("cars",
+                service.readAll(false, false));
         return "cars/cars-list.html";
     }
 
@@ -47,18 +46,8 @@ public class CarsController {
     @PostMapping("/create")
     public String createCar(
             @Validated @ModelAttribute("write") CarWriteDto car,
-            @Validated @ModelAttribute("carDetails") CarDetailsWriteDto carDetails,
-            Model model,
-            BindingResult bindingResult) {
+            @Validated @ModelAttribute("carDetails") CarDetailsWriteDto carDetails) {
         car.setDetails(carDetails);
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("makes", makeService.readAll());
-            model.addAttribute("update", car);
-            model.addAttribute("carDetails", carDetails);
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            return "cars/car-create.html";
-        }
         Integer id = service.writeCar(car);
         return "redirect:/cars/" + id;
     }
@@ -66,7 +55,8 @@ public class CarsController {
 
     @GetMapping("/make/{id}")
     public String getCarsByMake(Model model, @PathVariable int id) {
-        model.addAttribute("cars", service.readAllByMake(id, false, false));
+        model.addAttribute("cars",
+                service.readAllByMake(id, false, false));
         return "/cars/cars-list.html";
     }
 }
