@@ -3,6 +3,7 @@ package re1kur.rentalservice.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import re1kur.rentalservice.dto.make.MakeReadDto;
+import re1kur.rentalservice.dto.make.MakeUpdateDto;
 import re1kur.rentalservice.dto.make.MakeWriteDto;
 import re1kur.rentalservice.entity.Make;
 import re1kur.rentalservice.mapper.MakeMapper;
@@ -37,5 +38,16 @@ public class DefaultMakeService implements MakeService {
     @Override
     public MakeReadDto read(int id) {
         return repo.findById(id).map(mapper::read).orElse(null);
+    }
+
+    @Override
+    public MakeUpdateDto readUpdateById(int id) {
+        return repo.findById(id).map(mapper::readUpdate).orElse(null);
+    }
+
+    @Override
+    public void updateMake(MakeUpdateDto update, int id) {
+        Make mapped = mapper.update(update, id);
+        repo.save(mapped);
     }
 }

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
+import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 
 @Builder
 @Data
@@ -31,4 +32,6 @@ public class CarWriteDto {
     private String licensePlate;
 
     private CarDetailsWriteDto details;
+
+    private CarImageWriteDto image;
 }

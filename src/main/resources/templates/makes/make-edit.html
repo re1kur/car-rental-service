@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Editing ' + ${update.name} + ' — Car Rental Service'"></title>
+    <link rel="stylesheet" th:href="@{/css/styles-car-edit.css}">
+    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/main-header.css}">
+</head>
+<header class="header" th:insert="~{/fragments/header :: to-makes-list}">
+</header>
+
+<body>
+<div class="container">
+    <form th:object="${update}" class="edit-form" method="post" th:action="@{/makes/{id}/edit(id=${make.id})}">
+        <h2>Make information.</h2>
+        <h4>Name:</h4>
+        <label for="name">
+            <input th:field="*{name}" type="text" name="name" id="name"
+                   placeholder="Toyota" required>
+        </label><br>
+
+        <h4>Country:</h4>
+        <label for="country">
+            <input th:field="*{country}" type="text" name="country" id="country"
+                   placeholder="Japan" required>
+        </label>
+        <h4>Description:</h4>
+        <label for="description"><br>
+            <textarea th:field="*{description}" name="description" id="description"
+                      placeholder="Japanese multinational automotive manufacturer" rows="4" cols="80" style="resize: none">
+            </textarea>
+        </label><br>
+        <button type="submit">Edit</button>
+    </form>
+</div>
+</body>
+<footer th:replace="~{/fragments/footer :: main-footer}">
+</footer>
+</html>

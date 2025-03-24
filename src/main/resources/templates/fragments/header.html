@@ -21,7 +21,7 @@
     <a th:href="@{/makes/{id}/edit(id=${make.id})}" class="header-link">Edit</a>
 </div>
 
-<div class="header">
+<div th:fragment="make-header" class="header">
     <a th:href="@{/cars/list}" class="header-link">Cars</a>
     <a th:href="@{/makes/list}" class="header-link">Makes</a>
     <a th:href="@{/makes/{id}/edit(id=${make.id})}" class="header-link">Edit</a>

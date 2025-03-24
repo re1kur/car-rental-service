@@ -13,17 +13,15 @@ spring:
     password: 123456778
     driver-class-name: org.postgresql.Driver
 
-
   jpa:
     generate-ddl: false
     open-in-view: false
 
-#  mvc:
-#    hiddenmethod:
-#      filter:
-#        enabled: true
-
 custom:
+  buckets:
+    car-image: cars
+  rest-clients:
+    fileStore: http://localhost:8081/api
   datasource:
     schema: common
 

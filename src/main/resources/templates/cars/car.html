@@ -44,15 +44,15 @@
         <p style="font-style: italic">Car doesn't have details. Edit the car in the header.</p>
     </section>
 
-    <!--    <section th:if="${car.images}" class="car-images">-->
-    <!--        <h2>Images</h2>-->
-    <!--        <ul>-->
-    <!--            <li th:each="image : ${car.images}">-->
-    <!--                <span th:text="${image.url}"></span><br>-->
-    <!--                <span th:text="${image.uploadedAt}"></span><br>-->
-    <!--            </li>-->
-    <!--        </ul>-->
-    <!--    </section>-->
+        <section th:if="${car.images}" class="car-images">
+            <h2>Images</h2>
+            <ul>
+                <li th:each="image : ${car.images}">
+                    <img th:src="${image.url}"  alt="Here must be image"/><br>
+                    <span th:text="${image.uploadedAt}"></span><br>
+                </li>
+            </ul>
+        </section>
 </div>
 </body>
 <footer th:replace="~{/fragments/footer :: main-footer}">

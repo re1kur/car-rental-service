@@ -14,17 +14,15 @@ public class SecurityConfiguration {
     public DefaultSecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http
                 .csrf(
-                        csrfConfig -> {
-                            csrfConfig
-                                    .ignoringRequestMatchers(
-                                            "/users/register",
-                                            "/users/login",
-                                            "/users/logout");
-                        })
+                        csrfConfig -> csrfConfig
+                                .ignoringRequestMatchers(
+                                        "/users/register",
+                                        "/users/login",
+                                        "/users/logout"))
                 .formLogin(loginConfig ->
                         loginConfig
                                 .loginPage("/users/login")
-                                .defaultSuccessUrl("/cars/list", true))
+                                .defaultSuccessUrl("/", true))
                 .logout(logoutConfig ->
                         logoutConfig
                                 .logoutUrl("/users/logout")

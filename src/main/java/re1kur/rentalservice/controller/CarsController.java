@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import re1kur.rentalservice.dto.car.CarReadDto;
-import re1kur.rentalservice.dto.car.CarUpdateDto;
+import org.springframework.web.multipart.MultipartFile;
 import re1kur.rentalservice.dto.car.CarWriteDto;
-import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
 import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
+import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.service.CarService;
 import re1kur.rentalservice.service.MakeService;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("cars")
@@ -46,8 +46,11 @@ public class CarsController {
     @PostMapping("/create")
     public String createCar(
             @Validated @ModelAttribute("write") CarWriteDto car,
-            @Validated @ModelAttribute("carDetails") CarDetailsWriteDto carDetails) {
+            @Validated @ModelAttribute("carDetails") CarDetailsWriteDto carDetails,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
         car.setDetails(carDetails);
+        car.setImage(CarImageWriteDto.builder().image(file).build());
         Integer id = service.writeCar(car);
         return "redirect:/cars/" + id;
     }

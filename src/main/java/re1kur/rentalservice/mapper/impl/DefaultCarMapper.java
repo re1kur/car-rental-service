@@ -7,43 +7,55 @@ import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
 import re1kur.rentalservice.entity.Car;
 import re1kur.rentalservice.entity.CarDetails;
+import re1kur.rentalservice.entity.CarImage;
 import re1kur.rentalservice.mapper.CarDetailsMapper;
-//import re1kur.rentalservice.mapper.CarImagesMapper;
+import re1kur.rentalservice.mapper.CarImagesMapper;
 import re1kur.rentalservice.mapper.CarMapper;
 import re1kur.rentalservice.mapper.MakeMapper;
 import re1kur.rentalservice.repository.MakeRepository;
 
-import java.util.ArrayList;
 
 @Mapper
 public class DefaultCarMapper implements CarMapper {
     MakeRepository makeRepo;
     CarDetailsMapper detailsMapper;
-//    CarImagesMapper imagesMapper;
+    CarImagesMapper imagesMapper;
     MakeMapper makeMapper;
 
     @Autowired
     public DefaultCarMapper(
             CarDetailsMapper detailsMapper,
-//            CarImagesMapper imagesMapper,
+            CarImagesMapper imagesMapper,
             MakeRepository makeRepo,
             MakeMapper makeMapper
     ) {
         this.detailsMapper = detailsMapper;
-//        this.imagesMapper = imagesMapper;
+        this.imagesMapper = imagesMapper;
         this.makeRepo = makeRepo;
         this.makeMapper = makeMapper;
     }
 
     @Override
     public Car write(CarWriteDto car) {
-        return Car.builder()
+        CarDetails details = detailsMapper.write(car.getDetails());
+
+        Car build = Car.builder()
                 .make(makeRepo.getReferenceById(car.getMakeId()))
                 .model(car.getModel())
                 .year(car.getYear())
                 .licensePlate(car.getLicensePlate())
-                .details(detailsMapper.write(car.getDetails()))
+                .details(details)
                 .build();
+
+        if (details != null) {
+            details.setCar(build);
+        }
+
+        if (car.getImage() != null) {
+            CarImage image = imagesMapper.write(car.getImage());
+            build.addImage(image);
+        }
+        return build;
     }
 
     @Override
@@ -68,7 +80,7 @@ public class DefaultCarMapper implements CarMapper {
                 .isAvailable(car.isAvailable())
                 .licensePlate(car.getLicensePlate())
                 .details(detailsMapper.read(car.getDetails()))
-//                .images(imagesMapper.read(car.getImages()))
+                .images(imagesMapper.readImages(car.getImages()))
                 .build();
     }
 
@@ -94,5 +106,4 @@ public class DefaultCarMapper implements CarMapper {
                 .details(detailsMapper.update(car.getDetails(), id))
                 .build();
     }
-
 }

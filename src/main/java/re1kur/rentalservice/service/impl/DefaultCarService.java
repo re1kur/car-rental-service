@@ -5,48 +5,31 @@ import org.springframework.stereotype.Service;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
+import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.entity.Car;
-import re1kur.rentalservice.mapper.CarDetailsMapper;
 import re1kur.rentalservice.mapper.CarMapper;
-import re1kur.rentalservice.repository.CarDetailsRepository;
-import re1kur.rentalservice.repository.CarImageRepository;
 import re1kur.rentalservice.repository.CarRepository;
 import re1kur.rentalservice.service.CarService;
+import re1kur.rentalservice.service.FileStoreService;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
 public class DefaultCarService implements CarService {
     private final CarRepository repo;
-    private final CarDetailsRepository detailsRepo;
-//    private final CarImageRepository imageRepo;
     private final CarMapper mapper;
-    private final CarDetailsMapper detailsMapper;
-//    private final CarImagesMapper imagesMapper;
+    private final FileStoreService fileService;
 
     @Autowired
     public DefaultCarService
             (CarRepository repo,
              CarMapper mapper,
-             CarDetailsRepository detailsRepo,
-             CarImageRepository imageRepo,
-             CarDetailsMapper detailsMapper
-//             CarImagesMapper imagesMapper
-             ) {
+             FileStoreService fileService) {
         this.repo = repo;
         this.mapper = mapper;
-        this.detailsRepo = detailsRepo;
-//        this.imageRepo = imageRepo;
-        this.detailsMapper = detailsMapper;
-//        this.imagesMapper = imagesMapper;
+        this.fileService = fileService;
     }
-
-
-//    @Override
-//    public void writeCarDetails(CarDetailsWriteDto carDetails, int id) {
-//        CarDetails details = detailsMapper.write(carDetails, id);
-//        detailsRepo.save(details);
-//    }
 
     @Override
     public CarUpdateDto readUpdateById(int id) {
@@ -65,11 +48,6 @@ public class DefaultCarService implements CarService {
         return repo.findAll().stream().map(mapper::read).toList();
     }
 
-//    @Override
-//    public List<CarReadDto> readAllWithDetails() {
-//        return repo.findAll().stream().map(mapper::readWithDetails).toList();
-//    }
-
     @Override
     public CarReadDto readByIdWithDetails(int id) {
         return repo.findById(id).map(
@@ -77,7 +55,13 @@ public class DefaultCarService implements CarService {
     }
 
     @Override
-    public Integer writeCar(CarWriteDto car) {
+    public Integer writeCar(CarWriteDto car) throws IOException {
+        if (!car.getImage().getImage().getOriginalFilename().equals("")) {
+            CarImageWriteDto upload = fileService.upload(car.getImage());
+            car.setImage(upload);
+        } else {
+            car.setImage(null);
+        }
         Car mapped = mapper.write(car);
         Car saved = repo.save(mapped);
         return saved.getId();
@@ -90,21 +74,4 @@ public class DefaultCarService implements CarService {
                 .map(mapper::read).toList();
     }
 
-//    @Override
-//    public void updateCar(int id, CarUpdateDto updateDto) {
-//        Optional<Car> mayBeCar = repo.findById(id);
-//        mayBeCar.ifPresent(car -> {
-//            car.setModel(updateDto.getModel());
-//            car.setYear(updateDto.getYear());
-//            car.setLicensePlate(updateDto.getLicensePlate());
-//            CarDetails details = car.getDetails();
-//            if (details != null) {
-//                CarDetailsUpdateDto updateDetails = updateDto.getDetails();
-//                details.setColor(updateDetails.getColor());
-//                details.setMileage(updateDetails.getMileage());
-//                details.setFuelType(updateDetails.getFuelType());
-//                details.setTransmission(updateDetails.getTransmission());
-//            }
-//        });
-//    }
 }
