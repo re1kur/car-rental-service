@@ -1,25 +1,17 @@
 package re1kur.rentalservice.mapper.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import re1kur.rentalservice.annotations.Mapper;
 import re1kur.rentalservice.dto.car.images.CarImageReadDto;
 import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.entity.CarImage;
 import re1kur.rentalservice.mapper.CarImagesMapper;
-import re1kur.rentalservice.service.impl.DefaultFileStoreService;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
 @Mapper
 public class DefaultCarImagesMapper implements CarImagesMapper {
-    private final DefaultFileStoreService defaultFileStoreService;
-
-    public DefaultCarImagesMapper(DefaultFileStoreService defaultFileStoreService) {
-        this.defaultFileStoreService = defaultFileStoreService;
-    }
 
     @Override
     public List<CarImage> writeImages(List<CarImageWriteDto> images) {
@@ -52,5 +44,18 @@ public class DefaultCarImagesMapper implements CarImagesMapper {
                 .build())
                 .filter(Objects::nonNull)
                 .toList();
+    }
+
+    @Override
+    public CarImageReadDto read(CarImage titleImage) {
+        if (titleImage == null) {
+            return null;
+        }
+        return CarImageReadDto.builder()
+                .id(titleImage.getId())
+                .carId(titleImage.getCar().getId())
+                .url(titleImage.getImageUrl())
+                .uploadedAt(titleImage.getUploadedAt())
+                .build();
     }
 }

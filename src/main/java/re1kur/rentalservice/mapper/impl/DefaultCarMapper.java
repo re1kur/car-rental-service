@@ -51,6 +51,11 @@ public class DefaultCarMapper implements CarMapper {
             details.setCar(build);
         }
 
+        if (car.getTitleImage() != null) {
+            CarImage title = imagesMapper.write(car.getTitleImage());
+            build.addImage(title);
+            build.setTitleImage(title);
+        }
         if (car.getImage() != null) {
             CarImage image = imagesMapper.write(car.getImage());
             build.addImage(image);
@@ -65,6 +70,7 @@ public class DefaultCarMapper implements CarMapper {
                 .make(makeMapper.read(car.getMake()))
                 .model(car.getModel())
                 .year(car.getYear())
+                .titleImage(imagesMapper.read(car.getTitleImage()))
                 .isAvailable(car.isAvailable())
                 .licensePlate(car.getLicensePlate())
                 .build();
@@ -80,6 +86,7 @@ public class DefaultCarMapper implements CarMapper {
                 .isAvailable(car.isAvailable())
                 .licensePlate(car.getLicensePlate())
                 .details(detailsMapper.read(car.getDetails()))
+                .titleImage(imagesMapper.read(car.getTitleImage()))
                 .images(imagesMapper.readImages(car.getImages()))
                 .build();
     }

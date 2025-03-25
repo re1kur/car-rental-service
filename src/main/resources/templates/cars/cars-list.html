@@ -19,9 +19,16 @@
             </section>
 
             <section class="car-details">
-                <p th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></p>
-                <p th:text="'Year: ' + ${car.year}"></p>
-                <p th:text="'License plate: ' + ${car.licensePlate}"></p>
+                <div style="display: flex; align-items: center;">
+                    <div >
+                        <p th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></p>
+                        <p th:text="'Year: ' + ${car.year}"></p>
+                        <p th:text="'License plate: ' + ${car.licensePlate}"></p>
+                    </div>
+                    <div th:if="${car.titleImage != null}" class="image-container">
+                        <img th:src="${car.titleImage.url}" alt="Car Image">
+                    </div>
+                </div>
             </section>
 
             <footer class="car-footer">

@@ -48,6 +48,12 @@
             </label><br>
         </section>
 
+        <section class="form-group">
+            <label for="title" class="labelFile">Title image:
+                <input type="file" name="title" id="title" accept="image/*">
+            </label><br>
+        </section>
+
         <section class="form-group" th:object="${carDetails}">
             <h3>Details</h3>
 
@@ -95,8 +101,8 @@
                 </select>
             </label><br>
         </section>
-        <section>
-            <label for="file">Image:
+        <section class="form-group">
+            <label for="file" class="labelFile">Image:
                 <input type="file" id="file" name="file" accept="image/*">
             </label><br>
         </section>

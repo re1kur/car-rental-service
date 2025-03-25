@@ -19,20 +19,55 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
+    display: flex;
 }
 
 .car-item:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.car-info {
+}
+
 .car-info h2 {
     color: #e8491d;
     margin-top: 0;
+    margin-bottom: 5px;
 }
+
+.car-details img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-container {
+    width: 550px;
+    height: 225px;
+    border: 2px solid #e8491d;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-left: 100px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*.car-details div {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    flex-grow: 1;*/
+/*}*/
 
 .car-details p {
     margin: 5px 0;
+}
+
+
+.car-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .car-footer a {
@@ -54,28 +89,4 @@ hr {
     height: 1px;
     background: #ccc;
     margin: 20px 0;
-}
-
-@media (max-width: 768px) {
-    header {
-        padding-top: 15px;
-        min-height: 50px;
-    }
-
-    header a {
-        font-size: 14px;
-        margin: 0 5px;
-    }
-
-    .car-item {
-        padding: 15px;
-    }
-
-    .car-info h2 {
-        font-size: 1.5em;
-    }
-
-    .car-details p {
-        font-size: 0.9em;
-    }
 }

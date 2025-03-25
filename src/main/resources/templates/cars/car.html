@@ -26,6 +26,11 @@
         <label>
             <span class="field">License plate: </span>
             <span th:text="${car.licensePlate}"></span>
+        </label><br>
+        <label class="titleImage" th:if="${car.titleImage != null}"><span class="field">Title image</span><br>
+            <img th:src="${car.titleImage.url}"
+                 alt="Here must be title image"><br>
+            <span th:text="'Image uploaded at: ' + ${car.titleImage.uploadedAt}"></span><br>
         </label>
     </section>
 
@@ -44,15 +49,15 @@
         <p style="font-style: italic">Car doesn't have details. Edit the car in the header.</p>
     </section>
 
-        <section th:if="${car.images}" class="car-images">
-            <h2>Images</h2>
-            <ul>
-                <li th:each="image : ${car.images}">
-                    <img th:src="${image.url}"  alt="Here must be image"/><br>
-                    <span th:text="${image.uploadedAt}"></span><br>
-                </li>
-            </ul>
-        </section>
+    <section th:if="${car.images}" class="car-images">
+        <h2>Images</h2>
+        <ul>
+            <li th:each="image : ${car.images}">
+                <img th:src="${image.url}" alt="Here must be image"/><br>
+                <span th:text="'Image uploaded at: ' + ${image.uploadedAt}"></span><br>
+            </li>
+        </ul>
+    </section>
 </div>
 </body>
 <footer th:replace="~{/fragments/footer :: main-footer}">

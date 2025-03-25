@@ -14,4 +14,5 @@ public interface CarImagesMapper {
 
     List<CarImageReadDto> readImages(Collection<CarImage> images);
 
+    CarImageReadDto read(CarImage titleImage);
 }

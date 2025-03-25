@@ -33,5 +33,7 @@ public class CarWriteDto {
 
     private CarDetailsWriteDto details;
 
+    private CarImageWriteDto titleImage;
+
     private CarImageWriteDto image;
 }

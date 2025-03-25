@@ -56,6 +56,12 @@ public class DefaultCarService implements CarService {
 
     @Override
     public Integer writeCar(CarWriteDto car) throws IOException {
+        if (!car.getTitleImage().getImage().getOriginalFilename().equals("")) {
+            CarImageWriteDto upload = fileService.upload(car.getTitleImage());
+            car.setTitleImage(upload);
+        } else {
+            car.setTitleImage(null);
+        }
         if (!car.getImage().getImage().getOriginalFilename().equals("")) {
             CarImageWriteDto upload = fileService.upload(car.getImage());
             car.setImage(upload);

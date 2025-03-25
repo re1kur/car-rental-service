@@ -16,6 +16,7 @@ public class CarReadDto {
     private String model;
     private int year;
     private String licensePlate;
+    private CarImageReadDto titleImage;
     boolean isAvailable;
     private CarDetailsReadDto details;
     private List<CarImageReadDto> images;

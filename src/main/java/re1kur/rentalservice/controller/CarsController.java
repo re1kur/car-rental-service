@@ -47,9 +47,11 @@ public class CarsController {
     public String createCar(
             @Validated @ModelAttribute("write") CarWriteDto car,
             @Validated @ModelAttribute("carDetails") CarDetailsWriteDto carDetails,
-            @RequestParam("file") MultipartFile file
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("title") MultipartFile title
     ) throws IOException {
         car.setDetails(carDetails);
+        car.setTitleImage(CarImageWriteDto.builder().image(title).build());
         car.setImage(CarImageWriteDto.builder().image(file).build());
         Integer id = service.writeCar(car);
         return "redirect:/cars/" + id;

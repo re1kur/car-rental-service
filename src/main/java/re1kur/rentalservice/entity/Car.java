@@ -2,7 +2,10 @@ package re1kur.rentalservice.entity;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,6 +30,10 @@ public class Car {
     private Integer year;
 
     private String licensePlate;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "title_image_id")
+    private CarImage titleImage;
 
     @Column(insertable = false)
     private boolean isAvailable;
