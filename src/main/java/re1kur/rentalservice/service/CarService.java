@@ -1,5 +1,7 @@
 package re1kur.rentalservice.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
@@ -20,5 +22,6 @@ public interface CarService {
 
     void updateCar(CarUpdateDto car, int id);
 
-    List<CarReadDto> readAll();
+
+    Page<CarReadDto> readAll(Pageable pageable);
 }

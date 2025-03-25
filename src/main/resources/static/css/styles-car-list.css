@@ -54,12 +54,39 @@ body {
     align-items: center;
 }
 
+.pagination {
+    margin-top: 20px;
+}
 
-/*.car-details div {*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    flex-grow: 1;*/
-/*}*/
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.page-link {
+    color: #e8491d;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    padding: 0.5rem 0.75rem;
+    margin-left: 5px;
+    border-radius: 0.25rem;
+}
+
+.page-link:hover {
+    color: #e8491d;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.page-item.active .page-link {
+    background-color: #e8491d;
+    border-color: #e8491d;
+    color: #fff;
+    font-weight: bold;
+}
 
 .car-details p {
     margin: 5px 0;

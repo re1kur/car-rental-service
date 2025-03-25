@@ -1,6 +1,8 @@
 package re1kur.rentalservice.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarUpdateDto;
@@ -44,8 +46,8 @@ public class DefaultCarService implements CarService {
     }
 
     @Override
-    public List<CarReadDto> readAll() {
-        return repo.findAll().stream().map(mapper::read).toList();
+    public Page<CarReadDto> readAll(Pageable pageable) {
+        return repo.findAll(pageable).map(mapper::read);
     }
 
     @Override

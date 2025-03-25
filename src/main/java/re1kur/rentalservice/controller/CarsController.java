@@ -1,12 +1,17 @@
 package re1kur.rentalservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
 import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
 import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
@@ -20,6 +25,8 @@ import java.io.IOException;
 public class CarsController {
     private final CarService service;
     private final MakeService makeService;
+    @Value("${custom.pagination.size}")
+    private Integer size;
 
     @Autowired
     public CarsController(CarService service, MakeService makeService) {
@@ -28,9 +35,23 @@ public class CarsController {
     }
 
     @GetMapping("list")
-    public String listCars(Model model) {
-        model.addAttribute("cars",
-                service.readAll());
+    public String listCars(
+            Model model,
+            @RequestParam(name = "page", defaultValue = "0") Integer page) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CarReadDto> carPage = service.readAll(pageable);
+
+        model.addAttribute("cars", carPage.getContent());
+        model.addAttribute("currentPage", carPage.getNumber());
+        model.addAttribute("totalPages", carPage.getTotalPages());
+        model.addAttribute("pageSize", size);
+        model.addAttribute("totalItems", carPage.getTotalElements());
+
+
+        model.addAttribute("prevPage", carPage.hasPrevious() ? carPage.getNumber() - 1 : null);
+        model.addAttribute("nextPage", carPage.hasNext() ? carPage.getNumber() + 1 : null);
+        model.addAttribute("lastPage", carPage.getTotalPages() - 1);
+
         return "cars/cars-list.html";
     }
 

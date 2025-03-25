@@ -18,6 +18,9 @@ spring:
     open-in-view: false
 
 custom:
+  pagination:
+    size: 5
+
   buckets:
     car-image: cars
   rest-clients:

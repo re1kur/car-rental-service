@@ -20,7 +20,7 @@
 
             <section class="car-details">
                 <div style="display: flex; align-items: center;">
-                    <div >
+                    <div>
                         <p th:text="'Is available: ' + (${car.isAvailable} ? 'Yes' : 'No')"></p>
                         <p th:text="'Year: ' + ${car.year}"></p>
                         <p th:text="'License plate: ' + ${car.licensePlate}"></p>
@@ -39,6 +39,30 @@
     </div>
 </div>
 </body>
+<footer class="pages">
+    <nav aria-label="Pagination">
+        <div class="pagination justify-content-center">
+            <label th:class="${prevPage == null ? 'page-item disabled' : 'page-item'}">
+                <a th:href="${prevPage != null ? '/cars/list?page=' + prevPage : '#'} "
+                   th:text="Previous"
+                   class="page-link"></a>
+            </label>
+
+            <label th:each="pageNumber : ${#numbers.sequence(0, lastPage)}"
+                th:class="${pageNumber == currentPage ? 'page-item active' : 'page-item'}">
+                <a th:href="@{/cars/list(page=${pageNumber})}"
+                   th:text="${pageNumber + 1}"
+                   class="page-link"></a>
+            </label>
+
+            <label th:class="${nextPage == null ? 'page-item disabled' : 'page-item'}">
+                <a th:href="${nextPage != null ? '/cars/list?page=' + nextPage : '#'} "
+                   th:text="Next"
+                   class="page-link"></a>
+            </label>
+        </div>
+    </nav>
+</footer>
 <footer th:replace="~{/fragments/footer :: main-footer}">
 </footer>
 </html>
