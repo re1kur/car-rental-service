@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
 import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
+import re1kur.rentalservice.dto.car.filter.CarFilter;
 import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.service.CarService;
 import re1kur.rentalservice.service.MakeService;
@@ -37,16 +38,18 @@ public class CarsController {
     @GetMapping("list")
     public String listCars(
             Model model,
-            @RequestParam(name = "page", defaultValue = "0") Integer page) {
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @ModelAttribute(name="filter")CarFilter filter) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<CarReadDto> carPage = service.readAll(pageable);
+        Page<CarReadDto> carPage = service.readAll(filter, pageable);
 
+        model.addAttribute("makes", makeService.readAll());
         model.addAttribute("cars", carPage.getContent());
         model.addAttribute("currentPage", carPage.getNumber());
         model.addAttribute("totalPages", carPage.getTotalPages());
         model.addAttribute("pageSize", size);
         model.addAttribute("totalItems", carPage.getTotalElements());
-
+        model.addAttribute("filter", filter);
 
         model.addAttribute("prevPage", carPage.hasPrevious() ? carPage.getNumber() - 1 : null);
         model.addAttribute("nextPage", carPage.hasNext() ? carPage.getNumber() + 1 : null);
@@ -78,11 +81,4 @@ public class CarsController {
         return "redirect:/cars/" + id;
     }
 
-
-    @GetMapping("/make/{id}")
-    public String getCarsByMake(Model model, @PathVariable int id) {
-        model.addAttribute("cars",
-                service.readAllByMake(id));
-        return "/cars/cars-list.html";
-    }
 }

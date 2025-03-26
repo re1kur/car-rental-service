@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
+import re1kur.rentalservice.dto.car.filter.CarFilter;
 import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.entity.Car;
 import re1kur.rentalservice.mapper.CarMapper;
@@ -15,7 +16,6 @@ import re1kur.rentalservice.service.CarService;
 import re1kur.rentalservice.service.FileStoreService;
 
 import java.io.IOException;
-import java.util.List;
 
 @Service
 public class DefaultCarService implements CarService {
@@ -46,8 +46,11 @@ public class DefaultCarService implements CarService {
     }
 
     @Override
-    public Page<CarReadDto> readAll(Pageable pageable) {
-        return repo.findAll(pageable).map(mapper::read);
+    public Page<CarReadDto> readAll(CarFilter filter, Pageable pageable) {
+        String model = filter.getModel();
+        Integer makeId = filter.getMakeId();
+        Integer year = filter.getYear();
+        return repo.findAll(model, makeId, year, pageable).map(mapper::read);
     }
 
     @Override
@@ -73,13 +76,6 @@ public class DefaultCarService implements CarService {
         Car mapped = mapper.write(car);
         Car saved = repo.save(mapped);
         return saved.getId();
-    }
-
-
-    @Override
-    public List<CarReadDto> readAllByMake(int id) {
-        return repo.findAllByMakeId(id).stream()
-                .map(mapper::read).toList();
     }
 
 }

@@ -22,7 +22,7 @@
                 <span class="make-description" th:text="'Description: ' + ${make.description}"></span><br>
             </section>
             <footer class="make-footer">
-                <a th:href="@{/cars/make/{id}(id=${make.id})}" class="make-cars-link">Cars</a>
+                <a th:href="@{/cars/list(makeId=${make.id})}" class="make-cars-link">Cars</a>
             </footer>
         </article>
         <hr class="make-separator">
