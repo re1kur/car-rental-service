@@ -1,6 +1,7 @@
 package re1kur.rentalservice.mapper;
 
 import re1kur.rentalservice.dto.car.images.CarImageReadDto;
+import re1kur.rentalservice.dto.car.images.CarImageUpdateDto;
 import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.entity.CarImage;
 
@@ -15,4 +16,6 @@ public interface CarImagesMapper {
     List<CarImageReadDto> readImages(Collection<CarImage> images);
 
     CarImageReadDto read(CarImage titleImage);
+
+    List<CarImageUpdateDto> readUpdateImages(Collection<CarImage> images);
 }

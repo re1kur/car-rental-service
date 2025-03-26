@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
+import re1kur.rentalservice.dto.car.images.CarImageUpdateDto;
+
+import java.util.List;
 
 @Builder
 @Data
@@ -30,7 +33,9 @@ public class CarUpdateDto {
     @Size(message = "Length of license plate must be 6 chars.", min = 6, max = 6)
     private String licensePlate;
 
+    private Integer titleImageId;
+
     private CarDetailsUpdateDto details;
 
-//    private List<CarImageUpdateDto> images;
+    private List<CarImageUpdateDto> images;
 }

@@ -6,11 +6,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
+import re1kur.rentalservice.dto.car.images.CarImageUpdateDto;
 import re1kur.rentalservice.service.CarService;
 import re1kur.rentalservice.service.MakeService;
+
+import java.util.List;
 
 
 @Controller
@@ -37,10 +41,13 @@ public class CarController {
     }
 
     @GetMapping("edit")
-    public String editCar(@PathVariable int id, Model model) {
+    public String editCar(
+            @PathVariable int id,
+            Model model) {
         CarUpdateDto car = service.readUpdateById(id);
         model.addAttribute("makes", makeService.readAll());
         model.addAttribute("update", car);
+        model.addAttribute("images", car.getImages());
         model.addAttribute("carDetails", car.getDetails());
 
         return "/cars/car-edit.html";
@@ -51,7 +58,8 @@ public class CarController {
     public String updateCar(
             @PathVariable int id,
             @Validated @ModelAttribute("update") CarUpdateDto car,
-            @Validated @ModelAttribute("carDetails") CarDetailsUpdateDto carDetails) {
+            @Validated @ModelAttribute("carDetails") CarDetailsUpdateDto carDetails
+    ) {
         car.setDetails(carDetails);
         service.updateCar(car, id);
         return "redirect:/cars/" + id;

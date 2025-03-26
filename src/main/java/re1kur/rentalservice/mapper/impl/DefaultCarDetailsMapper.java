@@ -63,6 +63,11 @@ public class DefaultCarDetailsMapper implements CarDetailsMapper {
 
     @Override
     public CarDetails update(CarDetailsUpdateDto details, int id) {
+        if (details.getMileage() == null &&
+            details.getColor().isEmpty() &&
+            details.getTransmission() == null &&
+            details.getFuelType() == null)
+            return null;
         Car car = carRepo.getReferenceById(id);
         CarDetails build = CarDetails.builder()
                 .mileage(details.getMileage())

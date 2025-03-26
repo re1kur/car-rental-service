@@ -7,6 +7,31 @@ body {
     line-height: 1.6;
 }
 
+input[type="radio"]:checked + .image-container {
+    border: 4px solid #e8491d;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+.image-container {
+    width: 325px;
+    height: 140px;
+    overflow: hidden;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .container {
     width: 80%;
     margin: auto;

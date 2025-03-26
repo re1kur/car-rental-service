@@ -2,6 +2,7 @@ package re1kur.rentalservice.mapper.impl;
 
 import re1kur.rentalservice.annotations.Mapper;
 import re1kur.rentalservice.dto.car.images.CarImageReadDto;
+import re1kur.rentalservice.dto.car.images.CarImageUpdateDto;
 import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.entity.CarImage;
 import re1kur.rentalservice.mapper.CarImagesMapper;
@@ -47,15 +48,29 @@ public class DefaultCarImagesMapper implements CarImagesMapper {
     }
 
     @Override
-    public CarImageReadDto read(CarImage titleImage) {
-        if (titleImage == null) {
+    public CarImageReadDto read(CarImage image) {
+        if (image == null) {
             return null;
         }
         return CarImageReadDto.builder()
-                .id(titleImage.getId())
-                .carId(titleImage.getCar().getId())
-                .url(titleImage.getImageUrl())
-                .uploadedAt(titleImage.getUploadedAt())
+                .id(image.getId())
+                .carId(image.getCar().getId())
+                .url(image.getImageUrl())
+                .uploadedAt(image.getUploadedAt())
                 .build();
+    }
+
+    @Override
+    public List<CarImageUpdateDto> readUpdateImages(Collection<CarImage> images) {
+        if (images == null || images.isEmpty()) {
+            return null;
+        }
+        return images.stream().map(image -> CarImageUpdateDto.builder()
+                .id(image.getId())
+                .url(image.getImageUrl())
+                .uploadedAt(image.getUploadedAt())
+                .build())
+                .filter(Objects::nonNull)
+                .toList();
     }
 }

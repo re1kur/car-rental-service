@@ -1,19 +1,22 @@
-//package re1kur.rentalservice.dto.car.images;
-//
-//import jakarta.validation.constraints.Size;
-//import lombok.Builder;
-//import lombok.Getter;
-//import lombok.Setter;
-//import re1kur.rentalservice.dto.car.CarUpdateDto;
-//
-//@Builder
-//@Getter
-//@Setter
-//public class CarImageUpdateDto {
-//    private int id;
-//
-//    private CarUpdateDto car;
-//
-//    @Size(max=256)
-//    private String url;
-//}
+package re1kur.rentalservice.dto.car.images;
+
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
+
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CarImageUpdateDto {
+    private Integer id;
+
+    private String url;
+
+    private String bucket;
+
+    private MultipartFile image;
+
+    private LocalDateTime uploadedAt;
+}

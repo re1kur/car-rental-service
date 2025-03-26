@@ -12,12 +12,14 @@ import re1kur.rentalservice.mapper.CarDetailsMapper;
 import re1kur.rentalservice.mapper.CarImagesMapper;
 import re1kur.rentalservice.mapper.CarMapper;
 import re1kur.rentalservice.mapper.MakeMapper;
+import re1kur.rentalservice.repository.CarImageRepository;
 import re1kur.rentalservice.repository.MakeRepository;
 
 
 @Mapper
 public class DefaultCarMapper implements CarMapper {
     MakeRepository makeRepo;
+    CarImageRepository imageRepo;
     CarDetailsMapper detailsMapper;
     CarImagesMapper imagesMapper;
     MakeMapper makeMapper;
@@ -27,12 +29,14 @@ public class DefaultCarMapper implements CarMapper {
             CarDetailsMapper detailsMapper,
             CarImagesMapper imagesMapper,
             MakeRepository makeRepo,
-            MakeMapper makeMapper
+            MakeMapper makeMapper,
+            CarImageRepository imageRepo
     ) {
         this.detailsMapper = detailsMapper;
         this.imagesMapper = imagesMapper;
         this.makeRepo = makeRepo;
         this.makeMapper = makeMapper;
+        this.imageRepo = imageRepo;
     }
 
     @Override
@@ -97,7 +101,9 @@ public class DefaultCarMapper implements CarMapper {
                 .makeId(car.getMake().getId())
                 .model(car.getModel())
                 .year(car.getYear())
+                .titleImageId(car.getTitleImage() != null ? car.getTitleImage().getId() : null)
                 .licensePlate(car.getLicensePlate())
+                .images(imagesMapper.readUpdateImages(car.getImages()))
                 .details(detailsMapper.readUpdate(car.getDetails()))
                 .build();
     }
@@ -108,6 +114,8 @@ public class DefaultCarMapper implements CarMapper {
                 .id(id)
                 .make(makeRepo.getReferenceById(car.getMakeId()))
                 .model(car.getModel())
+                .titleImage(imageRepo.getReferenceById(car.getTitleImageId()))
+                .images(imageRepo.findAllByCarId(id))
                 .licensePlate(car.getLicensePlate())
                 .year(car.getYear())
                 .details(detailsMapper.update(car.getDetails(), id))

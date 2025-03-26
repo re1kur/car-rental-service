@@ -46,7 +46,15 @@
                        th:value="${update.licensePlate}"
                        placeholder="AAA111" required>
             </label><br>
+            <label>Title image:</label>
+            <div th:each="image, iter : ${images}">
+                <input type="radio" name="titleImageId" th:id="${'titleImageId' + iter.index}" th:value="${image.id}" th:field="*{update.titleImageId}">
+                <label th:for="${'titleImageId' + iter.index}" class="image-container">
+                    <img th:src="${image.url}" alt="Here must be image">
+                </label>
+            </div>
         </section>
+
 
         <section class="form-group" th:object="${carDetails}">
             <h3>Details</h3>
@@ -95,10 +103,6 @@
                 </select>
             </label><br>
         </section>
-        <!--        <label for="url">Image:-->
-        <!--            <input type="file" id="url" name="url" accept="image/*">-->
-        <!--        </label><br>-->
-
         <button type="submit">Edit</button>
     </form>
 </div>
