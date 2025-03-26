@@ -11,6 +11,30 @@
 <header th:replace="~{/fragments/header :: cars-header}">
 </header>
 <body>
+<div class="filter">
+    <form class="filter-form" th:object="${filter}" th:action="@{/cars/list}" method="get">
+        <div class="form-group">
+            <label for="model">Model:</label>
+            <input th:field="*{model}" type="text" class="form-control" id="model" placeholder="Enter model">
+        </div>
+
+        <div class="form-group">
+            <label for="make">Make:</label>
+            <select th:field="*{makeId}" class="form-control" id="make">
+                <option value="">Select a make</option>
+                <option th:each="make : ${makes}" th:value="${make.id}" th:text="${make.name}"
+                        th:selected="${make.id == makeId}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="year">Year:</label>
+            <input th:field="*{year}" type="number" class="form-control" id="year" placeholder="Enter year">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Find</button>
+    </form>
+</div>
 <div class="cars-list">
     <div th:each="car : ${cars}" class="car-item">
         <article>
@@ -43,20 +67,33 @@
     <nav aria-label="Pagination">
         <div class="pagination justify-content-center">
             <label th:class="${prevPage == null ? 'page-item disabled' : 'page-item'}">
-                <a th:href="${prevPage != null ? '/cars/list?page=' + prevPage : '#'} "
+                <a th:href="${prevPage != null ? '/cars/list?'
+                 + 'page=' + prevPage
+                 + '&model=' + filter.model
+                 + '&makeId=' + filter.makeId
+                 + '&year=' + (filter.year != null ? filter.year : '') : '#'} "
                    th:text="Previous"
                    class="page-link"></a>
             </label>
 
             <label th:each="pageNumber : ${#numbers.sequence(0, lastPage)}"
-                th:class="${pageNumber == currentPage ? 'page-item active' : 'page-item'}">
-                <a th:href="@{/cars/list(page=${pageNumber})}"
+                   th:class="${pageNumber == currentPage ? 'page-item active' : 'page-item'}">
+                <a th:href="@{/cars/list(
+                page=${pageNumber},
+                model=${filter.model},
+                makeId=${filter.makeId},
+                year=${filter.year != null ? filter.year : ''})}"
+
                    th:text="${pageNumber + 1}"
                    class="page-link"></a>
             </label>
 
             <label th:class="${nextPage == null ? 'page-item disabled' : 'page-item'}">
-                <a th:href="${nextPage != null ? '/cars/list?page=' + nextPage : '#'} "
+                <a th:href="${nextPage != null ? '/cars/list?'
+                 + 'page=' + nextPage
+                 + '&model=' + filter.model
+                 + '&makeId=' + filter.makeId
+                 + '&year=' + (filter.year != null ? filter.year : '') : '#'}"
                    th:text="Next"
                    class="page-link"></a>
             </label>

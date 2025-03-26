@@ -75,6 +75,66 @@ body {
     border-radius: 0.25rem;
 }
 
+.filter {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.filter-form .form-group {
+    margin-bottom: 0;
+    margin-right: 10px;
+    flex: 1;
+}
+
+.filter-form label {
+    margin-bottom: 5px;
+    display: block;
+
+}
+
+.filter-form .form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.filter-form select {
+    width: 100%;
+}
+
+
+.filter-form button {
+    background-color: #e8491d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    max-height: 40px;
+    align-self: flex-end;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+    flex: 0 0 auto;
+}
+
+.filter-form button:hover {
+    background-color: #c63913;
+}
+
 .page-link:hover {
     color: #e8491d;
     background-color: #e9ecef;

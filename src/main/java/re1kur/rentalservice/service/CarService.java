@@ -5,9 +5,9 @@ import org.springframework.data.domain.Pageable;
 import re1kur.rentalservice.dto.car.CarReadDto;
 import re1kur.rentalservice.dto.car.CarUpdateDto;
 import re1kur.rentalservice.dto.car.CarWriteDto;
+import re1kur.rentalservice.dto.car.filter.CarFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface CarService {
 
@@ -15,13 +15,9 @@ public interface CarService {
 
     Integer writeCar(CarWriteDto car) throws IOException;
 
-
-    List<CarReadDto> readAllByMake(int id);
-
     CarUpdateDto readUpdateById(int id);
 
     void updateCar(CarUpdateDto car, int id);
 
-
-    Page<CarReadDto> readAll(Pageable pageable);
+    Page<CarReadDto> readAll(CarFilter filter, Pageable pageable);
 }
