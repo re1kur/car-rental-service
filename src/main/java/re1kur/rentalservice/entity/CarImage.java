@@ -24,4 +24,6 @@ public class CarImage {
 
     @Column(insertable = false)
     private LocalDateTime uploadedAt;
+
+    private LocalDateTime expiresAt;
 }

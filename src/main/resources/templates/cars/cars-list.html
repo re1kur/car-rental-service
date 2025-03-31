@@ -36,6 +36,18 @@
     </form>
 </div>
 <div class="cars-list">
+    <table class="noCars" th:if="${cars.empty}">
+        <thead>
+        <tr>
+            <th>Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Cars are not found.</td>
+        </tr>
+        </tbody>
+    </table>
     <div th:each="car : ${cars}" class="car-item">
         <article>
             <section class="car-info">
@@ -63,7 +75,7 @@
     </div>
 </div>
 </body>
-<footer class="pages">
+<footer class="pages" th:if="${!cars.empty}">
     <nav aria-label="Pagination">
         <div class="pagination justify-content-center">
             <label th:class="${prevPage == null ? 'page-item disabled' : 'page-item'}">

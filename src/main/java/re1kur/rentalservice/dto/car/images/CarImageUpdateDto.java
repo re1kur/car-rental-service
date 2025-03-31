@@ -19,4 +19,6 @@ public class CarImageUpdateDto {
     private MultipartFile image;
 
     private LocalDateTime uploadedAt;
+
+    private LocalDateTime expiresAt;
 }

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Getter
@@ -21,4 +22,8 @@ public class MakeWriteDto {
     private String country;
 
     private String description;
+
+    private String titleImageUrl;
+
+    private MultipartFile image;
 }

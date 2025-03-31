@@ -24,6 +24,7 @@
             <footer class="make-footer">
                 <a th:href="@{/cars/list(makeId=${make.id})}" class="make-cars-link">Cars</a>
             </footer>
+            <img th:if="${make.titleImageUrl != null}" th:src="${make.titleImageUrl}" alt="">
         </article>
         <hr class="make-separator">
     </div>

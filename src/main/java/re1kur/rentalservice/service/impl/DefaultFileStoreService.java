@@ -15,6 +15,7 @@ import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.service.FileStoreService;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Slf4j
@@ -23,7 +24,10 @@ public class DefaultFileStoreService implements FileStoreService {
     private final WebClient fileStoreClient;
 
     @Value("${custom.buckets.car-image}")
-    private String bucket;
+    private String carsBucket;
+
+    @Value("${custom.buckets.make-image}")
+    private String makesBucket;
 
     @Autowired
     public DefaultFileStoreService(WebClient fileStoreClient) {
@@ -31,12 +35,12 @@ public class DefaultFileStoreService implements FileStoreService {
     }
 
     @Override
-    public CarImageWriteDto upload(CarImageWriteDto imageDto) throws IOException {
+    public CarImageWriteDto uploadCarImage(CarImageWriteDto imageDto) throws IOException {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         String uuid = UUID.randomUUID().toString();
         imageDto.setUrl(uuid);
-        imageDto.setBucket(bucket);
+        imageDto.setBucket(carsBucket);
 
         MultipartFile imageFile = imageDto.getImage();
         String contentType = imageFile.getContentType();
@@ -65,6 +69,7 @@ public class DefaultFileStoreService implements FileStoreService {
                 .block();
         if (url != null) {
             imageDto.setUrl(url);
+            imageDto.setExpiresAt(LocalDateTime.now().plusDays(29));
             log.info("Successfully uploaded file: {}. URL: {}", uuid, url);
         } else {
             log.error("Failed to get URL after upload: {}", uuid);
@@ -73,4 +78,41 @@ public class DefaultFileStoreService implements FileStoreService {
         return imageDto;
     }
 
+    @Override
+    public String uploadMakeImage(MultipartFile file) throws IOException {
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+        String uuid = UUID.randomUUID().toString();
+        String contentType = file.getContentType();
+        byte[] imageBytes = file.getBytes();
+
+        log.info("Uploading file: name={}, size={}, contentType={}", uuid, imageBytes.length, contentType);
+
+        ByteArrayResource array = new ByteArrayResource(imageBytes) {
+            @Override
+            public String getFilename() {
+                return uuid;
+            }
+        };
+        body.add("file", array);
+
+        body.add("bucket", makesBucket);
+        body.add("name", uuid);
+        body.add("contentType", contentType);
+
+        String url = fileStoreClient.post()
+                .uri("/upload")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(body))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        if (url != null) {
+            log.info("Successfully uploaded file: {}. URL: {}", uuid, url);
+            return url;
+        } else {
+            log.error("Failed to get URL after upload: {}", uuid);
+            throw new IOException("Could not upload file");
+        }
+    }
 }

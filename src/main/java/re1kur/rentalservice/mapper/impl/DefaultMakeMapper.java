@@ -17,6 +17,7 @@ public class DefaultMakeMapper implements MakeMapper {
                 .name(make.getName())
                 .country(make.getCountry())
                 .description(make.getDescription())
+                .titleImageUrl(make.getTitleImageUrl())
                 .build();
     }
 
@@ -26,6 +27,7 @@ public class DefaultMakeMapper implements MakeMapper {
                 .name(make.getName())
                 .country(make.getCountry())
                 .description(make.getDescription())
+                .titleImageUrl(make.getTitleImageUrl())
                 .build();
     }
 
@@ -35,6 +37,7 @@ public class DefaultMakeMapper implements MakeMapper {
                 .name(make.getName())
                 .country(make.getCountry())
                 .description(make.getDescription())
+                .titleImageUrl(make.getTitleImageUrl())
                 .build();
     }
 
@@ -45,6 +48,7 @@ public class DefaultMakeMapper implements MakeMapper {
                 .name(make.getName())
                 .country(make.getCountry())
                 .description(make.getDescription())
+                .titleImageUrl(make.getTitleImageUrl())
                 .build();
     }
 

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -23,4 +24,8 @@ public class MakeUpdateDto {
     private String country;
 
     private String description;
+
+    private String titleImageUrl;
+
+    private MultipartFile image;
 }

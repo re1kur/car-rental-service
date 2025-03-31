@@ -25,6 +25,8 @@ public class Make {
 
     private String description;
 
+    private String titleImageUrl;
+
     @OneToMany(mappedBy = "make", fetch = FetchType.LAZY)
     private Collection<Car> cars;
 }

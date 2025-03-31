@@ -54,6 +54,27 @@ body {
     align-items: center;
 }
 
+.noCars {
+    width: 50%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    font-family: sans-serif;
+}
+
+.noCars th, .noCars td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.noCars thead tr {
+    background-color: #f0f0f0;
+}
+
+.noCars td {
+    text-align: center;
+}
+
 .pagination {
     margin-top: 20px;
 }

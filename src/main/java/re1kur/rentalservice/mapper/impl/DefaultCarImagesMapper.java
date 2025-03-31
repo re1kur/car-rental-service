@@ -21,6 +21,7 @@ public class DefaultCarImagesMapper implements CarImagesMapper {
         }
         return images.stream().map(image -> CarImage.builder()
                         .imageUrl(image.getUrl())
+                        .expiresAt(image.getExpiresAt())
                         .build())
                 .toList();
     }
@@ -29,6 +30,7 @@ public class DefaultCarImagesMapper implements CarImagesMapper {
     public CarImage write(CarImageWriteDto car) {
         return CarImage.builder()
                 .imageUrl(car.getUrl())
+                .expiresAt(car.getExpiresAt())
                 .build();
     }
 
@@ -38,11 +40,12 @@ public class DefaultCarImagesMapper implements CarImagesMapper {
             return null;
         }
         return images.stream().map(image -> CarImageReadDto.builder()
-                .id(image.getId())
-                .carId(image.getCar().getId())
-                .url(image.getImageUrl())
-                .uploadedAt(image.getUploadedAt())
-                .build())
+                        .id(image.getId())
+                        .carId(image.getCar().getId())
+                        .url(image.getImageUrl())
+                        .uploadedAt(image.getUploadedAt())
+                        .expiresAt(image.getExpiresAt())
+                        .build())
                 .filter(Objects::nonNull)
                 .toList();
     }
@@ -57,6 +60,7 @@ public class DefaultCarImagesMapper implements CarImagesMapper {
                 .carId(image.getCar().getId())
                 .url(image.getImageUrl())
                 .uploadedAt(image.getUploadedAt())
+                .expiresAt(image.getExpiresAt())
                 .build();
     }
 
@@ -66,10 +70,11 @@ public class DefaultCarImagesMapper implements CarImagesMapper {
             return null;
         }
         return images.stream().map(image -> CarImageUpdateDto.builder()
-                .id(image.getId())
-                .url(image.getImageUrl())
-                .uploadedAt(image.getUploadedAt())
-                .build())
+                        .id(image.getId())
+                        .url(image.getImageUrl())
+                        .uploadedAt(image.getUploadedAt())
+                        .expiresAt(image.getExpiresAt())
+                        .build())
                 .filter(Objects::nonNull)
                 .toList();
     }

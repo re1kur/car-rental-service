@@ -7,12 +7,12 @@
     <link rel="stylesheet" th:href="@{/css/main-footer.css}">
     <link rel="stylesheet" th:href="@{/css/main-header.css}">
 </head>
-<header class="header" th:insert="~{/fragments/header :: to-makes-list}">
+<header class="header" th:insert="~{/fragments/header :: to-make}">
 </header>
 
 <body>
 <div class="container">
-    <form th:object="${update}" class="edit-form" method="post" th:action="@{/makes/{id}/edit(id=${make.id})}">
+    <form th:object="${update}" class="edit-form" method="post" th:action="@{/makes/{id}/edit(id=${make.id})}" enctype="multipart/form-data">
         <h2>Make information.</h2>
         <h4>Name:</h4>
         <label for="name">
@@ -31,6 +31,11 @@
                       placeholder="Japanese multinational automotive manufacturer" rows="4" cols="80" style="resize: none">
             </textarea>
         </label><br>
+        <section class="form-group">
+            <label for="title" class="labelFile">Title image:
+                <input type="file" name="title" id="title" accept="image/*">
+            </label><br>
+        </section>
         <button type="submit">Edit</button>
     </form>
 </div>

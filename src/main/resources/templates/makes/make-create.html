@@ -11,7 +11,7 @@
 </header>
 <body>
 <div class="container">
-    <form class="edit-form" method="post" th:action="@{/makes/create}">
+    <form class="edit-form" method="post" th:action="@{/makes/create}" enctype="multipart/form-data">
         <h2>Make information.</h2>
         <h4>Name:</h4>
         <label for="name">
@@ -30,6 +30,11 @@
                       placeholder="Japanese multinational automotive manufacturer" rows="4" cols="80" style="resize: none">
             </textarea>
         </label><br>
+        <section class="form-group">
+            <label for="title" class="labelFile">Title image:
+                <input type="file" name="title" id="title" accept="image/*">
+            </label><br>
+        </section>
         <button type="submit">Create</button>
     </form>
 </div>

@@ -13,4 +13,5 @@ public class CarImageReadDto {
     private int carId;
     private String url;
     private LocalDateTime uploadedAt;
+    private LocalDateTime expiresAt;
 }

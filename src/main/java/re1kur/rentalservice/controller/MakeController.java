@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import re1kur.rentalservice.dto.make.MakeReadDto;
 import re1kur.rentalservice.dto.make.MakeUpdateDto;
 import re1kur.rentalservice.service.MakeService;
@@ -38,7 +39,9 @@ public class MakeController {
     @PostMapping("edit")
     public String editMake(
             @Validated @ModelAttribute("update") MakeUpdateDto update,
-            @PathVariable int id) {
+            @PathVariable int id,
+            @RequestParam("title") MultipartFile title) {
+        update.setImage(title);
         service.updateMake(update, id);
         return "redirect:/makes/" + id;
     }

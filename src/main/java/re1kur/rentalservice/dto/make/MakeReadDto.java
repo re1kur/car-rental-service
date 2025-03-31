@@ -11,4 +11,5 @@ public class MakeReadDto {
     private String name;
     private String country;
     private String description;
+    private String titleImageUrl;
 }

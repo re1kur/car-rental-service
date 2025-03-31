@@ -23,6 +23,7 @@ custom:
 
   buckets:
     car-image: cars
+    make-image: makes
   rest-clients:
     fileStore: http://localhost:8081/api
   datasource:
