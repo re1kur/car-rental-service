@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: rental-service-dev
+  docker:
+    compose:
+      enabled: true
+      file: ./app/docker-compose.yml
+  devtools:
+    add-properties: true
+  liquibase:
+    change-log: db/changelog/db.changelog-master-dev.yml

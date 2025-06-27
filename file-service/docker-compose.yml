@@ -1,0 +1,15 @@
+services:
+  fs-postgres-dev:
+    image: postgres:17
+    env_file:
+      - dev.env
+    ports:
+      - "5433:5432"
+  fs-minio-dev:
+    image: quay.io/minio/minio:latest
+    env_file:
+      - dev.env
+    command: server /data --console-address ":9001"
+    ports:
+      - '9000:9000'
+      - '9001:9001'

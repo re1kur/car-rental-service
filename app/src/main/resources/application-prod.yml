@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: rental-service-prod
+  devtools:
+    add-properties: false
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml

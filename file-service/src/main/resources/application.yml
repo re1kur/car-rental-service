@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: file-service
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml
+
+server:
+  port: 8081
+
+minio:
+  url:
+    time-to-live: 7

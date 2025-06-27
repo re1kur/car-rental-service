@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: rs-file-service-dev
+  docker:
+    compose:
+      enabled: true
+      file: ./file-service/docker-compose.yml
+
+minio:
+  access-key: minioadmin
+  secret-key: minioadmin
+  endpoint: http://localhost:9000
+  endpoint-override: http://localhost:9000
+  default-bucket: minioadmin
