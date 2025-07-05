@@ -3,7 +3,7 @@
 -- changeset re1kur:1
 CREATE TABLE files
 (
-    id             VARCHAR(256) PRIMARY KEY,
+    id             VARCHAR(64) PRIMARY KEY,
     media_type      VARCHAR(64)              NOT NULL,
     url            VARCHAR(2048)            NOT NULL UNIQUE,
     uploaded_at    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),

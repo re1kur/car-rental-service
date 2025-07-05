@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit engine — Car Rental Service</title>
+</head>
+<body>
+<div>
+    <form class="edit-form" method="post" th:action="@{'/engines/' + engine.id + '/update'}">
+        <h4>Name:</h4>
+        <label for="name">
+            <input th:field="*{engine.name}" type="text" name="name" id="name"
+                   placeholder="Electric motor" required>
+        </label><br>
+        <button type="submit">Update</button>
+    </form>
+</div>
+</body>
+</html>

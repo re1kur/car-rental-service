@@ -2,6 +2,8 @@ package re1kur.app.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @org.springframework.context.annotation.Configuration
@@ -15,5 +17,10 @@ public class Configuration {
         return WebClient.builder()
                 .baseUrl(fileStoreUrl)
                 .build();
+    }
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
 }

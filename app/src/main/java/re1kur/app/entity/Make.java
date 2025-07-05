@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -21,11 +22,19 @@ public class Make {
 
     private String name;
 
-    private String country;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "title_image_id")
+    private Image titleImage;
 
-    private String description;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "make_id")
+    private MakeInformation makeInformation;
 
-    private String titleImageUrl;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "make_images",
+            joinColumns = @JoinColumn(name = "make_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id"))
+    private Collection<Image> makeImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "make", fetch = FetchType.LAZY)
     private Collection<Car> cars;

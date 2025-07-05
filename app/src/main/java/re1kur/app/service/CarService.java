@@ -2,10 +2,10 @@ package re1kur.app.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import re1kur.app.dto.car.CarReadDto;
-import re1kur.app.dto.car.CarUpdateDto;
-import re1kur.app.dto.car.CarWriteDto;
-import re1kur.app.dto.car.filter.CarFilter;
+import re1kur.app.core.car.CarReadDto;
+import re1kur.app.core.car.CarUpdateDto;
+import re1kur.app.core.car.CarWriteDto;
+import re1kur.app.core.car.filter.CarFilter;
 
 import java.io.IOException;
 

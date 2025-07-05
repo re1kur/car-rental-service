@@ -1,11 +1,12 @@
+name: dev-fs
 services:
-  fs-postgres-dev:
+  postgres:
     image: postgres:17
     env_file:
       - dev.env
     ports:
       - "5433:5432"
-  fs-minio-dev:
+  minio:
     image: quay.io/minio/minio:latest
     env_file:
       - dev.env

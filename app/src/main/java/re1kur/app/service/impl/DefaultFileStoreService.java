@@ -3,22 +3,17 @@ package re1kur.app.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import re1kur.app.dto.FileDto;
-import re1kur.app.dto.car.images.CarImageWriteDto;
+import re1kur.app.core.dto.FileDto;
+import re1kur.app.core.car.images.CarImageWriteDto;
 import re1kur.app.service.FileStoreService;
 
 import java.io.*;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Slf4j
 @Service

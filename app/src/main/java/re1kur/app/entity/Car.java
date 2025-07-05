@@ -23,7 +23,16 @@ public class Car {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "make_id")
     private Make make;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "car_type_id")
+    private CarType carType;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "engine_id")
+    private Engine engine;
 
     private String model;
 
@@ -33,25 +42,20 @@ public class Car {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "title_image_id")
-    private CarImage titleImage;
+    private Image titleImage;
 
-    @Column(insertable = false)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "car_images",
+            joinColumns = @JoinColumn(name = "car_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id"))
+    private Collection<Image> images;
+
+    @Column(insertable = false, columnDefinition = "DEFAULT FALSE")
     private boolean isAvailable;
 
-    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "car_id")
     private CarDetails details;
-
-    @OneToMany(mappedBy = "car", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Collection<CarImage> images;
-
-    public void addImage(CarImage image) {
-        if (images == null) {
-            images = new ArrayList<>();
-        }
-        images.add(image);
-        image.setCar(this);
-    }
-
 }
 
 

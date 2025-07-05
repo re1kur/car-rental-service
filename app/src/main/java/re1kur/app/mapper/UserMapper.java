@@ -1,13 +1,16 @@
 package re1kur.app.mapper;
 
-//import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
-import re1kur.app.dto.user.UserReadDto;
+import org.springframework.security.core.userdetails.UserDetails;
+import re1kur.app.core.dto.UserDto;
+import re1kur.app.core.payload.UserPayload;
 import re1kur.app.entity.User;
 
 public interface UserMapper {
 
-    UserReadDto read(User user);
+    UserDto read(User user);
 
-//    User write(OidcUserInfo token);
+    UserDetails security(User user);
+
+    User write(UserPayload user);
 
 }

@@ -9,16 +9,19 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "car")
 public class CarDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer carId;
 
-    @OneToOne
-    @JoinColumn(name = "car_id")
+    @OneToOne(mappedBy = "details")
     private Car car;
 
+    private String description;
+
     private String color;
+
+    private Integer seats;
 
     private Integer mileage;
 

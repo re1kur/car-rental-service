@@ -103,7 +103,7 @@
             <label th:class="${nextPage == null ? 'page-item disabled' : 'page-item'}">
                 <a th:href="${nextPage != null ? '/cars/list?'
                  + 'page=' + nextPage
-                 + '&model=' + filter.model
+                 + '&model=' + (filter.model != null ? filter.model : '')
                  + '&makeId=' + (filter.makeId != null ? filter.makeId : '')
                  + '&year=' + (filter.year != null ? filter.year : '') : '#'}"
                    th:text="Next"

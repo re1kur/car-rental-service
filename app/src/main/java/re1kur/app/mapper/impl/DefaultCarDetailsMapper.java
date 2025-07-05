@@ -1,10 +1,10 @@
 package re1kur.app.mapper.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import re1kur.app.annotations.Mapper;
-import re1kur.app.dto.car.details.CarDetailsReadDto;
-import re1kur.app.dto.car.details.CarDetailsUpdateDto;
-import re1kur.app.dto.car.details.CarDetailsWriteDto;
+import re1kur.app.core.annotations.Mapper;
+import re1kur.app.core.car.details.CarDetailsReadDto;
+import re1kur.app.core.car.details.CarDetailsUpdateDto;
+import re1kur.app.core.car.details.CarDetailsWriteDto;
 import re1kur.app.entity.Car;
 import re1kur.app.entity.CarDetails;
 import re1kur.app.mapper.CarDetailsMapper;
@@ -41,7 +41,6 @@ public class DefaultCarDetailsMapper implements CarDetailsMapper {
         if (details == null)
             return null;
         return CarDetailsReadDto.builder()
-                .id(details.getId())
                 .color(details.getColor())
                 .fuelType(details.getFuelType())
                 .mileage(details.getMileage())
@@ -76,9 +75,9 @@ public class DefaultCarDetailsMapper implements CarDetailsMapper {
                 .fuelType(details.getFuelType())
                 .car(car)
                 .build();
-        if (car.getDetails() != null) {
-            build.setId(car.getDetails().getId());
-        }
+//        if (car.getDetails() != null) {
+//            build.setId(car.getDetails().getId());
+//        }
         return build;
     }
 }

@@ -1,8 +1,8 @@
 package re1kur.app.mapper;
 
-import re1kur.app.dto.car.details.CarDetailsReadDto;
-import re1kur.app.dto.car.details.CarDetailsUpdateDto;
-import re1kur.app.dto.car.details.CarDetailsWriteDto;
+import re1kur.app.core.car.details.CarDetailsReadDto;
+import re1kur.app.core.car.details.CarDetailsUpdateDto;
+import re1kur.app.core.car.details.CarDetailsWriteDto;
 import re1kur.app.entity.CarDetails;
 
 public interface CarDetailsMapper {

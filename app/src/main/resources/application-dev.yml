@@ -5,6 +5,8 @@ spring:
     compose:
       enabled: true
       file: ./app/docker-compose.yml
+  jpa:
+    show-sql: true
   devtools:
     add-properties: true
   liquibase:

@@ -3,15 +3,10 @@ package re1kur.app.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import re1kur.app.dto.user.UserReadDto;
-import re1kur.app.dto.user.UserWriteDto;
+import re1kur.app.core.payload.UserPayload;
 import re1kur.app.service.UserService;
 
 @Slf4j
@@ -34,48 +29,20 @@ public class UserController {
         return "/users/logout.html";
     }
 
-    @PostMapping("logout")
-    public String logout(SecurityContext context) {
-        context.setAuthentication(null);
-        return "redirect:/";
-    }
-
     @GetMapping("login")
     public String login() {
         return "/users/login.html";
     }
 
     @GetMapping("register")
-    public String register() {
+    public String register(Model model) {
+        model.addAttribute("user", new UserPayload(null, null, null));
         return "/users/register.html";
     }
 
-    @PostMapping("login")
-    public String login(@RequestBody UserWriteDto dto) {
-        log.info("login: {}", dto.toString());
-        return "redirect:/";
-    }
-
     @PostMapping("register")
-    public String register(@RequestBody UserWriteDto dto) {
-        log.info("register: {}", dto.toString());
-        return "redirect:/";
+    public String register(@ModelAttribute @Valid UserPayload payload) {
+        service.register(payload);
+        return "redirect:/users/login";
     }
-
-//    @PostMapping("login")
-//    public String login(@RequestBody @Valid UserWriteDto users) {
-//        service.login(user);
-//        return "redirect:/";
-//    }
-//
-//    @GetMapping("register")
-//    public String register() {
-//        return "/users/login.html";
-//    }
-//
-//    @PostMapping("register")
-//    public String register(@RequestBody @Valid UserWriteDto user) {
-//        service.register(user);
-//        return "redirect:/";
-//    }
 }

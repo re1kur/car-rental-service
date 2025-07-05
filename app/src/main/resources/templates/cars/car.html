@@ -6,10 +6,11 @@
     <link rel="stylesheet" th:href="@{/css/styles-car.css}">
     <link rel="stylesheet" th:href="@{/css/main-footer.css}">
     <link rel="stylesheet" th:href="@{/css/main-header.css}">
-
 </head>
+
 <header th:replace="~{fragments/header :: car-header}">
 </header>
+
 <body>
 <div class="container">
     <h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>

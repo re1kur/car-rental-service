@@ -1,9 +1,9 @@
 package re1kur.app.mapper.impl;
 
-import re1kur.app.annotations.Mapper;
-import re1kur.app.dto.make.MakeReadDto;
-import re1kur.app.dto.make.MakeUpdateDto;
-import re1kur.app.dto.make.MakeWriteDto;
+import re1kur.app.core.annotations.Mapper;
+import re1kur.app.core.make.MakeReadDto;
+import re1kur.app.core.make.MakeUpdateDto;
+import re1kur.app.core.make.MakeWriteDto;
 import re1kur.app.entity.Make;
 import re1kur.app.mapper.MakeMapper;
 
@@ -15,9 +15,9 @@ public class DefaultMakeMapper implements MakeMapper {
         return MakeReadDto.builder()
                 .id(make.getId())
                 .name(make.getName())
-                .country(make.getCountry())
-                .description(make.getDescription())
-                .titleImageUrl(make.getTitleImageUrl())
+//                .country(make.getCountry())
+//                .description(make.getDescription())
+//                .titleImageUrl(make.getTitleImageUrl())
                 .build();
     }
 
@@ -25,9 +25,9 @@ public class DefaultMakeMapper implements MakeMapper {
     public Make write(MakeWriteDto make) {
         return Make.builder()
                 .name(make.getName())
-                .country(make.getCountry())
-                .description(make.getDescription())
-                .titleImageUrl(make.getTitleImageUrl())
+//                .country(make.getCountry())
+//                .description(make.getDescription())
+//                .titleImage(make.getTitleImageUrl())
                 .build();
     }
 
@@ -35,9 +35,9 @@ public class DefaultMakeMapper implements MakeMapper {
     public MakeUpdateDto readUpdate(Make make) {
         return MakeUpdateDto.builder()
                 .name(make.getName())
-                .country(make.getCountry())
-                .description(make.getDescription())
-                .titleImageUrl(make.getTitleImageUrl())
+//                .country(make.getCountry())
+//                .description(make.getDescription())
+//                .titleImageUrl(make.getTitleImageUrl())
                 .build();
     }
 
@@ -46,9 +46,9 @@ public class DefaultMakeMapper implements MakeMapper {
         return Make.builder()
                 .id(id)
                 .name(make.getName())
-                .country(make.getCountry())
-                .description(make.getDescription())
-                .titleImageUrl(make.getTitleImageUrl())
+//                .country(make.getCountry())
+//                .description(make.getDescription())
+//                .titleImageUrl(make.getTitleImageUrl())
                 .build();
     }
 

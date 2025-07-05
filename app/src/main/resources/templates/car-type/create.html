@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New car type — Car Rental Service</title>
+    <link rel="stylesheet" th:href="@{/css/styles-car.css}">
+    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/main-header.css}">
+</head>
+<body>
+<div class="container">
+    <form class="edit-form" method="post" th:action="@{/car-types/create}">
+        <h4>Name:</h4>
+        <label for="name">
+            <input th:field="*{carType.name}" type="text" name="name" id="name"
+                   placeholder="Sedan" required>
+        </label><br>
+        <button type="submit">Create</button>
+    </form>
+</div>
+</body>
+<footer th:insert="~{/fragments/footer :: main-footer}">
+</footer>
+</html>
