@@ -1,4 +1,4 @@
-package re1kur.app.entity;
+package re1kur.app.entity.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

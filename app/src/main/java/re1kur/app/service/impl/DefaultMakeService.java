@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import re1kur.app.core.make.MakeReadDto;
 import re1kur.app.core.make.MakeUpdateDto;
 import re1kur.app.core.make.MakeWriteDto;
-import re1kur.app.entity.Make;
+import re1kur.app.entity.car.Make;
 import re1kur.app.mapper.MakeMapper;
 import re1kur.app.repository.MakeRepository;
 import re1kur.app.service.FileStoreService;

@@ -15,10 +15,21 @@ import re1kur.app.service.EngineService;
 public class EngineController {
     private final EngineService engineService;
 
+    @GetMapping
+    public String getCarType(
+            Model model,
+            @PathVariable Integer id
+    ) {
+        EngineDto engineDto = engineService.get(id);
+        model.addAttribute("engine", engineDto);
+
+        return "/engine/profile.html";
+    }
+
     @GetMapping("/update")
     public String getEngineUpdatePage(Model model,
                                       @PathVariable Integer id) {
-        EngineDto engine = engineService.getById(id);
+        EngineDto engine = engineService.get(id);
         model.addAttribute("engine", engine);
 
         return "/engine/update.html";
@@ -29,7 +40,7 @@ public class EngineController {
                                @PathVariable Integer id) {
         engineService.update(payload, id);
 
-        return "redirect: /moderator/menu";
+        return "redirect:/moderator/menu";
     }
 
     @DeleteMapping("/delete")
@@ -37,6 +48,6 @@ public class EngineController {
 
         engineService.delete(id);
 
-        return "redirect: /moderator/menu";
+        return "redirect:/moderator/menu";
     }
 }

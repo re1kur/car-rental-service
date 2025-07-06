@@ -38,11 +38,11 @@ public class CarTypeController {
 
     @PostMapping("/update")
     public String carTypeUpdate(
-            @RequestBody @Valid CarTypeUpdatePayload payload,
+            @ModelAttribute @Valid CarTypeUpdatePayload payload,
             @PathVariable Integer id
     ) {
         carTypeService.update(payload, id);
-        return "redirect: /moderator/menu";
+        return "redirect:/moderator/menu";
     }
 
     @DeleteMapping("/delete")
@@ -51,6 +51,6 @@ public class CarTypeController {
     ) {
         carTypeService.delete(id);
 
-        return "redirect: /moderator/menu";
+        return "redirect:/moderator/menu";
     }
 }

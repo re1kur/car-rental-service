@@ -5,8 +5,8 @@ import re1kur.app.core.annotations.Mapper;
 import re1kur.app.core.car.details.CarDetailsReadDto;
 import re1kur.app.core.car.details.CarDetailsUpdateDto;
 import re1kur.app.core.car.details.CarDetailsWriteDto;
-import re1kur.app.entity.Car;
-import re1kur.app.entity.CarDetails;
+import re1kur.app.entity.car.Car;
+import re1kur.app.entity.car.CarDetails;
 import re1kur.app.mapper.CarDetailsMapper;
 import re1kur.app.repository.CarRepository;
 

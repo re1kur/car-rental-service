@@ -9,11 +9,12 @@ import re1kur.app.core.payload.EngineUpdatePayload;
 public interface EngineService {
     void create(EnginePayload payload);
 
-    EngineDto getById(int id);
+    EngineDto get(Integer id);
 
     void update(EngineUpdatePayload payload, Integer id);
 
     void delete(Integer id);
 
     Page<EngineDto> getPage(Pageable pageable);
+
 }

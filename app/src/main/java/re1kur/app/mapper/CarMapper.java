@@ -3,7 +3,7 @@ package re1kur.app.mapper;
 import re1kur.app.core.car.CarReadDto;
 import re1kur.app.core.car.CarUpdateDto;
 import re1kur.app.core.car.CarWriteDto;
-import re1kur.app.entity.Car;
+import re1kur.app.entity.car.Car;
 
 public interface CarMapper {
     Car write(CarWriteDto writeCar);

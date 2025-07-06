@@ -11,7 +11,7 @@ import re1kur.app.core.exception.CarTypeAlreadyExistsException;
 import re1kur.app.core.exception.CarTypeNotFoundException;
 import re1kur.app.core.payload.CarTypePayload;
 import re1kur.app.core.payload.CarTypeUpdatePayload;
-import re1kur.app.entity.CarType;
+import re1kur.app.entity.car.CarType;
 import re1kur.app.mapper.CarTypeMapper;
 import re1kur.app.repository.CarTypeRepository;
 import re1kur.app.service.CarTypeService;

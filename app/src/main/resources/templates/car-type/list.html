@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car types — Car Rental Service</title>
+</head>
+<body>
+<div class="container">
+    <div class="makes-list" th:if="${not #lists.isEmpty(carTypes)}">
+        <div th:each="carType : ${carTypes}" class="make-item">
+            <article>
+                <a th:href="@{/car-types/{id}(id=${carType.id})}" class="make-link">
+                    <span class="make-name" th:text="${carType.name}"></span><br>
+                </a>
+<!--                <section class="make-details">-->
+<!--                    <span class="make-country" th:text="'Country: ' + ${make.country}"></span><br>-->
+<!--                    <span class="make-description" th:text="'Description: ' + ${make.description}"></span><br>-->
+<!--                </section>-->
+<!--                <footer class="make-footer">-->
+<!--                    <a th:href="@{/car-types/list}" class="make-cars-link">CarTypes</a>-->
+<!--                </footer>-->
+<!--                <img th:if="${make.titleImageUrl != null}" th:src="${make.titleImageUrl}" alt="">-->
+            </article>
+            <hr class="make-separator">
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -11,7 +11,7 @@ import re1kur.app.core.exception.EngineAlreadyExistsException;
 import re1kur.app.core.exception.EngineNotFoundException;
 import re1kur.app.core.payload.EnginePayload;
 import re1kur.app.core.payload.EngineUpdatePayload;
-import re1kur.app.entity.Engine;
+import re1kur.app.entity.car.Engine;
 import re1kur.app.mapper.EngineMapper;
 import re1kur.app.repository.EngineRepository;
 import re1kur.app.service.EngineService;
@@ -40,7 +40,7 @@ public class EngineServiceImpl implements EngineService {
     }
 
     @Override
-    public EngineDto getById(int id) {
+    public EngineDto get(Integer id) {
         Engine engine = repo.findById(id).orElseThrow(() ->
                 new EngineNotFoundException("Engine with id '%d' not found.".formatted(id)));
 
@@ -85,4 +85,5 @@ public class EngineServiceImpl implements EngineService {
     public Page<EngineDto> getPage(Pageable pageable) {
         return repo.findAll(pageable).map(mapper::read);
     }
+
 }

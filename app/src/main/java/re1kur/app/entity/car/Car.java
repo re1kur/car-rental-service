@@ -1,4 +1,4 @@
-package re1kur.app.entity;
+package re1kur.app.entity.car;
 
 
 import jakarta.persistence.*;
@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import re1kur.app.entity.Image;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 

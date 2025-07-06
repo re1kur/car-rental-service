@@ -7,8 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import re1kur.app.core.annotations.Mapper;
 import re1kur.app.core.dto.UserDto;
 import re1kur.app.core.payload.UserPayload;
-import re1kur.app.entity.User;
-import re1kur.app.entity.UserDetailsImpl;
+import re1kur.app.entity.user.User;
+import re1kur.app.entity.user.UserDetailsImpl;
 import re1kur.app.mapper.UserMapper;
 
 import java.util.List;

@@ -18,6 +18,11 @@ import re1kur.app.service.EngineService;
 public class EnginesController {
     private final EngineService engineService;
 
+    @GetMapping
+    public String enginesRedirect() {
+        return "redirect:/engines/list";
+    }
+
     @GetMapping("/create")
     public String getEngineCreatePage(Model model) {
         model.addAttribute("engine", new EnginePayload(null));
@@ -37,7 +42,7 @@ public class EnginesController {
             @RequestParam(value = "size", defaultValue = "5") Integer size,
             Model model
     ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page <= 0 ? 0: page - 1, size);
         Page<EngineDto> pageDtos = engineService.getPage(pageable);
 
         model.addAttribute("engines", pageDtos.getContent());

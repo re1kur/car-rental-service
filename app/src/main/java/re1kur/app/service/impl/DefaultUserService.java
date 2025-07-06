@@ -9,7 +9,7 @@ import re1kur.app.core.dto.UserDto;
 import re1kur.app.core.exception.UserEmailAlreadyRegisteredException;
 import re1kur.app.core.exception.UserNotFoundException;
 import re1kur.app.core.payload.UserPayload;
-import re1kur.app.entity.User;
+import re1kur.app.entity.user.User;
 import re1kur.app.mapper.UserMapper;
 import re1kur.app.repository.UserRepository;
 import re1kur.app.service.UserService;

@@ -12,10 +12,15 @@ import re1kur.app.core.payload.CarTypePayload;
 import re1kur.app.service.CarTypeService;
 
 @Controller
-@RequestMapping("/car-types/")
+@RequestMapping("/car-types")
 @RequiredArgsConstructor
 public class CarTypesController {
     private final CarTypeService carTypeService;
+
+    @GetMapping
+    public String carTypesRedirect() {
+        return "redirect:/car-types/list";
+    }
 
     @GetMapping("/create")
     public String getCarTypeCreatePage(Model model) {
@@ -40,7 +45,7 @@ public class CarTypesController {
             @RequestParam(value = "size", defaultValue = "5") Integer size,
             Model model
     ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page <= 0 ? 0 : page - 1, size);
 
         Page<CarTypeDto> pageDtos = carTypeService.getPage(pageable);
         model.addAttribute("carTypes", pageDtos.getContent());

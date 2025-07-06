@@ -7,7 +7,7 @@
 </head>
 <body>
 <div>
-    <form class="edit-form" method="post" th:action="@{'/car-types/' + carType.id + '/update'}">
+    <form class="edit-form" method="post" th:action="@{/car-types/{id}/update(id=${carType.id})}">
         <h4>Name:</h4>
         <label for="name">
             <input th:field="*{carType.name}" type="text" name="name" id="name"

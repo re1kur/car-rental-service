@@ -1,4 +1,4 @@
-package re1kur.app.entity;
+package re1kur.app.entity.user;
 
 import jakarta.persistence.*;
 import lombok.Data;

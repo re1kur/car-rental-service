@@ -1,32 +1,37 @@
 --liquibase formatted sql
 
---changeset re1kur:1
-INSERT INTO makes (name, country, description)
-VALUES ('Toyota', 'Japan',
-        'Japanese multinational automotive manufacturer known for its reliability and innovation in hybrid technology.'),
-       ('Honda', 'Japan',
-        'Japanese multinational automaker renowned for its engines and motorcycles, as well as cars.'),
-       ('Ford', 'USA',
-        'American multinational automaker with a long history of producing iconic vehicles like the Model T and the Mustang.'),
-       ('Chevrolet', 'USA',
-        'American multinational automobile division of General Motors, famous for its wide range of vehicles including the Corvette and Silverado.'),
-       ('BMW', 'Germany',
-        'German multinational luxury vehicle and motorcycle manufacturer known for its performance and engineering excellence.'),
-       ('Mercedes-Benz', 'Germany',
-        'German multinational automotive manufacturer famous for its luxury vehicles and advanced engineering.'),
-       ('Volkswagen', 'Germany',
-        'German multinational automotive manufacturer known for its compact and affordable vehicles.'),
-       ('Audi', 'Germany',
-        'German multinational luxury vehicle manufacturer known for its design and advanced technology.'),
-       ('Nissan', 'Japan',
-        'Japanese multinational automaker known for its affordable and reliable vehicles, including the Leaf electric car.'),
-       ('Hyundai', 'South Korea',
-        'South Korean multinational automotive manufacturer known for its value and innovation in the global market.');
-
 --changeset re1kur:2
-INSERT INTO cars (make_id, model, year, license_plate, is_available)
-VALUES ((SELECT id FROM makes WHERE name = 'Toyota'), 'Camry', 2022, 'ABC123', TRUE),
-       ((SELECT id FROM makes WHERE name = 'Honda'), 'Civic', 2021, 'XYZ789', TRUE),
-       ((SELECT id FROM makes WHERE name = 'Ford'), 'Mustang', 2020, 'DEF456', TRUE),
-       ((SELECT id FROM makes WHERE name = 'BMW'), '3 Series', 2023, 'GHI789', TRUE);
+INSERT INTO makes (name) VALUES ('Toyota');
+INSERT INTO makes (name) VALUES ('BMW');
+INSERT INTO makes (name) VALUES ('Tesla');
 
+--changeset re1kur:3
+INSERT INTO make_information (make_id, country, description, founded_at, founder, owner)
+VALUES
+    (1, 'Japan', 'Japanese automotive manufacturer', 1937, 'Kiichiro Toyoda', 'Toyota Group'),
+    (2, 'Germany', 'German luxury vehicle manufacturer', 1916, 'Franz Josef Popp', 'BMW AG'),
+    (3, 'USA', 'American electric car manufacturer', 2003, 'Elon Musk', 'Tesla Inc.');
+
+--changeset re1kur:4
+INSERT INTO car_types (name) VALUES ('Sedan');
+INSERT INTO car_types (name) VALUES ('SUV');
+INSERT INTO car_types (name) VALUES ('Hatchback');
+
+--changeset re1kur:5
+INSERT INTO engines (name) VALUES ('V6');
+INSERT INTO engines (name) VALUES ('V8');
+INSERT INTO engines (name) VALUES ('Electric Motor');
+
+--changeset re1kur:6
+INSERT INTO cars (make_id, car_type_id, engine_id, model, year, license_plate, is_available)
+VALUES
+    (1, 1, 1, 'Camry', 2020, 'A123BC', TRUE),
+    (2, 2, 2, 'X5', 2021, 'B456DE', FALSE),
+    (3, 1, 3, 'Model S', 2022, 'C789FG', TRUE);
+
+--changeset re1kur:7
+INSERT INTO car_details (car_id, description, color, seats, mileage, fuel_type, transmission)
+VALUES
+    (1, 'Comfortable family sedan', 'White', 5, 15000, 'Petrol', 'Automatic'),
+    (2, 'Luxury SUV for city and offroad', 'Black', 5, 8000, 'Diesel', 'Automatic'),
+    (3, 'Fully electric premium sedan', 'Red', 5, 5000, 'Electric', 'Single-speed');
