@@ -1,16 +1,16 @@
 package re1kur.app.mapper;
 
-import re1kur.app.core.make.MakeReadDto;
-import re1kur.app.core.make.MakeUpdateDto;
-import re1kur.app.core.make.MakeWriteDto;
+import re1kur.app.core.dto.MakeDto;
+import re1kur.app.core.payload.MakeUpdatePayload;
+import re1kur.app.core.payload.MakePayload;
 import re1kur.app.entity.car.Make;
 
 public interface MakeMapper {
-    MakeReadDto read (Make make);
+    MakeDto read (Make make);
 
-    Make write (MakeWriteDto make);
+    Make write (MakePayload make);
 
-    MakeUpdateDto readUpdate(Make make);
+    MakeUpdatePayload readUpdate(Make make);
 
-    Make update(MakeUpdateDto make, int id);
+    Make update(MakeUpdatePayload make, int id);
 }

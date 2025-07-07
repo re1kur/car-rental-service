@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS make_information
     make_id     SMALLINT PRIMARY KEY,
     country     VARCHAR(32),
     description TEXT,
-    founded_at  SMALLINT,
+    founded_at  DATE,
     founder     VARCHAR(64),
     owner       varchar(64),
     FOREIGN KEY (make_id) REFERENCES makes (id) ON DELETE CASCADE

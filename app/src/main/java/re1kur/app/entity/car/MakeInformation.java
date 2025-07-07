@@ -3,6 +3,8 @@ package re1kur.app.entity.car;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "make_information")
 @Data
@@ -22,7 +24,7 @@ public class MakeInformation {
 
     private String description;
 
-    private Integer foundedAt;
+    private LocalDate foundedAt;
 
     private String founder;
 

@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import re1kur.app.core.car.details.CarDetailsReadDto;
 import re1kur.app.core.car.images.CarImageReadDto;
-import re1kur.app.core.make.MakeReadDto;
+import re1kur.app.core.dto.MakeDto;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class CarReadDto {
     private int id;
-    private MakeReadDto make;
+    private MakeDto make;
     private String model;
     private int year;
     private String licensePlate;

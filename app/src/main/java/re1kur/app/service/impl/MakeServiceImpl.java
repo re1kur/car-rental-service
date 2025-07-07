@@ -3,9 +3,10 @@ package re1kur.app.service.impl;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import re1kur.app.core.make.MakeReadDto;
-import re1kur.app.core.make.MakeUpdateDto;
-import re1kur.app.core.make.MakeWriteDto;
+import re1kur.app.core.exception.MakeNotFoundException;
+import re1kur.app.core.dto.MakeDto;
+import re1kur.app.core.payload.MakeUpdatePayload;
+import re1kur.app.core.payload.MakePayload;
 import re1kur.app.entity.car.Make;
 import re1kur.app.mapper.MakeMapper;
 import re1kur.app.repository.MakeRepository;
@@ -15,13 +16,13 @@ import re1kur.app.service.MakeService;
 import java.util.List;
 
 @Service
-public class DefaultMakeService implements MakeService {
+public class MakeServiceImpl implements MakeService {
     private final MakeRepository repo;
     private final MakeMapper mapper;
     private final FileStoreService fileStoreService;
 
     @Autowired
-    public DefaultMakeService(
+    public MakeServiceImpl(
             MakeRepository repo,
             MakeMapper mapper,
             FileStoreService fileStoreService) {
@@ -31,33 +32,27 @@ public class DefaultMakeService implements MakeService {
     }
 
     @Override
-    public List<MakeReadDto> readAll() {
+    public List<MakeDto> readAll() {
         return repo.findAll().stream().map(mapper::read).toList();
     }
 
     @SneakyThrows
-    public MakeReadDto write(MakeWriteDto make) {
-        if (make.getImage() != null) {
-            String url = fileStoreService.uploadMakeImage(make.getImage());
-            make.setTitleImageUrl(url);
-        }
-        Make saved = repo.save(mapper.write(make));
-        return mapper.read(saved);
+    public void write(MakePayload make) {
+//        if (make.getImage() != null) {
+//            String url = fileStoreService.uploadMakeImage(make.getImage());
+//            make.setTitleImageUrl(url);
+//        }
+        repo.save(mapper.write(make));
     }
 
     @Override
-    public MakeReadDto read(int id) {
-        return repo.findById(id).map(mapper::read).orElse(null);
-    }
-
-    @Override
-    public MakeUpdateDto readUpdateById(int id) {
-        return repo.findById(id).map(mapper::readUpdate).orElse(null);
+    public MakeDto get(Integer id) {
+        return repo.findById(id).map(mapper::read).orElseThrow(() -> new MakeNotFoundException("Make with ID [%d] was not found.".formatted(id)));
     }
 
     @SneakyThrows
     @Override
-    public void updateMake(MakeUpdateDto update, int id) {
+    public void update(MakeUpdatePayload update, Integer id) {
         if (update.getImage() != null) {
             String url = fileStoreService.uploadMakeImage(update.getImage());
             update.setTitleImageUrl(url);

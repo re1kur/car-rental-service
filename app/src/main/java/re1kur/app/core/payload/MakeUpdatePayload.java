@@ -1,19 +1,19 @@
-package re1kur.app.core.make;
+package re1kur.app.core.payload;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+@Data
 @Builder
-@Getter
-@Setter
-public class MakeWriteDto {
+@NoArgsConstructor
+@AllArgsConstructor
+public class MakeUpdatePayload {
     @NotBlank(message = "The make name mustn't only name with backspace chars.")
-    @NotNull(message = "The make name have to be.")
     @Size(message = "The make name have to be lesser and greater than 64 and 3 chars respectively.", min = 3, max = 64)
     private String name;
 

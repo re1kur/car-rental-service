@@ -1,20 +1,18 @@
 package re1kur.app.service;
 
-import re1kur.app.core.make.MakeReadDto;
-import re1kur.app.core.make.MakeUpdateDto;
-import re1kur.app.core.make.MakeWriteDto;
+import re1kur.app.core.dto.MakeDto;
+import re1kur.app.core.payload.MakeUpdatePayload;
+import re1kur.app.core.payload.MakePayload;
 
 import java.util.List;
 
 public interface MakeService {
 
-    List<MakeReadDto> readAll();
+    List<MakeDto> readAll();
 
-    MakeReadDto write(MakeWriteDto make);
+    void write(MakePayload make);
 
-    MakeReadDto read(int id);
+    MakeDto get(Integer id);
 
-    MakeUpdateDto readUpdateById(int id);
-
-    void updateMake(MakeUpdateDto update, int id);
+    void update(MakeUpdatePayload update, Integer id);
 }

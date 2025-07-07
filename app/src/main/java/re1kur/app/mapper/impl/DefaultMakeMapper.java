@@ -1,9 +1,9 @@
 package re1kur.app.mapper.impl;
 
 import re1kur.app.core.annotations.Mapper;
-import re1kur.app.core.make.MakeReadDto;
-import re1kur.app.core.make.MakeUpdateDto;
-import re1kur.app.core.make.MakeWriteDto;
+import re1kur.app.core.dto.MakeDto;
+import re1kur.app.core.payload.MakeUpdatePayload;
+import re1kur.app.core.payload.MakePayload;
 import re1kur.app.entity.car.Make;
 import re1kur.app.mapper.MakeMapper;
 
@@ -11,8 +11,8 @@ import re1kur.app.mapper.MakeMapper;
 public class DefaultMakeMapper implements MakeMapper {
 
     @Override
-    public MakeReadDto read(Make make) {
-        return MakeReadDto.builder()
+    public MakeDto read(Make make) {
+        return MakeDto.builder()
                 .id(make.getId())
                 .name(make.getName())
 //                .country(make.getCountry())
@@ -22,9 +22,9 @@ public class DefaultMakeMapper implements MakeMapper {
     }
 
     @Override
-    public Make write(MakeWriteDto make) {
+    public Make write(MakePayload make) {
         return Make.builder()
-                .name(make.getName())
+//                .name(make.getName())
 //                .country(make.getCountry())
 //                .description(make.getDescription())
 //                .titleImage(make.getTitleImageUrl())
@@ -32,8 +32,8 @@ public class DefaultMakeMapper implements MakeMapper {
     }
 
     @Override
-    public MakeUpdateDto readUpdate(Make make) {
-        return MakeUpdateDto.builder()
+    public MakeUpdatePayload readUpdate(Make make) {
+        return MakeUpdatePayload.builder()
                 .name(make.getName())
 //                .country(make.getCountry())
 //                .description(make.getDescription())
@@ -42,7 +42,7 @@ public class DefaultMakeMapper implements MakeMapper {
     }
 
     @Override
-    public Make update(MakeUpdateDto make, int id) {
+    public Make update(MakeUpdatePayload make, int id) {
         return Make.builder()
                 .id(id)
                 .name(make.getName())
