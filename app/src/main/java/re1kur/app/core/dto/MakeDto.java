@@ -2,12 +2,17 @@ package re1kur.app.core.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Builder
-public record MakeDto(
-        Integer id,
-        String name,
-        String country,
-        String description,
-        String titleImageUrl
-) {
+@Setter
+public class MakeDto {
+    public Integer id;
+    public String name;
+    public String country;
+    public String description;
+    public LocalDate foundedAt;
+    public String founder;
+    public String owner;
+    public String titleImgUrl;
 }

@@ -1,56 +1,64 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">#
+
 <head>
     <meta charset="UTF-8">
-    <title>New Make &ndash; Car Rental Service </title>
-    <link rel="stylesheet" th:href="@{/css/styles-car-edit.css}">
-    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
-    <link rel="stylesheet" th:href="@{/css/main-header.css}">
+    <title>New Make - Car Rental Service </title>
 </head>
-<header th:insert="~{/fragments/header :: makes-header}">
-</header>
+
 <body>
-<div class="container">
-    <form class="edit-form" method="post" th:action="@{/makes/create}" enctype="multipart/form-data">
+<div>
+    <form method="post" th:action="@{/makes/create}" enctype="multipart/form-data">
         <h2>Make information.</h2>
+
         <h4>Name:</h4>
         <label for="name">
-            <input th:field="*{make.name}" type="text" name="name" id="name"
-                   placeholder="Toyota" required>
+            <input type="text" name="name"
+                   id="name" placeholder="Toyota" required>
         </label><br>
 
         <h4>Country:</h4>
         <label for="country">
-            <input th:field="*{make.country}" type="text" name="country" id="country"
-                   placeholder="Japan" required>
-        </label>
+            <input type="text" name="country"
+                   id="country" placeholder="Japan">
+        </label><br>
+
         <h4>Description:</h4>
         <label for="description"><br>
-            <textarea th:field="*{make.description}" name="description" id="description"
-                      placeholder="Japanese multinational automotive manufacturer" rows="4" cols="80" style="resize: none">
+            <textarea id="description"
+                      placeholder="Japanese multinational automotive manufacturer" rows="4" cols="80"
+                      style="resize: none"
+                      name="description">
             </textarea>
         </label><br>
-        <h4>Date of foundation:</h4>
-        <label for="foundedAt">
-            <input type="date" id="foundedAt" placeholder="2018-07-22">
-        </label>
+
         <h4>Founder:</h4>
         <label for="founder">
-            <input type="text" id="founder" placeholder="Mads Mikkelsen / Group">
-        </label>
+            <input type="text" name="founder" id="founder" placeholder="Mads Mikkelsen">
+        </label><br>
+
+
+        <h4>Date of foundation:</h4>
+        <label for="foundedAt">
+            <input type="date" name="foundedAt" id="foundedAt" placeholder="2018-07-22">
+        </label><br>
+
+
         <h4>Owner:</h4>
         <label for="owner">
-            <input type="text" id="owner" placeholder="Mads Mikkelsen / Group">
-        </label>
-        <section class="form-group">
-            <label for="title" class="labelFile">Title image:
-                <input type="file" name="title" id="title" accept="image/*">
+            <input type="text" name="owner" id="owner" placeholder="BMW Group">
+        </label><br>
+
+
+        <section>
+            <h4>Title image:</h4>
+            <label for="titleImg">
+                <input type="file" name="titleImg" id="titleImg" accept="image/*">
             </label><br>
         </section>
+
         <button type="submit">Create</button>
     </form>
 </div>
 </body>
-<footer th:insert="~{/fragments/footer :: main-footer}">
-</footer>
 </html>

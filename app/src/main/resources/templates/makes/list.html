@@ -2,38 +2,32 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Makes &ndash; Car Rental Service</title>
-    <link rel="stylesheet" th:href="@{/css/styles-make-list.css}">
-    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
-    <link rel="stylesheet" th:href="@{/css/main-header.css}">
+    <title>Makes - Car Rental Service</title>
 </head>
 <body>
-<header th:replace="~{/fragments/header :: makes-header}">
-</header>
 
-<div class="makes-list" th:if="${not #lists.isEmpty(makes)}">
-    <div th:each="make : ${makes}" class="make-item">
-        <article>
-            <a th:href="@{/makes/{id}(id=${make.id})}" class="make-link">
-                <span class="make-name" th:text="${make.name}"></span><br>
-            </a>
-            <section class="make-details">
-                <span class="make-country" th:text="'Country: ' + ${make.country}"></span><br>
-                <span class="make-description" th:text="'Description: ' + ${make.description}"></span><br>
-            </section>
-            <footer class="make-footer">
-                <a th:href="@{/cars/list(makeId=${make.id})}" class="make-cars-link">Cars</a>
-            </footer>
-            <img th:if="${make.titleImageUrl != null}" th:src="${make.titleImageUrl}" alt="">
-        </article>
+<div th:if="${not #lists.isEmpty(makes)}">
+    <div th:each="make : ${makes}">
+        <img th:if="${make.titleImgUrl != null}"
+             th:src="${make.titleImgUrl}"
+             th:alt="${make.name + ' logo'}" />
+
+        <h4 th:text="${make.name}"></h4><br>
+
+        <a th:href="@{/makes/{id}(id=${make.id})}">
+            <span>Profile</span>
+        </a><br>
+
+        <a th:href="@{/cars/list(makeId=${make.id})}">
+            <span th:text="'Cars by ' + ${make.name}"></span>
+        </a><br>
         <hr class="make-separator">
     </div>
 </div>
 
-<div class="no-makes-message" th:if="${#lists.isEmpty(makes)}">
+<div th:if="${#lists.isEmpty(makes)}">
     <p>No makes available.</p>
 </div>
+
 </body>
-<footer th:replace="~{/fragments/footer :: main-footer}">
-</footer>
 </html>

@@ -15,6 +15,8 @@ import re1kur.fs.repository.FileRepository;
 import re1kur.fs.service.FileService;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -52,7 +54,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public String getUrl(String id) {
         File file = repo.findById(id).orElseThrow(() -> new FileNotFoundException("File with id '%s' does not exist.".formatted(id)));
-        if (ZonedDateTime.now().isAfter(file.getUrlExpiresAt().toInstant().atZone(ZoneId.systemDefault()))) {
+        if (Instant.now().isAfter(file.getUrlExpiresAt())) {
             file = updateUrl(file);
         }
         return file.getUrl();
@@ -60,11 +62,11 @@ public class FileServiceImpl implements FileService {
 
     private File updateUrl(File file) {
         PresignedUrl resp = client.getUrl(file.getId());
-        if (resp.expiration().equals(file.getUrlExpiresAt().toInstant())) {
+        if (resp.expiration().equals(file.getUrlExpiresAt())) {
             throw new UrlUpdateException("The expiration has not been updated.");
         }
         file.setUrl(resp.url());
-        file.setUrlExpiresAt(resp.expiration().atZone(ZoneId.systemDefault()));
+        file.setUrlExpiresAt(resp.expiration());
         return repo.save(file);
     }
 }

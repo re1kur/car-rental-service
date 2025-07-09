@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import re1kur.app.core.dto.MakeDto;
+import re1kur.app.core.dto.MakeShortDto;
 import re1kur.app.core.payload.MakePayload;
 import re1kur.app.service.MakeService;
 
@@ -16,33 +16,32 @@ import java.util.List;
 @RequestMapping("/makes")
 @RequiredArgsConstructor
 public class MakesController {
-    MakeService service;
+    private final MakeService service;
 
     @GetMapping
     public String redirectList() {
         return "redirect:/makes/list";
     }
 
-    @GetMapping("list")
+    @GetMapping("/list")
     public String getList(Model model) {
-        List<MakeDto> makes = service.readAll();
+        List<MakeShortDto> makes = service.readAll();
         model.addAttribute("makes", makes);
         return "/makes/list.html";
     }
 
-    @GetMapping("create")
+    @GetMapping("/create")
     public String getCreateMake(Model model) {
         model.addAttribute("make", null);
         return "/makes/create.html";
     }
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public String createMake(
             @ModelAttribute @Valid MakePayload payload,
-            @RequestParam("title") MultipartFile title
+            @RequestParam("titleImg") MultipartFile titleImg
     ) {
-//        payload.setImage(title);
-        service.write(payload);
+        service.create(payload, titleImg);
         return "redirect:/moderator/menu";
     }
 }

@@ -1,63 +1,85 @@
 package re1kur.app.service.impl;
 
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import re1kur.app.core.dto.MakeShortDto;
+import re1kur.app.core.exception.MakeAlreadyExistsException;
 import re1kur.app.core.exception.MakeNotFoundException;
 import re1kur.app.core.dto.MakeDto;
 import re1kur.app.core.payload.MakeUpdatePayload;
 import re1kur.app.core.payload.MakePayload;
+import re1kur.app.entity.Image;
 import re1kur.app.entity.car.Make;
+import re1kur.app.entity.car.MakeInformation;
+import re1kur.app.mapper.MakeInformationMapper;
 import re1kur.app.mapper.MakeMapper;
+import re1kur.app.repository.MakeInformationRepository;
 import re1kur.app.repository.MakeRepository;
 import re1kur.app.service.FileStoreService;
 import re1kur.app.service.MakeService;
 
 import java.util.List;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class MakeServiceImpl implements MakeService {
     private final MakeRepository repo;
-    private final MakeMapper mapper;
+    private final MakeMapper makeMapper;
+    private final MakeInformationMapper infoMapper;
     private final FileStoreService fileStoreService;
-
-    @Autowired
-    public MakeServiceImpl(
-            MakeRepository repo,
-            MakeMapper mapper,
-            FileStoreService fileStoreService) {
-        this.repo = repo;
-        this.mapper = mapper;
-        this.fileStoreService = fileStoreService;
-    }
+    private final MakeInformationRepository infoRepo;
 
     @Override
-    public List<MakeDto> readAll() {
-        return repo.findAll().stream().map(mapper::read).toList();
+    public List<MakeShortDto> readAll() {
+        return repo.findAll().stream().map(makeMapper::readShort).toList();
     }
 
-    @SneakyThrows
-    public void write(MakePayload make) {
-//        if (make.getImage() != null) {
-//            String url = fileStoreService.uploadMakeImage(make.getImage());
-//            make.setTitleImageUrl(url);
-//        }
-        repo.save(mapper.write(make));
+    @Transactional
+    @Override
+    public void create(MakePayload payload, MultipartFile titleImg) {
+        log.info("Received create make request: {}", payload);
+        String name = payload.name();
+
+        if (repo.existsByName(name))
+            throw new MakeAlreadyExistsException("Make with name '%s' already exists.".formatted(name));
+
+        Image image = fileStoreService.uploadImage(titleImg);
+
+        Make mapped = makeMapper.write(payload, image);
+
+        try {
+            Make saved = repo.save(mapped);
+            repo.flush();
+            if (payload.hasInfo()) {
+                log.info("MakePayload has info.");
+                MakeInformation infoMapped = infoMapper.write(payload, saved);
+                infoRepo.save(infoMapped);
+            }
+        } catch (Exception e) {
+            fileStoreService.deleteImage(image.getId());
+            throw e;
+        }
+        log.info("Make created: {}", mapped);
     }
 
     @Override
     public MakeDto get(Integer id) {
-        return repo.findById(id).map(mapper::read).orElseThrow(() -> new MakeNotFoundException("Make with ID [%d] was not found.".formatted(id)));
+        return repo.findById(id).map(makeMapper::read).orElseThrow(() ->
+                new MakeNotFoundException("Make with ID [%d] was not found.".formatted(id)));
     }
 
-    @SneakyThrows
     @Override
     public void update(MakeUpdatePayload update, Integer id) {
-        if (update.getImage() != null) {
-            String url = fileStoreService.uploadMakeImage(update.getImage());
-            update.setTitleImageUrl(url);
-        }
-        Make mapped = mapper.update(update, id);
+//        if (update.getImage() != null) {
+//            String url = fileStoreService.uploadMakeImage(update.getImage());
+//            update.setTitleImageUrl(url);
+//        }
+        Make mapped = makeMapper.update(update, id);
         repo.save(mapped);
     }
 }

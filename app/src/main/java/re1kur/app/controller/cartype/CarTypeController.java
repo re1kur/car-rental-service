@@ -18,7 +18,7 @@ public class CarTypeController {
     @GetMapping
     public String getCarType(
             Model model,
-            @PathVariable Integer id
+            @PathVariable(name = "id") Integer id
     ) {
         CarTypeDto carTypeDto = carTypeService.get(id);
         model.addAttribute("carType", carTypeDto);
@@ -28,7 +28,7 @@ public class CarTypeController {
 
     @GetMapping("/update")
     public String getCarTypeUpdatePage(
-            @PathVariable Integer id,
+            @PathVariable(name = "id") Integer id,
             Model model
     ) {
         CarTypeDto type = carTypeService.get(id);
@@ -39,7 +39,7 @@ public class CarTypeController {
     @PostMapping("/update")
     public String carTypeUpdate(
             @ModelAttribute @Valid CarTypeUpdatePayload payload,
-            @PathVariable Integer id
+            @PathVariable(name = "id") Integer id
     ) {
         carTypeService.update(payload, id);
         return "redirect:/moderator/menu";
@@ -47,7 +47,7 @@ public class CarTypeController {
 
     @DeleteMapping("/delete")
     public String carTypeDelete(
-            @PathVariable Integer id
+            @PathVariable(name = "id") Integer id
     ) {
         carTypeService.delete(id);
 

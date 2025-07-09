@@ -3,6 +3,7 @@ package re1kur.app.controller.make;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import re1kur.app.core.dto.MakeDto;
@@ -13,15 +14,16 @@ import re1kur.app.service.MakeService;
 @RequestMapping("/makes/{id}")
 @RequiredArgsConstructor
 public class MakeController {
-    MakeService service;
+    private final MakeService service;
 
     @ModelAttribute("make")
-    public MakeDto make(@PathVariable Integer id) {
+    public MakeDto make(@PathVariable(name = "id") Integer id) {
         return service.get(id);
     }
 
     @GetMapping
-    public String getMakeProfile() {
+    public String getMakeProfile(
+    ) {
         return "/makes/profile.html";
     }
 

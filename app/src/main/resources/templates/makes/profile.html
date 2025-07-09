@@ -1,26 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title th:text="${make.name} + ' — Car Rental Service'"></title>
-    <link rel="stylesheet" th:href="@{/css/styles-make.css}">
-    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
-    <link rel="stylesheet" th:href="@{/css/main-header.css}">
 </head>
-<body>
-<header th:replace="~{fragments/header :: make-header}"></header>
 
-<div class="container">
+<body>
+
+<div>
     <h1 th:text="${make.name}"></h1>
-    <section>
-        <span class="field">Country: </span> <span th:text="${make.country}"></span><br><br>
-        <h3>Description: </h3> <span th:text="${make.description}"></span>
+    <section th:if="${make.country != null}">
+        <h3>Country:</h3>
+        <span th:text="${make.country}"></span><br>
     </section>
-    <section>
-        <img th:if="${make.titleImageUrl != null}" th:src="${make.titleImageUrl}" alt="">
+
+    <section th:if="${make.description != null}">
+        <h3>Description: </h3>
+        <span th:text="${make.description}"></span>
     </section>
+
+    <section th:if="${make.foundedAt != null}">
+        <h3>Founded at: </h3>
+        <span th:text="${make.foundedAt}"></span>
+    </section>
+
+    <section th:if="${make.founder != null}">
+        <h3>Founder: </h3>
+        <span th:text="${make.founder}"></span>
+    </section>
+
+    <section th:if="${make.owner != null}">
+        <h3>Owner: </h3>
+        <span th:text="${make.owner}"></span>
+    </section>
+
+    <section>
+        <img th:if="${make.titleImgUrl != null}" th:src="${make.titleImgUrl}" alt="">
+    </section>
+
 </div>
 </body>
-<footer th:replace="~{/fragments/footer :: main-footer}">
-</footer>
 </html>

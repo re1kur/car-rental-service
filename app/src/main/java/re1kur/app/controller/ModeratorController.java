@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
-@RequestMapping("moderator")
+@RequestMapping("/moderator")
 @RequiredArgsConstructor
 public class ModeratorController {
 

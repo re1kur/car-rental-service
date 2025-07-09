@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -23,7 +25,7 @@ public class File {
     private String url;
 
     @Column(insertable = false, updatable = false)
-    private ZonedDateTime uploadedAt;
+    private Instant uploadedAt;
 
-    private ZonedDateTime urlExpiresAt;
+    private Instant urlExpiresAt;
 }

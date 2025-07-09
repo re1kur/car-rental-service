@@ -7,18 +7,18 @@ import re1kur.fs.dto.PresignedUrl;
 import re1kur.fs.entity.File;
 import re1kur.fs.mapper.FileMapper;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 
 @Component
-public class DefaultFileMapper implements FileMapper {
+public class FileMapperImpl implements FileMapper {
     @Override
     public File upload(MultipartFile payload, String id, PresignedUrl resp) {
         return File.builder()
                 .id(id)
                 .url(resp.url())
-                .uploadedAt(ZonedDateTime.now())
-                .urlExpiresAt(resp.expiration().atZone(ZoneId.systemDefault()))
+                .uploadedAt(Instant.now())
+                .urlExpiresAt(resp.expiration())
                 .mediaType(payload.getContentType())
                 .build();
     }

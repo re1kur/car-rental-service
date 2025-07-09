@@ -17,7 +17,7 @@ import re1kur.app.repository.MakeRepository;
 
 
 @Mapper
-public class DefaultCarMapper implements CarMapper {
+public class CarMapperImpl implements CarMapper {
     MakeRepository makeRepo;
 //    CarImageRepository imageRepo;
     CarDetailsMapper detailsMapper;
@@ -25,7 +25,7 @@ public class DefaultCarMapper implements CarMapper {
     MakeMapper makeMapper;
 
     @Autowired
-    public DefaultCarMapper(
+    public CarMapperImpl(
             CarDetailsMapper detailsMapper,
 //            CarImagesMapper imagesMapper,
             MakeRepository makeRepo,

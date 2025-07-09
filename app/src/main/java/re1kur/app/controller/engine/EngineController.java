@@ -18,7 +18,7 @@ public class EngineController {
     @GetMapping
     public String getCarType(
             Model model,
-            @PathVariable Integer id
+            @PathVariable(name = "id") Integer id
     ) {
         EngineDto engineDto = engineService.get(id);
         model.addAttribute("engine", engineDto);
@@ -27,8 +27,9 @@ public class EngineController {
     }
 
     @GetMapping("/update")
-    public String getEngineUpdatePage(Model model,
-                                      @PathVariable Integer id) {
+    public String getEngineUpdatePage(
+            Model model,
+            @PathVariable(name = "id") Integer id) {
         EngineDto engine = engineService.get(id);
         model.addAttribute("engine", engine);
 
@@ -36,15 +37,17 @@ public class EngineController {
     }
 
     @PostMapping("/update")
-    public String engineUpdate(@ModelAttribute @Valid EngineUpdatePayload payload,
-                               @PathVariable Integer id) {
+    public String engineUpdate(
+            @ModelAttribute @Valid EngineUpdatePayload payload,
+            @PathVariable(name = "id") Integer id) {
         engineService.update(payload, id);
 
         return "redirect:/moderator/menu";
     }
 
     @DeleteMapping("/delete")
-    public String engineDelete(@PathVariable Integer id) {
+    public String engineDelete(
+            @PathVariable(name = "id") Integer id) {
 
         engineService.delete(id);
 
