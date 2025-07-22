@@ -1,4 +1,4 @@
-package re1kur.app.entity;
+package re1kur.app.entity.image;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "images")
@@ -22,7 +22,7 @@ public class Image {
 
     private String url;
 
-    private OffsetDateTime uploadedAt;
+    private LocalDateTime uploadedAt;
 
-    private OffsetDateTime urlExpiresAt;
+    private LocalDateTime urlExpiresAt;
 }

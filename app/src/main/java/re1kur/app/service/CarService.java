@@ -1,23 +1,22 @@
 package re1kur.app.service;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import re1kur.app.core.car.CarReadDto;
+import org.springframework.web.multipart.MultipartFile;
+import re1kur.app.core.dto.CarDto;
 import re1kur.app.core.car.CarUpdateDto;
-import re1kur.app.core.car.CarWriteDto;
-import re1kur.app.core.car.filter.CarFilter;
-
-import java.io.IOException;
+import re1kur.app.core.dto.PageDto;
+import re1kur.app.core.payload.CarPayload;
+import re1kur.app.core.other.CarFilter;
 
 public interface CarService {
 
-    CarReadDto readByIdWithDetails(int id);
+    CarDto readFull(int id);
 
-    Integer writeCar(CarWriteDto car) throws IOException;
+    Integer create(CarPayload car, MultipartFile title, MultipartFile[] files);
 
     CarUpdateDto readUpdateById(int id);
 
     void updateCar(CarUpdateDto car, int id);
 
-    Page<CarReadDto> readAll(CarFilter filter, Pageable pageable);
+    PageDto<CarDto> readAll(CarFilter filter, Pageable pageable);
 }

@@ -11,10 +11,12 @@ import re1kur.app.core.exception.CarTypeAlreadyExistsException;
 import re1kur.app.core.exception.CarTypeNotFoundException;
 import re1kur.app.core.payload.CarTypePayload;
 import re1kur.app.core.payload.CarTypeUpdatePayload;
-import re1kur.app.entity.car.CarType;
+import re1kur.app.entity.cartype.CarType;
 import re1kur.app.mapper.CarTypeMapper;
 import re1kur.app.repository.CarTypeRepository;
 import re1kur.app.service.CarTypeService;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -40,7 +42,7 @@ public class CarTypeServiceImpl implements CarTypeService {
     }
 
     @Override
-    public CarTypeDto get(Integer id) {
+    public CarTypeDto read(Integer id) {
         CarType carType = repo.findById(id).orElseThrow(() ->
                 new CarTypeNotFoundException("Car type with ID [%d] was not found.".formatted(id)));
 
@@ -79,8 +81,19 @@ public class CarTypeServiceImpl implements CarTypeService {
     }
 
     @Override
-    public Page<CarTypeDto> getPage(Pageable pageable) {
+    public Page<CarTypeDto> readPage(Pageable pageable) {
         return repo.findAll(pageable).map(mapper::read);
     }
 
+    @Override
+    public List<CarTypeDto> readAll() {
+        List<CarType> found = (List<CarType>) repo.findAll();
+        return found.stream().map(mapper::read).toList();
+    }
+
+    @Override
+    public CarType get(Integer id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new CarTypeNotFoundException("Car type with ID [%d] was not found.".formatted(id)));
+    }
 }

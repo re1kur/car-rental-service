@@ -43,7 +43,7 @@ public class EnginesController {
             Model model
     ) {
         Pageable pageable = PageRequest.of(page <= 0 ? 0: page - 1, size);
-        Page<EngineDto> pageDtos = engineService.getPage(pageable);
+        Page<EngineDto> pageDtos = engineService.readPage(pageable);
 
         model.addAttribute("engines", pageDtos.getContent());
         model.addAttribute("size", pageDtos.getSize());

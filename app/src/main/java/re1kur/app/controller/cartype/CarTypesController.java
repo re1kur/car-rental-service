@@ -47,7 +47,7 @@ public class CarTypesController {
     ) {
         Pageable pageable = PageRequest.of(page <= 0 ? 0 : page - 1, size);
 
-        Page<CarTypeDto> pageDtos = carTypeService.getPage(pageable);
+        Page<CarTypeDto> pageDtos = carTypeService.readPage(pageable);
         model.addAttribute("carTypes", pageDtos.getContent());
         model.addAttribute("size", pageDtos.getSize());
         model.addAttribute("page", pageDtos.getNumber());

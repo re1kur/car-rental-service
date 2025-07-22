@@ -20,7 +20,7 @@ public class CarTypeController {
             Model model,
             @PathVariable(name = "id") Integer id
     ) {
-        CarTypeDto carTypeDto = carTypeService.get(id);
+        CarTypeDto carTypeDto = carTypeService.read(id);
         model.addAttribute("carType", carTypeDto);
 
         return "/car-type/profile.html";
@@ -31,7 +31,7 @@ public class CarTypeController {
             @PathVariable(name = "id") Integer id,
             Model model
     ) {
-        CarTypeDto type = carTypeService.get(id);
+        CarTypeDto type = carTypeService.read(id);
         model.addAttribute("carType", type);
         return "/car-type/update.html";
     }

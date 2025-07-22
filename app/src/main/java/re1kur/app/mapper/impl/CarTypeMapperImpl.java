@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import re1kur.app.core.dto.CarTypeDto;
 import re1kur.app.core.payload.CarTypePayload;
 import re1kur.app.core.payload.CarTypeUpdatePayload;
-import re1kur.app.entity.car.CarType;
+import re1kur.app.entity.cartype.CarType;
 import re1kur.app.mapper.CarTypeMapper;
 
 @Component

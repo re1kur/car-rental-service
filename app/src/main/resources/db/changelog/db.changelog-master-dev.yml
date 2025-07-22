@@ -3,6 +3,6 @@ databaseChangeLog:
       file: db/changelog/db.changelog-1.0.sql
   - include:
       file: db/changelog/db.changelog-init.sql
-#  - include:
-#      file: db/changelog/db.changelog-mock.sql
+  - include:
+      file: db/changelog/db.changelog-mock.sql
 

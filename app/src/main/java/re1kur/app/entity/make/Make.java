@@ -1,8 +1,9 @@
-package re1kur.app.entity.car;
+package re1kur.app.entity.make;
 
 import jakarta.persistence.*;
 import lombok.*;
-import re1kur.app.entity.Image;
+import re1kur.app.entity.image.Image;
+import re1kur.app.entity.car.Car;
 
 import java.util.ArrayList;
 import java.util.Collection;

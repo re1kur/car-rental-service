@@ -1,4 +1,4 @@
-package re1kur.app.controller;
+package re1kur.app.controller.home;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

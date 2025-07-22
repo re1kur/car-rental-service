@@ -2,19 +2,18 @@ package re1kur.app.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import re1kur.app.core.dto.MakeShortDto;
+import re1kur.app.core.dto.MakeDto;
 import re1kur.app.core.exception.MakeAlreadyExistsException;
 import re1kur.app.core.exception.MakeNotFoundException;
-import re1kur.app.core.dto.MakeDto;
+import re1kur.app.core.dto.MakeFullDto;
 import re1kur.app.core.payload.MakeUpdatePayload;
 import re1kur.app.core.payload.MakePayload;
-import re1kur.app.entity.Image;
-import re1kur.app.entity.car.Make;
-import re1kur.app.entity.car.MakeInformation;
+import re1kur.app.entity.image.Image;
+import re1kur.app.entity.make.Make;
+import re1kur.app.entity.make.MakeInformation;
 import re1kur.app.mapper.MakeInformationMapper;
 import re1kur.app.mapper.MakeMapper;
 import re1kur.app.repository.MakeInformationRepository;
@@ -35,8 +34,8 @@ public class MakeServiceImpl implements MakeService {
     private final MakeInformationRepository infoRepo;
 
     @Override
-    public List<MakeShortDto> readAll() {
-        return repo.findAll().stream().map(makeMapper::readShort).toList();
+    public List<MakeDto> readAll() {
+        return repo.findAll().stream().map(makeMapper::read).toList();
     }
 
     @Transactional
@@ -68,8 +67,8 @@ public class MakeServiceImpl implements MakeService {
     }
 
     @Override
-    public MakeDto get(Integer id) {
-        return repo.findById(id).map(makeMapper::read).orElseThrow(() ->
+    public MakeFullDto read(Integer id) {
+        return repo.findById(id).map(makeMapper::readFull).orElseThrow(() ->
                 new MakeNotFoundException("Make with ID [%d] was not found.".formatted(id)));
     }
 
@@ -81,5 +80,11 @@ public class MakeServiceImpl implements MakeService {
 //        }
         Make mapped = makeMapper.update(update, id);
         repo.save(mapped);
+    }
+
+    @Override
+    public Make get(Integer id) {
+        return repo.findById(id).orElseThrow(() ->
+                new MakeNotFoundException("Make with ID [%d] was not found.".formatted(id)));
     }
 }

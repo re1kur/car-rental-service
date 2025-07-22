@@ -5,7 +5,6 @@ import lombok.Builder;
 @Builder
 public record MakeShortDto(
         Integer id,
-        String name,
-        String titleImgUrl
+        String name
 ) {
 }

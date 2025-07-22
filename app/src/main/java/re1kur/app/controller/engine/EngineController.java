@@ -20,7 +20,7 @@ public class EngineController {
             Model model,
             @PathVariable(name = "id") Integer id
     ) {
-        EngineDto engineDto = engineService.get(id);
+        EngineDto engineDto = engineService.read(id);
         model.addAttribute("engine", engineDto);
 
         return "/engine/profile.html";
@@ -30,7 +30,7 @@ public class EngineController {
     public String getEngineUpdatePage(
             Model model,
             @PathVariable(name = "id") Integer id) {
-        EngineDto engine = engineService.get(id);
+        EngineDto engine = engineService.read(id);
         model.addAttribute("engine", engine);
 
         return "/engine/update.html";

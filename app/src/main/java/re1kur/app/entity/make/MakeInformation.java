@@ -1,4 +1,4 @@
-package re1kur.app.entity.car;
+package re1kur.app.entity.make;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Car &ndash; Car Rental Service</title>
+</head>
+<body>
+<div class="container">
+    <form method="post" th:action="@{/cars/create}" enctype="multipart/form-data">
+        <section class="form-group">
+            <h2>Common information</h2>
+            <label for="makeId">Make:
+                <select id="makeId" name="makeId" required>
+                    <option value="" disabled selected>Choose the make</option>
+                    <option th:each="make : ${makes}"
+                            th:value="${make.id}"
+                            th:text="${make.name}"
+                            th:selected="${payload != null ? payload.makeId == make.id : ''}"
+                    >
+                    </option>
+                </select>
+            </label><br>
+
+            <label for="model">Model:
+                <input type="text" name="model" id="model"
+                       th:value="${payload != null ? payload.model : ''}"
+                       placeholder="Camry" required>
+            </label><br>
+
+            <label for="carTypeId">Type of car:
+                <select id="carTypeId" name="carTypeId" required>
+                    <option value="" disabled selected>Choose the type</option>
+                    <option th:each="carType : ${carTypes}"
+                            th:value="${carType.id}"
+                            th:text="${carType.name}"
+                            th:selected="${payload != null ? payload.carTypeId == carType.id : ''}"
+                    >
+                    </option>
+                </select>
+            </label><br>
+
+            <label for="engineId">Engine:
+                <select id="engineId" name="engineId" required>
+                    <option value="" disabled selected>Choose the engine</option>
+                    <option th:each="engine : ${engines}"
+                            th:value="${engine.id}"
+                            th:text="${engine.name}"
+                            th:selected="${payload != null ? payload.engineId == engine.id : ''}"
+                    >
+                    </option>
+                </select>
+            </label><br>
+
+            <label for="year">Year:
+                <input type="text" name="year" id="year"
+                       th:value="${payload != null ? payload.year : ''}"
+                       placeholder="____" required max="4">
+            </label><br>
+
+            <label for="licensePlate">License plate:
+                <input type="text" name="licensePlate" id="licensePlate"
+                       th:value="${payload != null ? payload.licensePlate : ''}"
+                       placeholder="AAA111" required>
+            </label><br>
+        </section>
+
+
+        <section>
+            <h2>Detailed information</h2>
+            <label for="description">Description:
+                <input type="text"
+                       id="description"
+                       name="description"
+                       placeholder="Experience smooth driving with the Toyota Corolla 2022
+                       – perfect for city trips and long drives. Known for its excellent fuel economy, comfort, and safety features.
+                       Ideal for small families or business travel."
+                       th:value="${payload != null ? payload.description : ''}">
+            </label><br>
+
+            <label for="color">Color:
+                <input type="text"
+                       id="color"
+                       name="color"
+                       placeholder="Red"
+                       th:value="${payload != null ? payload.color : ''}">
+            </label><br>
+
+            <label for="mileage">Mileage:
+                <input type="text"
+                       name="mileage"
+                       id="mileage"
+                       placeholder="Mileage"
+                       th:value="${payload != null ? payload.mileage : ''}">
+            </label><br>
+
+            <label for="seats">Seats:
+                <input type="text"
+                       name="seats"
+                       id="seats"
+                       placeholder="5"
+                       th:value="${payload != null ? payload.seats : ''}">
+            </label><br>
+
+            <label for="fuelType">Fuel type:
+                <select id="fuelType" name="fuelType">
+                    <option value="" disabled selected>Choose fuel type</option>
+                    <option th:value="'Gasoline'" th:text="'Gasoline'"
+                            th:selected="${payload.fuelType == 'Gasoline'}"></option>
+                    <option th:value="'Diesel'" th:text="'Diesel'"
+                            th:selected="${payload.fuelType == 'Diesel'}"></option>
+                    <option th:value="'Ethanol'" th:text="'Ethanol'"
+                            th:selected="${payload.fuelType == 'Ethanol'}"></option>
+                    <option th:value="'Electric'" th:text="'Electric'"
+                            th:selected="${payload.fuelType == 'Electric'}"></option>
+                    <option th:value="'Hybrid electric'" th:text="'Hybrid electric'"
+                            th:selected="${payload.fuelType == 'Hybrid electric'}"></option>
+                    <option th:value="'Natural gas'" th:text="'Natural gas'"
+                            th:selected="${payload.fuelType == 'Natural gas'}"></option>
+                </select>
+            </label><br>
+
+            <label for="transmission">Transmission:
+                <select id="transmission" name="transmission">
+                    <option value="" selected disabled>Choose transmission</option>
+                    <option th:value="'Automatic transmission'"
+                            th:selected="${payload.transmission == 'Automatic transmission'}">
+                        Automatic transmission
+                    </option>
+                    <option th:value="'Manual transmission'"
+                            th:selected="${payload.transmission == 'Manual transmission'}">Manual
+                        transmission
+                    </option>
+                    <option th:value="'Semi-automatic transmission'"
+                            th:selected="${payload.transmission == 'Semi-automatic transmission'}">Semi-automatic
+                        transmission
+                    </option>
+                </select>
+            </label><br>
+        </section>
+
+        <section>
+            <label for="title">Title image:
+                <input type="file" name="title" id="title" accept="image/*">
+            </label><br>
+        </section>
+
+        <section>
+            <label for="file">Image:
+                <input type="file" id="file" name="file" accept="image/*" multiple>
+            </label><br>
+        </section>
+
+        <button type="submit">Create</button>
+    </form>
+</div>
+</body>
+</html>

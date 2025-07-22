@@ -1,7 +1,7 @@
 name: dev-app
 services:
   postgres:
-    image: postgres:17
+    image: postgres:17-alpine
     env_file:
       - .env
     ports:

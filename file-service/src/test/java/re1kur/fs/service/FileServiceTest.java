@@ -84,7 +84,7 @@ class FileServiceTest {
     void getUrl__ValidFile__DoesNotThrowException() {
         String id = "some-file-id";
         String currentUrl = "http://some-url";
-        ZonedDateTime notExpired = ZonedDateTime.now().plusMinutes(10);
+        Instant notExpired = Instant.now().plusSeconds(60);
 
         File file = File.builder()
                 .id(id)
@@ -105,7 +105,7 @@ class FileServiceTest {
         String id = "expired-file-id";
         String oldUrl = "http://old-url";
         String newUrl = "http://new-url";
-        ZonedDateTime expiredAt = ZonedDateTime.now().minusMinutes(5);
+        Instant expiredAt = Instant.now().minusSeconds(60);
         Instant newExpiration = Instant.now().plusSeconds(3600);
 
         File file = File.builder()
@@ -118,7 +118,7 @@ class FileServiceTest {
         File updatedFile = File.builder()
                 .id(id)
                 .url(newUrl)
-                .urlExpiresAt(newExpiration.atZone(ZoneId.systemDefault()))
+                .urlExpiresAt(newExpiration)
                 .build();
 
         Mockito.when(repo.findById(id)).thenReturn(Optional.of(file));
@@ -144,18 +144,15 @@ class FileServiceTest {
     void getUrl__UpdateFailsWithSameExpiration__ThrowsUrlUpdateException() {
         String id = "stale-url-id";
         String currentUrl = "http://old-url";
-        ZoneId zone = ZoneId.systemDefault();
-        ZonedDateTime expiredAt = ZonedDateTime.now(zone).minusMinutes(5);
-        Instant sameInstant = expiredAt.toInstant();
-        ZonedDateTime sameExpiration = sameInstant.atZone(zone);
+        Instant expiredAt = Instant.now().minusSeconds(60);
 
         File file = File.builder()
                 .id(id)
                 .url(currentUrl)
-                .urlExpiresAt(sameExpiration)
+                .urlExpiresAt(expiredAt)
                 .build();
 
-        PresignedUrl presignedUrl = new PresignedUrl("http://still-old-url", sameInstant);
+        PresignedUrl presignedUrl = new PresignedUrl("http://still-old-url", expiredAt);
 
         Mockito.when(repo.findById(id)).thenReturn(Optional.of(file));
         Mockito.when(client.getUrl(id)).thenReturn(presignedUrl);

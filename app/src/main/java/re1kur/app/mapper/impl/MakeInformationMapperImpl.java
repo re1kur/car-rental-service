@@ -2,8 +2,8 @@ package re1kur.app.mapper.impl;
 
 import re1kur.app.core.annotations.Mapper;
 import re1kur.app.core.payload.MakePayload;
-import re1kur.app.entity.car.Make;
-import re1kur.app.entity.car.MakeInformation;
+import re1kur.app.entity.make.Make;
+import re1kur.app.entity.make.MakeInformation;
 import re1kur.app.mapper.MakeInformationMapper;
 
 @Mapper

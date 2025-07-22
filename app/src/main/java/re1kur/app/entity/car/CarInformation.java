@@ -4,17 +4,18 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "car_details")
+@Table(name = "car_information")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "car")
-public class CarDetails {
+public class CarInformation {
     @Id
     private Integer carId;
 
-    @OneToOne(mappedBy = "details")
+    @MapsId
+    @OneToOne(mappedBy = "information")
     private Car car;
 
     private String description;

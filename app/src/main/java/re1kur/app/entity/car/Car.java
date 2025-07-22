@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import re1kur.app.entity.Image;
+import re1kur.app.entity.image.Image;
+import re1kur.app.entity.cartype.CarType;
+import re1kur.app.entity.engine.Engine;
+import re1kur.app.entity.make.Make;
 
 import java.util.Collection;
 
@@ -21,6 +24,10 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id")
+    private CarInformation information;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "make_id")
@@ -53,9 +60,6 @@ public class Car {
     @Column(insertable = false, columnDefinition = "DEFAULT FALSE")
     private boolean isAvailable;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "car_id")
-    private CarDetails details;
 }
 
 

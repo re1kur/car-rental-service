@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import re1kur.app.core.car.CarReadDto;
+import re1kur.app.core.dto.CarDto;
 import re1kur.app.core.car.CarUpdateDto;
 import re1kur.app.core.car.details.CarDetailsUpdateDto;
 import re1kur.app.service.CarService;
@@ -27,13 +27,13 @@ public class CarController {
     }
 
     @ModelAttribute("car")
-    public CarReadDto car(@PathVariable int id) {
-        return service.readByIdWithDetails(id);
+    public CarDto car(@PathVariable int id) {
+        return service.readFull(id);
     }
 
     @GetMapping
     public String getCar() {
-        return "/cars/car.html";
+        return "/cars/profile.html";
     }
 
     @GetMapping("edit")

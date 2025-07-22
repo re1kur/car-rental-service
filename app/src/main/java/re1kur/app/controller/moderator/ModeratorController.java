@@ -1,4 +1,4 @@
-package re1kur.app.controller;
+package re1kur.app.controller.moderator;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

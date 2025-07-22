@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS cars
 );
 
 --changeset re1kur:11
-CREATE TABLE IF NOT EXISTS car_details
+CREATE TABLE IF NOT EXISTS car_information
 (
     car_id       INTEGER PRIMARY KEY,
     description  TEXT,

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import re1kur.app.core.dto.MakeShortDto;
+import re1kur.app.core.dto.MakeDto;
 import re1kur.app.core.payload.MakePayload;
 import re1kur.app.service.MakeService;
 
@@ -25,7 +25,7 @@ public class MakesController {
 
     @GetMapping("/list")
     public String getList(Model model) {
-        List<MakeShortDto> makes = service.readAll();
+        List<MakeDto> makes = service.readAll();
         model.addAttribute("makes", makes);
         return "/makes/list.html";
     }

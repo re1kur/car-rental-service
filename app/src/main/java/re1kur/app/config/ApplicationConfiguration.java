@@ -2,12 +2,13 @@ package re1kur.app.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@org.springframework.context.annotation.Configuration
-public class Configuration {
+@Configuration
+public class ApplicationConfiguration {
 
     @Value("${custom.rest-clients.fileStore}")
     private String fileStoreUrl;

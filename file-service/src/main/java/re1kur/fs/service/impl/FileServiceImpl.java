@@ -1,6 +1,7 @@
 package re1kur.fs.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
@@ -31,6 +33,7 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional
     public FileDto upload(MultipartFile payload) throws IOException {
+        log.info("UPLOAD FILE [{}]", payload.getOriginalFilename());
         String originalFilename = payload.getOriginalFilename();
         String extension = "";
         if (originalFilename != null && originalFilename.contains(".")) {
@@ -47,12 +50,14 @@ public class FileServiceImpl implements FileService {
         PresignedUrl resp = client.getUrl(key);
         File file = mapper.upload(payload, key, resp);
         file = repo.save(file);
+        log.info("FILE UPLOADED [{}]", file.getId());
         return mapper.read(file);
     }
 
 
     @Override
     public String getUrl(String id) {
+        log.info("GET URL OF FILE [{}]", id);
         File file = repo.findById(id).orElseThrow(() -> new FileNotFoundException("File with id '%s' does not exist.".formatted(id)));
         if (Instant.now().isAfter(file.getUrlExpiresAt())) {
             file = updateUrl(file);

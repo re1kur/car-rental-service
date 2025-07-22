@@ -1,8 +1,14 @@
+#file: noinspection undefined
 spring:
   application:
     name: rental-service
-  profiles:
-    active: dev
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 30MB
+
+
 #  security:
 #    oauth2:
 #      client:
@@ -23,8 +29,14 @@ spring:
     generate-ddl: false
     open-in-view: false
 server:
+  tomcat:
+    max-part-count: 15
   port: 8080
+
 custom:
+  map:
+    title_image_key: "title"
+    images_key: "images"
   pagination:
     size: 5
   buckets:
@@ -38,4 +50,6 @@ logging:
     org:
       springframework:
         security: DEBUG
+    org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
+
 

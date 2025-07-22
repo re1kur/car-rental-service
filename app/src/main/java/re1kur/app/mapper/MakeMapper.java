@@ -1,11 +1,12 @@
 package re1kur.app.mapper;
 
+import re1kur.app.core.dto.MakeFullDto;
 import re1kur.app.core.dto.MakeDto;
 import re1kur.app.core.dto.MakeShortDto;
 import re1kur.app.core.payload.MakeUpdatePayload;
 import re1kur.app.core.payload.MakePayload;
-import re1kur.app.entity.Image;
-import re1kur.app.entity.car.Make;
+import re1kur.app.entity.image.Image;
+import re1kur.app.entity.make.Make;
 
 public interface MakeMapper {
 
@@ -15,7 +16,9 @@ public interface MakeMapper {
 
     Make update(MakeUpdatePayload make, int id);
 
-    MakeDto read (Make make);
+    MakeFullDto readFull(Make make);
+
+    MakeDto read(Make make);
 
     MakeShortDto readShort(Make make);
 }

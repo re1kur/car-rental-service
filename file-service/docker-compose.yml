@@ -1,7 +1,7 @@
 name: dev-fs
 services:
   postgres:
-    image: postgres:17
+    image: postgres:17-alpine
     env_file:
       - dev.env
     ports:

@@ -1,10 +1,11 @@
-package re1kur.app.entity.car;
+package re1kur.app.entity.cartype;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import re1kur.app.entity.car.Car;
 
 import java.util.Collection;
 

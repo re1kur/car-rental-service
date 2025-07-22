@@ -1,23 +1,24 @@
 package re1kur.app.mapper.impl;
 
 import re1kur.app.core.annotations.Mapper;
+import re1kur.app.core.dto.MakeFullDto;
 import re1kur.app.core.dto.MakeDto;
 import re1kur.app.core.dto.MakeShortDto;
 import re1kur.app.core.payload.MakeUpdatePayload;
 import re1kur.app.core.payload.MakePayload;
-import re1kur.app.entity.Image;
-import re1kur.app.entity.car.Make;
-import re1kur.app.entity.car.MakeInformation;
+import re1kur.app.entity.image.Image;
+import re1kur.app.entity.make.Make;
+import re1kur.app.entity.make.MakeInformation;
 import re1kur.app.mapper.MakeMapper;
 
 @Mapper
 public class MakeMapperImpl implements MakeMapper {
 
     @Override
-    public MakeDto read(Make make) {
+    public MakeFullDto readFull(Make make) {
         MakeInformation makeInformation = make.getMakeInformation();
         Image titleImage = make.getTitleImage();
-        MakeDto build = MakeDto.builder()
+        MakeFullDto build = MakeFullDto.builder()
                 .id(make.getId())
                 .name(make.getName())
                 .titleImgUrl(titleImage != null ? titleImage.getUrl() : null)
@@ -62,12 +63,20 @@ public class MakeMapperImpl implements MakeMapper {
     }
 
     @Override
-    public MakeShortDto readShort(Make make) {
+    public MakeDto read(Make make) {
         Image titleImage = make.getTitleImage();
-        return MakeShortDto.builder()
+        return MakeDto.builder()
                 .id(make.getId())
                 .name(make.getName())
                 .titleImgUrl(titleImage != null ? titleImage.getUrl() : null)
+                .build();
+    }
+
+    @Override
+    public MakeShortDto readShort(Make make) {
+        return MakeShortDto.builder()
+                .id(make.getId())
+                .name(make.getName())
                 .build();
     }
 

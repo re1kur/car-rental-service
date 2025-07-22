@@ -1,4 +1,4 @@
-package re1kur.app.controller;
+package re1kur.app.controller.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -11,10 +11,12 @@ import re1kur.app.core.exception.EngineAlreadyExistsException;
 import re1kur.app.core.exception.EngineNotFoundException;
 import re1kur.app.core.payload.EnginePayload;
 import re1kur.app.core.payload.EngineUpdatePayload;
-import re1kur.app.entity.car.Engine;
+import re1kur.app.entity.engine.Engine;
 import re1kur.app.mapper.EngineMapper;
 import re1kur.app.repository.EngineRepository;
 import re1kur.app.service.EngineService;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -40,11 +42,9 @@ public class EngineServiceImpl implements EngineService {
     }
 
     @Override
-    public EngineDto get(Integer id) {
-        Engine engine = repo.findById(id).orElseThrow(() ->
-                new EngineNotFoundException("Engine with id '%d' not found.".formatted(id)));
-
-        return mapper.read(engine);
+    public EngineDto read(Integer id) {
+        return repo.findById(id).map(mapper::read).orElseThrow(() ->
+                new EngineNotFoundException("Engine [%d] was not found.".formatted(id)));
     }
 
     @Override
@@ -53,11 +53,11 @@ public class EngineServiceImpl implements EngineService {
         log.info("Update engine request: {}", payload.toString());
 
         Engine engine = repo.findById(id)
-                .orElseThrow(() -> new EngineNotFoundException("Engine with id '%d' not found.".formatted(id)));
+                .orElseThrow(() -> new EngineNotFoundException("Engine [%d] was not found.".formatted(id)));
 
         if (!engine.getName().equals(payload.name())) {
             if (repo.existsByName(payload.name())) {
-                throw new EngineAlreadyExistsException("Engine with name '%s' already exists.".formatted(payload.name()));
+                throw new EngineAlreadyExistsException("Engine [%s] already exists.".formatted(payload.name()));
             }
         }
 
@@ -74,7 +74,7 @@ public class EngineServiceImpl implements EngineService {
         log.info("Delete engine with ID [{}] request.", id);
 
         Engine engine = repo.findById(id)
-                .orElseThrow(() -> new EngineNotFoundException("Engine with id '%d' not found.".formatted(id)));
+                .orElseThrow(() -> new EngineNotFoundException("Engine [%d] was not found.".formatted(id)));
 
         repo.delete(engine);
 
@@ -82,8 +82,20 @@ public class EngineServiceImpl implements EngineService {
     }
 
     @Override
-    public Page<EngineDto> getPage(Pageable pageable) {
+    public Page<EngineDto> readPage(Pageable pageable) {
         return repo.findAll(pageable).map(mapper::read);
+    }
+
+    @Override
+    public List<EngineDto> readAll() {
+        List<Engine> found = (List<Engine>) repo.findAll();
+        return found.stream().map(mapper::read).toList();
+    }
+
+    @Override
+    public Engine get(Integer id) {
+        return repo.findById(id).orElseThrow(() ->
+                new EngineNotFoundException("Engine [%d] was not found.".formatted(id)));
     }
 
 }

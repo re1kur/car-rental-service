@@ -1,4 +1,4 @@
-package re1kur.app.core.car.filter;
+package re1kur.app.core.other;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,98 +1,84 @@
 package re1kur.app.mapper.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import re1kur.app.core.annotations.Mapper;
-import re1kur.app.core.car.CarReadDto;
+import re1kur.app.core.dto.CarDto;
 import re1kur.app.core.car.CarUpdateDto;
-import re1kur.app.core.car.CarWriteDto;
-import re1kur.app.entity.car.Car;
-import re1kur.app.entity.car.CarDetails;
-//import re1kur.app.entity.CarImage;
-import re1kur.app.mapper.CarDetailsMapper;
-//import re1kur.app.mapper.CarImagesMapper;
-import re1kur.app.mapper.CarMapper;
-import re1kur.app.mapper.MakeMapper;
-//import re1kur.app.repository.CarImageRepository;
-import re1kur.app.repository.MakeRepository;
+import re1kur.app.core.dto.*;
+import re1kur.app.core.payload.CarPayload;
+import re1kur.app.entity.image.Image;
+import re1kur.app.entity.car.*;
+import re1kur.app.entity.cartype.CarType;
+import re1kur.app.entity.engine.Engine;
+import re1kur.app.entity.make.Make;
+import re1kur.app.mapper.*;
 
 
 @Mapper
+@RequiredArgsConstructor
 public class CarMapperImpl implements CarMapper {
-    MakeRepository makeRepo;
-//    CarImageRepository imageRepo;
-    CarDetailsMapper detailsMapper;
-//    CarImagesMapper imagesMapper;
-    MakeMapper makeMapper;
-
-    @Autowired
-    public CarMapperImpl(
-            CarDetailsMapper detailsMapper,
-//            CarImagesMapper imagesMapper,
-            MakeRepository makeRepo,
-            MakeMapper makeMapper
-//            CarImageRepository imageRepo
-    ) {
-        this.detailsMapper = detailsMapper;
-//        this.imagesMapper = imagesMapper;
-        this.makeRepo = makeRepo;
-        this.makeMapper = makeMapper;
-//        this.imageRepo = imageRepo;
-    }
+    private final MakeMapper makeMapper;
+    private final CarTypeMapper carTypeMapper;
+    private final EngineMapper engineMapper;
+    private final ImageMapper imageMapper;
 
     @Override
-    public Car write(CarWriteDto car) {
-        CarDetails details = detailsMapper.write(car.getDetails());
-
-        Car build = Car.builder()
-                .make(makeRepo.getReferenceById(car.getMakeId()))
-                .model(car.getModel())
-                .year(car.getYear())
-                .licensePlate(car.getLicensePlate())
-                .details(details)
+    public Car write(CarPayload payload, Make make, CarType type, Engine engine) {
+        return Car.builder()
+                .make(make)
+                .carType(type)
+                .engine(engine)
+                .model(payload.model())
+                .year(payload.year())
+                .licensePlate(payload.licensePlate())
                 .build();
 
-        if (details != null) {
-            details.setCar(build);
-        }
 
-//        if (car.getTitleImage() != null) {
-//            CarImage title = imagesMapper.write(car.getTitleImage());
-//            build.addImage(title);
-//            build.setTitleImage(title);
-//        }
-//        if (car.getImage() != null) {
-//            CarImage image = imagesMapper.write(car.getImage());
-//            build.addImage(image);
-//        }
-        return build;
     }
 
     @Override
-    public CarReadDto read(Car car) {
-        return CarReadDto.builder()
+    public CarDto read(Car car) {
+        Image titleImage = car.getTitleImage();
+        return CarDto.builder()
                 .id(car.getId())
-                .make(makeMapper.read(car.getMake()))
                 .model(car.getModel())
                 .year(car.getYear())
-//                .titleImage(imagesMapper.read(car.getTitleImage()))
-                .isAvailable(car.isAvailable())
                 .licensePlate(car.getLicensePlate())
+                .make(makeMapper.readShort(car.getMake()))
+                .carType(carTypeMapper.read(car.getCarType()))
+                .engine(engineMapper.read(car.getEngine()))
+                .titleImage(titleImage != null ? imageMapper.read(titleImage) : null)
                 .build();
     }
 
     @Override
-    public CarReadDto readWithDetails(Car car) {
-        return CarReadDto.builder()
+    public CarDto readFull(Car car) {
+        return CarDto.builder()
                 .id(car.getId())
-                .make(makeMapper.read(car.getMake()))
+//                .make(makeMapper.read(car.getMake()))
                 .model(car.getModel())
                 .year(car.getYear())
-                .isAvailable(car.isAvailable())
                 .licensePlate(car.getLicensePlate())
-                .details(detailsMapper.read(car.getDetails()))
 //                .titleImage(imagesMapper.read(car.getTitleImage()))
 //                .images(imagesMapper.readImages(car.getImages()))
                 .build();
+    }
+
+    @Override
+    public PageDto<CarDto> readPage(Page<Car> found) {
+        boolean hasNext = found.hasNext();
+        boolean hasPrevious = found.hasPrevious();
+        return new PageDto<>(
+                found.getContent().stream().map(this::read).toList(),
+                found.getNumber(),
+                found.getSize(),
+                found.getTotalPages(),
+                hasNext ? found.nextPageable().getPageNumber() : 0,
+                hasPrevious ? found.previousPageable().getPageNumber() : 0,
+                hasNext ? found.nextOrLastPageable().getPageNumber() : 0,
+                hasPrevious ? found.previousOrFirstPageable().getPageNumber() : 0
+        );
     }
 
     @Override
@@ -104,7 +90,6 @@ public class CarMapperImpl implements CarMapper {
 //                .titleImageId(car.getTitleImage() != null ? car.getTitleImage().getId() : null)
                 .licensePlate(car.getLicensePlate())
 //                .images(imagesMapper.readUpdateImages(car.getImages()))
-                .details(detailsMapper.readUpdate(car.getDetails()))
                 .build();
     }
 
@@ -112,13 +97,12 @@ public class CarMapperImpl implements CarMapper {
     public Car update(CarUpdateDto car, int id) {
         return Car.builder()
                 .id(id)
-                .make(makeRepo.getReferenceById(car.getMakeId()))
+//                .make(makeRepo.getReferenceById(car.getMakeId()))
                 .model(car.getModel())
 //                .titleImage(imageRepo.getReferenceById(car.getTitleImageId()))
 //                .images(imageRepo.findAllByCarId(id))
                 .licensePlate(car.getLicensePlate())
                 .year(car.getYear())
-                .details(detailsMapper.update(car.getDetails(), id))
                 .build();
     }
 }

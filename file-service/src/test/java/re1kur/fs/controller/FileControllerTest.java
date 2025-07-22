@@ -19,6 +19,7 @@ import re1kur.fs.service.FileService;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -26,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(controllers = FileController.class)
-//@AutoConfigureMockMvc(addFilters = false)
 class FileControllerTest {
     @Autowired
     private ObjectMapper mapper;
@@ -47,8 +47,8 @@ class FileControllerTest {
         FileDto expected = FileDto.builder()
                 .id("SOME-ID")
                 .mediaType("multipart/form-data")
-                .uploadedAt(ZonedDateTime.now())
-                .urlExpiresAt(ZonedDateTime.now().plus(Duration.ofDays(7)))
+                .uploadedAt(Instant.now())
+                .urlExpiresAt(Instant.now().plus(Duration.ofDays(7)))
                 .build();
 
         Mockito.when(service.upload(file)).thenReturn(FileDto.builder()
