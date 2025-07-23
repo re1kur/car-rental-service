@@ -44,12 +44,3 @@ custom:
     make-image: makes
   rest-clients:
     fileStore: http://localhost:8081/api/files
-
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
-    org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
-
-

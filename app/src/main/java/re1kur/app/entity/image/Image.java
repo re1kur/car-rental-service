@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "images")
@@ -22,7 +22,7 @@ public class Image {
 
     private String url;
 
-    private LocalDateTime uploadedAt;
+    private Instant uploadedAt;
 
-    private LocalDateTime urlExpiresAt;
+    private Instant urlExpiresAt;
 }

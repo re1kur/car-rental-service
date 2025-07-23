@@ -7,6 +7,7 @@ import re1kur.app.entity.image.Image;
 import re1kur.app.mapper.ImageMapper;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Mapper
 public class ImageMapperImpl implements ImageMapper {
@@ -15,8 +16,8 @@ public class ImageMapperImpl implements ImageMapper {
         return Image.builder()
                 .id(response.id())
                 .url(response.url())
-                .uploadedAt(LocalDateTime.from(response.uploadedAt()))
-                .urlExpiresAt(LocalDateTime.from(response.urlExpiresAt()))
+                .uploadedAt(response.uploadedAt())
+                .urlExpiresAt(response.urlExpiresAt())
                 .build();
     }
 
@@ -25,7 +26,7 @@ public class ImageMapperImpl implements ImageMapper {
         return ImageDto.builder()
                 .id(titleImage.getId())
                 .url(titleImage.getUrl())
-                .uploadedAt(titleImage.getUploadedAt())
+                .uploadedAt(LocalDateTime.ofInstant(titleImage.getUploadedAt(), ZoneId.systemDefault()))
                 .build();
     }
 }
