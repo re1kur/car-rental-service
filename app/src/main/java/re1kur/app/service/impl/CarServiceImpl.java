@@ -117,7 +117,7 @@ public class CarServiceImpl implements CarService {
             map.put(TITLE_IMAGE_KEY, null);
         }
 
-        if (filesEmptiness) {
+        if (!filesEmptiness) {
             List<Image> uploadedFiles = fileService.uploadImages(filesUploads);
             map.put(IMAGES_KEY, uploadedFiles);
         } else {

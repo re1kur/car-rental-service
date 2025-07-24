@@ -31,7 +31,7 @@ public class Make {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "make_images",
-            joinColumns = @JoinColumn(name = "id"),
+            joinColumns = @JoinColumn(name = "make_id"),
             inverseJoinColumns = @JoinColumn(name = "image_id"))
     private Collection<Image> makeImages = new ArrayList<>();
 

@@ -30,7 +30,7 @@ spring:
     open-in-view: false
 server:
   tomcat:
-    max-part-count: 15
+    max-part-count: 20
   port: 8080
 
 custom:

@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS car_information
     description  TEXT,
     color        VARCHAR(20),
     seats        SMALLINT,
-    mileage      SMALLINT,
+    mileage      INTEGER,
     fuel_type    VARCHAR(20),
     transmission VARCHAR(30),
     FOREIGN KEY (car_id) REFERENCES cars (id) ON DELETE CASCADE
