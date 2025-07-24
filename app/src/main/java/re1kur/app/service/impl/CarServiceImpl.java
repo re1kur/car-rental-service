@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import re1kur.app.core.dto.CarDto;
 import re1kur.app.core.car.CarUpdateDto;
+import re1kur.app.core.dto.CarFullDto;
 import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.payload.CarPayload;
 import re1kur.app.core.other.CarFilter;
@@ -74,7 +75,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public CarDto readFull(int id) {
+    @Transactional
+    public CarFullDto readFull(Integer id) {
         return repo.findById(id).map(
                 carMapper::readFull).orElse(null);
     }

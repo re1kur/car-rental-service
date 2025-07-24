@@ -3,63 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service' "></title>
-    <link rel="stylesheet" th:href="@{/css/styles-car.css}">
-    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
-    <link rel="stylesheet" th:href="@{/css/main-header.css}">
 </head>
 
-<header th:replace="~{fragments/header :: car-header}">
-</header>
-
 <body>
-<div class="container">
+<div>
     <h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>
-    <section class="common">
-        <h2>Common Information</h2>
+    <section>
         <label>
-            <span class="field">Is available: </span>
-            <span th:text="(${car.isAvailable} ? 'Yes' : 'No')"></span>
-        </label><br>
-        <label>
-            <span class="field">Year: </span>
-            <span th:text="${car.year}"></span>
-        </label><br>
-        <label>
-            <span class="field">License plate: </span>
-            <span th:text="${car.licensePlate}"></span>
-        </label><br>
-        <label class="titleImage" th:if="${car.titleImage != null}"><span class="field">Title image</span><br>
-            <img th:src="${car.titleImage.url}"
-                 alt="Here must be title image"><br>
+            <span th:text="'Available: ' + ${car.available ? Yes: No}"></span>
         </label>
     </section>
+    <section>
+        <h2>Common:</h2>
+        <label  th:if="${car.titleImage}"><span>Title image: </span><br>
+            <img th:src="${car.titleImage.url}"
+            alt="Here must be title image."><br>
+        </label>
 
-    <section th:if="${car.details}" class="details">
-        <h2>Details</h2>
-        <ul>
-            <li th:if="${car.details.color}" th:text="'Color: ' + ${car.details.color}"></li>
-            <li th:if="${car.details.mileage}" th:text="'Mileage: ' + ${car.details.mileage}"></li>
-            <li th:if="${car.details.fuelType}" th:text="'Fuel type: ' + ${car.details.fuelType}"></li>
-            <li th:if="${car.details.transmission}" th:text="'Transmission: ' + ${car.details.transmission}"></li>
-        </ul>
+        <section th:if="${not #lists.isEmpty(car.images.empty)}">
+            <ul>
+                <li th:each="image : ${car.images}">
+                    <img th:src="${image.url}" alt="Here must be image"/><br>
+                    <span th:text="'Image uploaded at: ' + ${image.uploadedAt}"></span><br>
+                </li>
+            </ul>
+        </section>
+
+        <label>
+            <span>Make: </span>
+            <span th:text="${car.make.name}"></span>
+        </label><br>
+
+        <label>
+            <span>Model: </span>
+            <span th:text="${car.model}"></span>
+        </label><br>
+
+        <label>
+            <span>Type: </span>
+            <span th:text="${car.carType.name}"></span>
+        </label><br>
+
+        <label>
+            <span>Engine: </span>
+            <span th:text="${car.engine.name}"></span>
+        </label><br>
+
+        <label>
+            <span>Year: </span>
+            <span th:text="${car.year}"></span>
+        </label><br>
+
+        <label>
+            <span>License plate: </span>
+            <span th:text="${car.licensePlate}"></span>
+        </label><br>
     </section>
 
-    <section th:unless="${car.details}" class="no-details">
-        <hr>
-        <p style="font-style: italic">Car doesn't have details. Edit the car in the header.</p>
-    </section>
 
-    <section th:if="${car.images}" class="car-images">
-        <h2>Images</h2>
+    <section th:if="${car.information}">
+        <h2>Information</h2>
         <ul>
-            <li th:each="image : ${car.images}">
-                <img th:src="${image.url}" alt="Here must be image"/><br>
-                <span th:text="'Image uploaded at: ' + ${image.uploadedAt}"></span><br>
-            </li>
+            <li th:if="${car.information.description}" th:text="'Description: ' + ${car.information.description}"></li>
+            <li th:if="${car.information.color}" th:text="'Color: ' + ${car.information.color}"></li>
+            <li th:if="${car.information.seats}" th:text="'Seats: ' + ${car.information.seats}"></li>
+            <li th:if="${car.information.mileage}" th:text="'Mileage: ' + ${car.information.mileage}"></li>
+            <li th:if="${car.information.fuelType}" th:text="'Fuel type: ' + ${car.information.fuelType}"></li>
+            <li th:if="${car.information.transmission}" th:text="'Transmission: ' + ${car.information.transmission}"></li>
         </ul>
     </section>
 </div>
 </body>
-<footer th:replace="~{/fragments/footer :: main-footer}">
-</footer>
 </html>

@@ -19,7 +19,7 @@ public interface CarMapper {
 
     Car update(CarUpdateDto car, int id);
 
-    CarDto readFull(Car car);
+    CarFullDto readFull(Car car);
 
     PageDto<CarDto> readPage(Page<Car> found);
 }

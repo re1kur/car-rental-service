@@ -14,6 +14,9 @@ import re1kur.app.entity.engine.Engine;
 import re1kur.app.entity.make.Make;
 import re1kur.app.mapper.*;
 
+import java.util.Collection;
+import java.util.List;
+
 
 @Mapper
 @RequiredArgsConstructor
@@ -53,15 +56,38 @@ public class CarMapperImpl implements CarMapper {
     }
 
     @Override
-    public CarDto readFull(Car car) {
-        return CarDto.builder()
+    public CarFullDto readFull(Car car) {
+        Image titleImage = car.getTitleImage();
+        Collection<Image> images = car.getImages();
+        CarInformation information = car.getInformation();
+
+        return CarFullDto.builder()
                 .id(car.getId())
-//                .make(makeMapper.read(car.getMake()))
                 .model(car.getModel())
+                .available(car.isAvailable())
                 .year(car.getYear())
                 .licensePlate(car.getLicensePlate())
-//                .titleImage(imagesMapper.read(car.getTitleImage()))
-//                .images(imagesMapper.readImages(car.getImages()))
+                .make(makeMapper.readShort(car.getMake()))
+                .carType(carTypeMapper.read(car.getCarType()))
+                .engine(engineMapper.read(car.getEngine()))
+                .information(readInformation(information))
+                .titleImage(titleImage != null ? imageMapper.read(titleImage) : null)
+                .images(images != null ? images.stream().map(imageMapper::read).toList() : List.of())
+                .build();
+    }
+
+    private CarInformationDto readInformation(CarInformation information) {
+        if (information == null) {
+            return null;
+        }
+
+        return CarInformationDto.builder()
+                .color(information.getColor())
+                .seats(information.getSeats())
+                .description(information.getDescription())
+                .transmission(information.getTransmission())
+                .mileage(information.getMileage())
+                .fuelType(information.getFuelType())
                 .build();
     }
 

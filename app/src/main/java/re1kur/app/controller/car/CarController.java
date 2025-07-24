@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import re1kur.app.core.dto.CarDto;
 import re1kur.app.core.car.CarUpdateDto;
 import re1kur.app.core.car.details.CarDetailsUpdateDto;
+import re1kur.app.core.dto.CarFullDto;
 import re1kur.app.service.CarService;
 import re1kur.app.service.MakeService;
 
@@ -26,13 +27,15 @@ public class CarController {
         this.makeService = makeService;
     }
 
-    @ModelAttribute("car")
-    public CarDto car(@PathVariable int id) {
-        return service.readFull(id);
-    }
-
     @GetMapping
-    public String getCar() {
+    public String getCar(
+            @PathVariable(name = "id") Integer id,
+            Model model
+    ) {
+
+        CarFullDto found = service.readFull(id);
+        model.addAttribute("car", found);
+
         return "/cars/profile.html";
     }
 
