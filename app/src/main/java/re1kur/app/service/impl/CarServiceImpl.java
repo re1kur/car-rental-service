@@ -29,10 +29,7 @@ import re1kur.app.repository.CarInformationRepository;
 import re1kur.app.repository.CarRepository;
 import re1kur.app.service.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -59,11 +56,7 @@ public class CarServiceImpl implements CarService {
     @Transactional
     public Integer create(CarPayload payload, MultipartFile titlePayload, MultipartFile[] files) {
         log.info("CREATE CAR [{}]", payload);
-        Map<String, Object> result = uploadFiles(titlePayload, files);
         String licensePlate = payload.licensePlate();
-
-        Image title = (Image) result.get(TITLE_IMAGE_KEY);
-        List<Image> images = (List<Image>) result.get(IMAGES_KEY);
 
         if (repo.existsByLicensePlate(licensePlate))
             throw new CarAlreadyExistsException("Car [%s] already exists.".formatted(licensePlate));
@@ -76,16 +69,35 @@ public class CarServiceImpl implements CarService {
 
         Car saved = repo.save(mapped);
 
-        CarInformation infoMapped = infoMapper.create(payload, saved);
-
-
-        if (title != null) saved.setTitleImage(title);
-        if (images != null && !images.isEmpty()) saved.setImages(images);
-
-        infoRepo.save(infoMapped);
+        saveImagesAndInformation(payload, titlePayload, files, saved);
 
         log.info("CREATED CAR [{}]", saved.getId());
         return saved.getId();
+    }
+
+    private void saveImagesAndInformation(CarPayload payload, MultipartFile titlePayload, MultipartFile[] files, Car car) {
+        CarInformation infoMapped = infoMapper.create(payload, car);
+        if (infoMapped != null) {
+            car.setInformation(infoMapped);
+            infoRepo.save(infoMapped);
+        }
+
+        Map<String, Object> result = uploadFiles(titlePayload, files);
+        Image title = (Image) result.get(TITLE_IMAGE_KEY);
+        List<Image> images = (List<Image>) result.get(IMAGES_KEY);
+
+        boolean hasImages = false;
+        if (images != null && !images.isEmpty()) {
+            car.setImages(images);
+            hasImages = true;
+        }
+
+        if (title != null) {
+            car.setTitleImage(title);
+        }
+
+        if (hasImages)
+            repo.save(car);
     }
 
     @Override
@@ -141,23 +153,23 @@ public class CarServiceImpl implements CarService {
 
     private Map<String, Object> uploadFiles(MultipartFile titlePayload, MultipartFile[] filesUploads) {
         Map<String, Object> map = new HashMap<>();
-        boolean titleEmptiness = titlePayload == null && titlePayload.isEmpty();
-        boolean filesEmptiness = filesUploads.length == 0;
+        List<Image> images = new ArrayList<>();
 
-        if (!titleEmptiness) {
-            Image title = fileService.uploadImage(titlePayload);
-            map.put(TITLE_IMAGE_KEY, title);
+        if (titlePayload != null && !titlePayload.isEmpty()) {
+            Image titleImage = fileService.uploadImage(titlePayload);
+            map.put(TITLE_IMAGE_KEY, titleImage);
+            images.add(titleImage);
         } else {
             map.put(TITLE_IMAGE_KEY, null);
         }
 
-        if (!filesEmptiness) {
+        if (filesUploads != null && filesUploads.length > 0) {
             List<Image> uploadedFiles = fileService.uploadImages(filesUploads);
-            map.put(IMAGES_KEY, uploadedFiles);
-        } else {
-            map.put(IMAGES_KEY, List.of());
+            images.addAll(uploadedFiles);
         }
 
+        map.put(IMAGES_KEY, images);
         return map;
     }
+
 }

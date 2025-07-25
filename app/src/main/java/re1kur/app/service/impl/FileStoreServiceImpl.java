@@ -2,7 +2,6 @@ package re1kur.app.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
@@ -15,14 +14,9 @@ import re1kur.app.entity.image.Image;
 import re1kur.app.mapper.ImageMapper;
 import re1kur.app.repository.ImageRepository;
 import re1kur.app.service.FileStoreService;
-import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -43,13 +37,13 @@ public class FileStoreServiceImpl implements FileStoreService {
 
         FileDto response =
                 fileStoreClient
-                .post()
-                .uri("/upload")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .body(BodyInserters.fromMultipartData(builder.build()))
-                .retrieve()
-                .bodyToMono(FileDto.class)
-                .block();
+                        .post()
+                        .uri("/upload")
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .body(BodyInserters.fromMultipartData(builder.build()))
+                        .retrieve()
+                        .bodyToMono(FileDto.class)
+                        .block();
 
         if (response == null) {
             log.warn("UPLOAD FAILED: RESPONSE IS NULL.");
@@ -58,7 +52,8 @@ public class FileStoreServiceImpl implements FileStoreService {
 
         log.info("Image uploaded successfully.");
         Image img = mapper.write(response);
-        repo.save(img);
+        img = repo.save(img);
+        log.info("SAVED IMAGE [{}]", img.getId());
         return img;
     }
 

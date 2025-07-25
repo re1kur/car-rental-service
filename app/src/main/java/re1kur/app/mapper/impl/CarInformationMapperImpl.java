@@ -44,10 +44,10 @@ public class CarInformationMapperImpl implements CarInformationMapper {
         }
 
         if (hasInfo) {
-            car.setInformation(information);
+            return information;
         }
 
-        return information;
+        return null;
     }
 
     @Override
@@ -116,9 +116,9 @@ public class CarInformationMapperImpl implements CarInformationMapper {
 
         if (hasInfo) {
             return information;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     private static boolean isNotEmpty(String str) {

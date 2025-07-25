@@ -16,6 +16,7 @@ import re1kur.app.mapper.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 
 @Mapper
@@ -112,12 +113,27 @@ public class CarMapperImpl implements CarMapper {
 
     @Override
     public Car update(Car found, CarUpdatePayload payload, Make make, CarType type, Engine engine) {
+        String titleImageId = payload.titleImageId();
+        Image titleImage = found.getTitleImage();
+
         found.setMake(make);
         found.setCarType(type);
         found.setEngine(engine);
         found.setLicensePlate(payload.licensePlate());
         found.setModel(payload.model());
         found.setInformation(infoMapper.update(found.getInformation(), payload, found));
+
+        if ((titleImage == null && titleImageId != null)
+                || (titleImage != null && !Objects.equals(titleImage.getId(), titleImageId))) {
+
+            Image image = found.getImages().stream()
+                    .filter(img -> img.getId().equals(titleImageId))
+                    .findFirst()
+                    .orElse(null);
+
+            found.setTitleImage(image);
+        }
+
 
         return found;
     }

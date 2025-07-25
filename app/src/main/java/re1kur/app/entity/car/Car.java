@@ -59,7 +59,4 @@ public class Car {
 
     @Column(insertable = false, columnDefinition = "DEFAULT FALSE")
     private boolean isAvailable;
-
 }
-
-

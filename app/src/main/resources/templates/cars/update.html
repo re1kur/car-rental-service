@@ -59,13 +59,24 @@
                        th:value="${car.licensePlate}"
                        placeholder="AAA111" required>
             </label><br>
-<!--            <label>Title image:</label>-->
-<!--            <div th:each="image, iter : ${car.images}">-->
-<!--                <input type="radio" name="titleImageId" th:id="${'titleImageId' + iter.index}" th:value="${image.id}">-->
-<!--                <label th:for="${'titleImageId' + iter.index}">-->
-<!--                    <img th:src="${image.url}" alt="Here must be image.">-->
-<!--                </label>-->
-<!--            </div>-->
+            <section th:if="${car.titleImage}">
+                <label>Current title image:</label>
+                <img th:src="${car.titleImage.url}" alt="Current title image.">
+            </section>
+
+            <section th:if="${car.images != null and !#lists.isEmpty(car.images)}">
+                <label>Select a new title image:</label>
+                <div th:each="image : ${car.images}">
+                    <label th:for="${'image_' + image.id}">
+                        <input type="radio" name="titleImageId"
+                               th:id="${'image_' + image.id}"
+                               th:value="${image.id}"
+                               th:checked="${car.titleImage != null and car.titleImage.id == image.id}">
+                        <img th:src="${image.url}" alt="Image option">
+                        <span th:text="'Uploaded at: ' + ${image.uploadedAt}"></span>
+                    </label>
+                </div>
+            </section>
         </section>
 
 
@@ -73,7 +84,8 @@
             <h3>Information:</h3>
 
             <label for="description">Description:
-                <input type="text" name="description" id="description" th:value="${car.information.description}" placeholder="Did not beaten.">
+                <input type="text" name="description" id="description" th:value="${car.information.description}"
+                       placeholder="Did not beaten.">
             </label><br>
 
             <label for="color">Color:
@@ -81,17 +93,18 @@
             </label><br>
 
             <label for="mileage">Mileage:
-                <input type="text" name="mileage" id="mileage"  th:value="${car.information.mileage}" placeholder="5000">
+                <input type="text" name="mileage" id="mileage" th:value="${car.information.mileage}" placeholder="5000">
             </label><br>
 
             <label for="seats">Seats:
-                <input type="text" name="seats" id="seats"  th:value="${car.information.seats}" placeholder="5">
+                <input type="text" name="seats" id="seats" th:value="${car.information.seats}" placeholder="5">
             </label><br>
 
             <label for="fuelType">Fuel type:
                 <select id="fuelType" name="fuelType">
                     <option th:value="''"
-                            th:selected="${car.information.fuelType == null}">Nothing chosen</option>
+                            th:selected="${car.information.fuelType == null}">Nothing chosen
+                    </option>
                     <option th:value="'Gasoline'" th:text="'Gasoline'"
                             th:selected="${car.information.fuelType == 'Gasoline'}"></option>
                     <option th:value="'Diesel'" th:text="'Diesel'"
@@ -125,7 +138,8 @@
                     </option>
 
                     <option th:value="'Semi-automatic transmission'"
-                            th:selected="${car.information.transmission == 'Semi-automatic transmission'}">Semi-automatic
+                            th:selected="${car.information.transmission == 'Semi-automatic transmission'}">
+                        Semi-automatic
                         transmission
                     </option>
                 </select>

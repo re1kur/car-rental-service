@@ -40,5 +40,7 @@ public record CarUpdatePayload (
 
         String fuelType,
 
-        String transmission
+        String transmission,
+
+        String titleImageId
 ) {}
