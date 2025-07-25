@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import re1kur.app.core.dto.CarDto;
-import re1kur.app.core.car.CarUpdateDto;
+import re1kur.app.core.dto.CarUpdateDto;
+import re1kur.app.core.exception.CarAlreadyExistsException;
+import re1kur.app.core.exception.CarNotFoundException;
+import re1kur.app.core.payload.CarUpdatePayload;
 import re1kur.app.core.dto.CarFullDto;
 import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.payload.CarPayload;
@@ -29,6 +32,7 @@ import re1kur.app.service.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -52,15 +56,44 @@ public class CarServiceImpl implements CarService {
 
 
     @Override
-    public CarUpdateDto readUpdateById(int id) {
-        return repo.findById(id).map(carMapper::readUpdate)
-                .orElse(null);
+    @Transactional
+    public Integer create(CarPayload payload, MultipartFile titlePayload, MultipartFile[] files) {
+        log.info("CREATE CAR [{}]", payload);
+        Map<String, Object> result = uploadFiles(titlePayload, files);
+        String licensePlate = payload.licensePlate();
+
+        Image title = (Image) result.get(TITLE_IMAGE_KEY);
+        List<Image> images = (List<Image>) result.get(IMAGES_KEY);
+
+        if (repo.existsByLicensePlate(licensePlate))
+            throw new CarAlreadyExistsException("Car [%s] already exists.".formatted(licensePlate));
+
+        Make make = makeService.get(payload.makeId());
+        CarType type = carTypeService.get(payload.carTypeId());
+        Engine engine = engineService.get(payload.engineId());
+
+        Car mapped = carMapper.write(payload, make, type, engine);
+
+        Car saved = repo.save(mapped);
+
+        CarInformation infoMapped = infoMapper.create(payload, saved);
+
+
+        if (title != null) saved.setTitleImage(title);
+        if (images != null && !images.isEmpty()) saved.setImages(images);
+
+        infoRepo.save(infoMapped);
+
+        log.info("CREATED CAR [{}]", saved.getId());
+        return saved.getId();
     }
 
     @Override
-    public void updateCar(CarUpdateDto car, int id) {
-        Car update = carMapper.update(car, id);
-        repo.save(update);
+    @Transactional
+    public CarUpdateDto readUpdateById(Integer id) {
+        return repo.findById(id)
+                .map(carMapper::readUpdate)
+                .orElse(null);
     }
 
     @Override
@@ -83,28 +116,27 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @Transactional
-    public Integer create(CarPayload payload, MultipartFile titlePayload, MultipartFile[] files) {
-        log.info("CREATE CAR [{}]", payload);
-        Map<String, Object> result = uploadFiles(titlePayload, files);
+    public void updateCar(CarUpdatePayload payload, Integer id) {
+        log.info("UPDATE CAR [{}] REQUEST", id);
 
-        Image title = (Image) result.get(TITLE_IMAGE_KEY);
-        List<Image> images = (List<Image>) result.get(IMAGES_KEY);
+        Car found = repo.findById(id)
+                .orElseThrow(() -> new CarNotFoundException("Car [%d] was not found.".formatted(id)));
 
-        //todo: check if exists by license plate
+        String licensePlate = payload.licensePlate();
+        if (!Objects.equals(licensePlate, found.getLicensePlate())) {
+            if (repo.existsByLicensePlate(licensePlate))
+                throw new CarAlreadyExistsException("Car [%s] already exists.".formatted(licensePlate));
+        }
 
         Make make = makeService.get(payload.makeId());
         CarType type = carTypeService.get(payload.carTypeId());
         Engine engine = engineService.get(payload.engineId());
 
-        Car mapped = carMapper.write(payload, make, type, engine);
+        Car updated = carMapper.update(found, payload, make, type, engine);
 
-        Car saved = repo.save(mapped);
+        repo.save(updated);
 
-        CarInformation infoMapped = infoMapper.write(payload, saved, title, images);
-        infoRepo.save(infoMapped);
-
-        log.info("CREATED CAR [{}]", saved.getId());
-        return saved.getId();
+        log.info("UPDATED CAR [{}]", id);
     }
 
     private Map<String, Object> uploadFiles(MultipartFile titlePayload, MultipartFile[] filesUploads) {

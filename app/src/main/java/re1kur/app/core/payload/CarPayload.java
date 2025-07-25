@@ -1,12 +1,7 @@
 package re1kur.app.core.payload;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import re1kur.app.core.car.details.CarDetailsWriteDto;
-import re1kur.app.core.car.images.CarImageWriteDto;
 
 @Builder
 public record CarPayload (

@@ -1,31 +1,27 @@
 package re1kur.app.controller.car;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import re1kur.app.core.dto.CarDto;
-import re1kur.app.core.car.CarUpdateDto;
-import re1kur.app.core.car.details.CarDetailsUpdateDto;
+import re1kur.app.core.dto.CarUpdateDto;
+import re1kur.app.core.payload.CarUpdatePayload;
 import re1kur.app.core.dto.CarFullDto;
 import re1kur.app.service.CarService;
+import re1kur.app.service.CarTypeService;
+import re1kur.app.service.EngineService;
 import re1kur.app.service.MakeService;
 
 
 @Controller
 @RequestMapping("cars/{id}")
+@RequiredArgsConstructor
 public class CarController {
     private final CarService service;
     private final MakeService makeService;
-
-
-    @Autowired
-    public CarController(CarService service, MakeService makeService) {
-        this.service = service;
-        this.makeService = makeService;
-    }
+    private final EngineService engineService;
+    private final CarTypeService carTypeService;
 
     @GetMapping
     public String getCar(
@@ -39,28 +35,26 @@ public class CarController {
         return "/cars/profile.html";
     }
 
-    @GetMapping("edit")
-    public String editCar(
+    @GetMapping("/update")
+    public String getUpdatePage(
             @PathVariable int id,
-            Model model) {
+            Model model
+    ) {
         CarUpdateDto car = service.readUpdateById(id);
         model.addAttribute("makes", makeService.readAll());
-        model.addAttribute("update", car);
-        model.addAttribute("images", car.getImages());
-        model.addAttribute("carDetails", car.getDetails());
+        model.addAttribute("engines", engineService.readAll());
+        model.addAttribute("carTypes", carTypeService.readAll());
+        model.addAttribute("car", car);
 
-        return "/cars/car-edit.html";
+        return "/cars/update.html";
     }
 
-    @PostMapping("edit")
-    @Transactional
+    @PostMapping("/update")
     public String updateCar(
-            @PathVariable int id,
-            @Validated @ModelAttribute("update") CarUpdateDto car,
-            @Validated @ModelAttribute("carDetails") CarDetailsUpdateDto carDetails
+            @PathVariable Integer id,
+            @Valid @ModelAttribute("car") CarUpdatePayload payload
     ) {
-        car.setDetails(carDetails);
-        service.updateCar(car, id);
+        service.updateCar(payload, id);
         return "redirect:/cars/" + id;
     }
 }

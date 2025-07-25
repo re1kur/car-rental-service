@@ -9,14 +9,14 @@
     <form method="post" th:action="@{/cars/create}" enctype="multipart/form-data">
         <section class="form-group">
             <h2>Common information</h2>
+
             <label for="makeId">Make:
                 <select id="makeId" name="makeId" required>
                     <option value="" disabled selected>Choose the make</option>
                     <option th:each="make : ${makes}"
                             th:value="${make.id}"
                             th:text="${make.name}"
-                            th:selected="${payload != null ? payload.makeId == make.id : ''}"
-                    >
+                            th:selected="${payload != null ? payload.makeId == make.id : ''}">
                     </option>
                 </select>
             </label><br>
@@ -33,8 +33,7 @@
                     <option th:each="carType : ${carTypes}"
                             th:value="${carType.id}"
                             th:text="${carType.name}"
-                            th:selected="${payload != null ? payload.carTypeId == carType.id : ''}"
-                    >
+                            th:selected="${payload != null ? payload.carTypeId == carType.id : ''}">
                     </option>
                 </select>
             </label><br>
@@ -45,8 +44,7 @@
                     <option th:each="engine : ${engines}"
                             th:value="${engine.id}"
                             th:text="${engine.name}"
-                            th:selected="${payload != null ? payload.engineId == engine.id : ''}"
-                    >
+                            th:selected="${payload != null ? payload.engineId == engine.id : ''}">
                     </option>
                 </select>
             </label><br>

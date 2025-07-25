@@ -10,7 +10,7 @@
     <h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>
     <section>
         <label>
-            <span th:text="'Available: ' + ${car.available ? Yes: No}"></span>
+            <span th:text="${'Available: ' + (car.available ? 'Yes' : 'No')}"></span>
         </label>
     </section>
     <section>
@@ -62,7 +62,7 @@
 
 
     <section th:if="${car.information}">
-        <h2>Information</h2>
+        <h2>Information:</h2>
         <ul>
             <li th:if="${car.information.description}" th:text="'Description: ' + ${car.information.description}"></li>
             <li th:if="${car.information.color}" th:text="'Color: ' + ${car.information.color}"></li>

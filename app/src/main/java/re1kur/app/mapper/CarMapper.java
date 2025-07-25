@@ -2,7 +2,7 @@ package re1kur.app.mapper;
 
 import org.springframework.data.domain.Page;
 import re1kur.app.core.dto.CarDto;
-import re1kur.app.core.car.CarUpdateDto;
+import re1kur.app.core.payload.CarUpdatePayload;
 import re1kur.app.core.dto.*;
 import re1kur.app.core.payload.CarPayload;
 import re1kur.app.entity.car.Car;
@@ -17,7 +17,7 @@ public interface CarMapper {
 
     CarUpdateDto readUpdate(Car car);
 
-    Car update(CarUpdateDto car, int id);
+    Car update(Car found, CarUpdatePayload payload, Make make, CarType type, Engine engine);
 
     CarFullDto readFull(Car car);
 

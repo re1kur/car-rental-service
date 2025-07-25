@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import re1kur.app.core.annotations.Mapper;
 import re1kur.app.core.dto.CarDto;
-import re1kur.app.core.car.CarUpdateDto;
+import re1kur.app.core.payload.CarUpdatePayload;
 import re1kur.app.core.dto.*;
 import re1kur.app.core.payload.CarPayload;
 import re1kur.app.entity.image.Image;
@@ -21,6 +21,7 @@ import java.util.List;
 @Mapper
 @RequiredArgsConstructor
 public class CarMapperImpl implements CarMapper {
+    private final CarInformationMapper infoMapper;
     private final MakeMapper makeMapper;
     private final CarTypeMapper carTypeMapper;
     private final EngineMapper engineMapper;
@@ -36,8 +37,6 @@ public class CarMapperImpl implements CarMapper {
                 .year(payload.year())
                 .licensePlate(payload.licensePlate())
                 .build();
-
-
     }
 
     @Override
@@ -51,7 +50,7 @@ public class CarMapperImpl implements CarMapper {
                 .make(makeMapper.readShort(car.getMake()))
                 .carType(carTypeMapper.read(car.getCarType()))
                 .engine(engineMapper.read(car.getEngine()))
-                .titleImage(titleImage != null ? imageMapper.read(titleImage) : null)
+                .titleImage(imageMapper.read(titleImage))
                 .build();
     }
 
@@ -59,7 +58,6 @@ public class CarMapperImpl implements CarMapper {
     public CarFullDto readFull(Car car) {
         Image titleImage = car.getTitleImage();
         Collection<Image> images = car.getImages();
-        CarInformation information = car.getInformation();
 
         return CarFullDto.builder()
                 .id(car.getId())
@@ -70,26 +68,12 @@ public class CarMapperImpl implements CarMapper {
                 .make(makeMapper.readShort(car.getMake()))
                 .carType(carTypeMapper.read(car.getCarType()))
                 .engine(engineMapper.read(car.getEngine()))
-                .information(readInformation(information))
-                .titleImage(titleImage != null ? imageMapper.read(titleImage) : null)
+                .information(infoMapper.read(car.getInformation()))
+                .titleImage(imageMapper.read(titleImage))
                 .images(images != null ? images.stream().map(imageMapper::read).toList() : List.of())
                 .build();
     }
 
-    private CarInformationDto readInformation(CarInformation information) {
-        if (information == null) {
-            return null;
-        }
-
-        return CarInformationDto.builder()
-                .color(information.getColor())
-                .seats(information.getSeats())
-                .description(information.getDescription())
-                .transmission(information.getTransmission())
-                .mileage(information.getMileage())
-                .fuelType(information.getFuelType())
-                .build();
-    }
 
     @Override
     public PageDto<CarDto> readPage(Page<Car> found) {
@@ -109,26 +93,32 @@ public class CarMapperImpl implements CarMapper {
 
     @Override
     public CarUpdateDto readUpdate(Car car) {
+        Image titleImage = car.getTitleImage();
+        Collection<Image> images = car.getImages();
+
         return CarUpdateDto.builder()
-                .makeId(car.getMake().getId())
+                .id(car.getId())
                 .model(car.getModel())
                 .year(car.getYear())
-//                .titleImageId(car.getTitleImage() != null ? car.getTitleImage().getId() : null)
                 .licensePlate(car.getLicensePlate())
-//                .images(imagesMapper.readUpdateImages(car.getImages()))
+                .make(makeMapper.readShort(car.getMake()))
+                .carTypeId(car.getCarType().getId())
+                .engineId(car.getEngine().getId())
+                .information(infoMapper.read(car.getInformation()))
+                .titleImage(imageMapper.read(titleImage))
+                .images(images != null ? images.stream().map(imageMapper::read).toList() : List.of())
                 .build();
     }
 
     @Override
-    public Car update(CarUpdateDto car, int id) {
-        return Car.builder()
-                .id(id)
-//                .make(makeRepo.getReferenceById(car.getMakeId()))
-                .model(car.getModel())
-//                .titleImage(imageRepo.getReferenceById(car.getTitleImageId()))
-//                .images(imageRepo.findAllByCarId(id))
-                .licensePlate(car.getLicensePlate())
-                .year(car.getYear())
-                .build();
+    public Car update(Car found, CarUpdatePayload payload, Make make, CarType type, Engine engine) {
+        found.setMake(make);
+        found.setCarType(type);
+        found.setEngine(engine);
+        found.setLicensePlate(payload.licensePlate());
+        found.setModel(payload.model());
+        found.setInformation(infoMapper.update(found.getInformation(), payload, found));
+
+        return found;
     }
 }

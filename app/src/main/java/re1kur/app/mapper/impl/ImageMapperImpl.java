@@ -23,6 +23,10 @@ public class ImageMapperImpl implements ImageMapper {
 
     @Override
     public ImageDto read(Image titleImage) {
+        if (titleImage == null) {
+            return null;
+        }
+
         return ImageDto.builder()
                 .id(titleImage.getId())
                 .url(titleImage.getUrl())

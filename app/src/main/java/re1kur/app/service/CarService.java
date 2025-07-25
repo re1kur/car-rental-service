@@ -3,7 +3,8 @@ package re1kur.app.service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import re1kur.app.core.dto.CarDto;
-import re1kur.app.core.car.CarUpdateDto;
+import re1kur.app.core.dto.CarUpdateDto;
+import re1kur.app.core.payload.CarUpdatePayload;
 import re1kur.app.core.dto.CarFullDto;
 import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.payload.CarPayload;
@@ -15,9 +16,9 @@ public interface CarService {
 
     Integer create(CarPayload car, MultipartFile title, MultipartFile[] files);
 
-    CarUpdateDto readUpdateById(int id);
+    CarUpdateDto readUpdateById(Integer id);
 
-    void updateCar(CarUpdateDto car, int id);
+    void updateCar(CarUpdatePayload car, Integer id);
 
     PageDto<CarDto> readAll(CarFilter filter, Pageable pageable);
 }
