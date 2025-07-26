@@ -3,9 +3,8 @@ package re1kur.app.controller.make;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import re1kur.app.core.dto.MakeFullDto;
 import re1kur.app.core.payload.MakeUpdatePayload;
 import re1kur.app.service.MakeService;
 
@@ -15,29 +14,29 @@ import re1kur.app.service.MakeService;
 public class MakeController {
     private final MakeService service;
 
-    @ModelAttribute("make")
-    public MakeFullDto make(@PathVariable(name = "id") Integer id) {
-        return service.read(id);
-    }
-
     @GetMapping
     public String getMakeProfile(
+            Model model,
+            @PathVariable(name = "id") Integer id
     ) {
+        model.addAttribute("make", service.read(id));
         return "/makes/profile.html";
     }
 
     @GetMapping("/update")
-    public String getEditMake() {
+    public String getEditMake(
+            @PathVariable("id") Integer makeId,
+            Model model
+    ) {
+        model.addAttribute("make", service.read(makeId));
         return "/makes/update.html";
     }
 
     @PostMapping("/update")
     public String editMake(
             @Valid @ModelAttribute("update") MakeUpdatePayload payload,
-            @PathVariable Integer id,
-            @RequestParam("title") MultipartFile title
+            @PathVariable Integer id
     ) {
-        payload.setImage(title);
         service.update(payload, id);
         return "redirect:/makes/" + id;
     }

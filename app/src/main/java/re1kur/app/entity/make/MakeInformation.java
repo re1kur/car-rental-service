@@ -17,7 +17,7 @@ public class MakeInformation {
     private Integer makeId;
 
     @MapsId
-    @OneToOne(mappedBy = "makeInformation")
+    @OneToOne(mappedBy = "information")
     @JoinColumn(name = "make_id")
     private Make make;
 

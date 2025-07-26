@@ -1,5 +1,6 @@
 package re1kur.app.mapper.impl;
 
+import lombok.RequiredArgsConstructor;
 import re1kur.app.core.annotations.Mapper;
 import re1kur.app.core.dto.MakeFullDto;
 import re1kur.app.core.dto.MakeDto;
@@ -9,35 +10,37 @@ import re1kur.app.core.payload.MakePayload;
 import re1kur.app.entity.image.Image;
 import re1kur.app.entity.make.Make;
 import re1kur.app.entity.make.MakeInformation;
+import re1kur.app.mapper.ImageMapper;
+import re1kur.app.mapper.MakeInformationMapper;
 import re1kur.app.mapper.MakeMapper;
 
+import java.util.List;
+
 @Mapper
+@RequiredArgsConstructor
 public class MakeMapperImpl implements MakeMapper {
+    private final ImageMapper imageMapper;
+    private final MakeInformationMapper infoMapper;
 
     @Override
     public MakeFullDto readFull(Make make) {
-        MakeInformation makeInformation = make.getMakeInformation();
+        MakeInformation makeInformation = make.getInformation();
         Image titleImage = make.getTitleImage();
-        MakeFullDto build = MakeFullDto.builder()
+        List<Image> images = make.getImages();
+
+        return MakeFullDto.builder()
                 .id(make.getId())
                 .name(make.getName())
-                .titleImgUrl(titleImage != null ? titleImage.getUrl() : null)
+                .information(infoMapper.read(makeInformation))
+                .titleImage(imageMapper.read(titleImage))
+                .images(images != null ? images.stream().map(imageMapper::read).toList() : List.of())
                 .build();
-        if (makeInformation != null) {
-            build.setDescription(makeInformation.getDescription());
-            build.setCountry(makeInformation.getCountry());
-            build.setFounder(makeInformation.getFounder());
-            build.setOwner(makeInformation.getOwner());
-            build.setFoundedAt(makeInformation.getFoundedAt());
-        }
-        return build;
     }
 
     @Override
-    public Make write(MakePayload payload, Image image) {
+    public Make write(MakePayload payload) {
         return Make.builder()
                 .name(payload.name())
-                .titleImage(image)
                 .build();
     }
 

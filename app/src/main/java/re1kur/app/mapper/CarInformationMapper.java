@@ -7,7 +7,7 @@ import re1kur.app.entity.car.Car;
 import re1kur.app.entity.car.CarInformation;
 
 public interface CarInformationMapper {
-    CarInformationDto read(CarInformation details);
+    CarInformationDto read(CarInformation information);
 
     CarInformation update(CarInformation details, CarUpdatePayload payload, Car car);
 

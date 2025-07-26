@@ -16,7 +16,7 @@
 
             <div>
                 <label for="make">Make:</label>
-                <select id="make" name="make">
+                <select id="make" name="makeId">
                     <option value="">Select a make</option>
                     <option th:each="make : ${makes}" th:value="${make.id}" th:text="${make.name}"
                             th:selected="${filter.makeId == make.id}"></option>

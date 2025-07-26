@@ -2,44 +2,77 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Editing ' + ${update.name} + ' — Car Rental Service'"></title>
-    <link rel="stylesheet" th:href="@{/css/styles-car-edit.css}">
-    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
-    <link rel="stylesheet" th:href="@{/css/main-header.css}">
+    <title th:text="'Updating ' + ${make.name} + ' — Car Rental Service'"></title>
 </head>
-<header class="header" th:insert="~{/fragments/header :: to-make}">
-</header>
-
 <body>
-<div class="container">
-    <form th:object="${update}" class="edit-form" method="post" th:action="@{/makes/{id}/edit(id=${make.id})}" enctype="multipart/form-data">
+<div>
+    <form method="post" th:action="@{/makes/{id}/update(id=${make.id})}" enctype="multipart/form-data">
         <h2>Make information.</h2>
+
         <h4>Name:</h4>
         <label for="name">
-            <input th:field="*{name}" type="text" name="name" id="name"
-                   placeholder="Toyota" required>
+            <input type="text" name="name"
+                   th:value="${make.name}"
+                   id="name" placeholder="Toyota" required>
         </label><br>
 
         <h4>Country:</h4>
         <label for="country">
-            <input th:field="*{country}" type="text" name="country" id="country"
-                   placeholder="Japan" required>
-        </label>
-        <h4>Description:</h4>
+            <input type="text" name="country"
+                   th:value="${make.information.country}"
+                   id="country" placeholder="Japan">
+        </label><br>
+
+            <h4>Description:</h4>
         <label for="description"><br>
-            <textarea th:field="*{description}" name="description" id="description"
-                      placeholder="Japanese multinational automotive manufacturer" rows="4" cols="80" style="resize: none">
+            <textarea id="description"
+            name="description"
+            placeholder="Japanese multinational automotive manufacturer" rows="4" cols="80"
+            th:text="${make.information.description}">
             </textarea>
         </label><br>
-        <section class="form-group">
-            <label for="title" class="labelFile">Title image:
-                <input type="file" name="title" id="title" accept="image/*">
-            </label><br>
+
+        <h4>Founder:</h4>
+        <label for="founder">
+            <input type="text" name="founder" id="founder" placeholder="Mads Mikkelsen"
+                   th:value="${make.information.founder}">
+        </label><br>
+
+
+        <h4>Date of foundation:</h4>
+        <label for="foundedAt">
+            <input type="date" name="foundedAt" id="foundedAt" placeholder="2018-07-22"
+                   th:value="${make.information.foundedAt}">
+        </label><br>
+
+
+        <h4>Owner:</h4>
+        <label for="owner">
+            <input type="text" name="owner" id="owner" placeholder="BMW Group"
+                   th:value="${make.information.owner}">
+        </label><br>
+
+        <section th:if="${make.titleImage}">
+            <label>Current title image:</label>
+            <img th:src="${make.titleImage.url}" alt="Current title image.">
         </section>
-        <button type="submit">Edit</button>
+
+        <section th:if="${make.images != null and !#lists.isEmpty(make.images)}">
+            <label>Select a new title image:</label>
+            <div th:each="image : ${make.images}">
+                <label th:for="${'image_' + image.id}">
+                    <input type="radio" name="titleImageId"
+                           th:id="${'image_' + image.id}"
+                           th:value="${image.id}"
+                           th:checked="${make.titleImage != null and make.titleImage.id == image.id}">
+                    <img th:src="${image.url}" alt="Image option">
+                    <span th:text="'Uploaded at: ' + ${image.uploadedAt}"></span>
+                </label>
+            </div>
+        </section>
+
+        <button type="submit">Update</button>
     </form>
 </div>
 </body>
-<footer th:replace="~{/fragments/footer :: main-footer}">
-</footer>
 </html>

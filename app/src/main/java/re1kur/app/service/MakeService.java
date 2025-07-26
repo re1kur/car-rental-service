@@ -13,7 +13,7 @@ public interface MakeService {
 
     List<MakeDto> readAll();
 
-    void create(MakePayload make, MultipartFile titleImg);
+    void create(MakePayload make, MultipartFile titleImg, MultipartFile[] files);
 
     MakeFullDto read(Integer id);
 

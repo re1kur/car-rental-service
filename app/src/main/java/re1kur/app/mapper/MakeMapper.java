@@ -10,7 +10,7 @@ import re1kur.app.entity.make.Make;
 
 public interface MakeMapper {
 
-    Make write (MakePayload make, Image mayBeImage);
+    Make write (MakePayload make);
 
     MakeUpdatePayload readUpdate(Make make);
 

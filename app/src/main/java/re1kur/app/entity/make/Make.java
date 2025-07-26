@@ -7,6 +7,7 @@ import re1kur.app.entity.car.Car;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "makes")
@@ -27,13 +28,13 @@ public class Make {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
-    private MakeInformation makeInformation;
+    private MakeInformation information;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "make_images",
             joinColumns = @JoinColumn(name = "make_id"),
             inverseJoinColumns = @JoinColumn(name = "image_id"))
-    private Collection<Image> makeImages = new ArrayList<>();
+    private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "make", fetch = FetchType.LAZY)
     private Collection<Car> cars;

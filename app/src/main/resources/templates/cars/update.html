@@ -83,9 +83,13 @@
         <section th:if="${car.information}">
             <h3>Information:</h3>
 
+            <textarea name="description"
+                      id="description"
+                      rows="4" cols="80"
+                      placeholder="Did not beaten."
+                      th:value="${car.information.description}">
+                 </textarea>
             <label for="description">Description:
-                <input type="text" name="description" id="description" th:value="${car.information.description}"
-                       placeholder="Did not beaten.">
             </label><br>
 
             <label for="color">Color:

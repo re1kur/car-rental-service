@@ -18,6 +18,11 @@ import java.util.List;
 public class MakesController {
     private final MakeService service;
 
+    @GetMapping("/")
+    public String redirectListSlash() {
+        return "redirect:/makes/list";
+    }
+
     @GetMapping
     public String redirectList() {
         return "redirect:/makes/list";
@@ -39,9 +44,10 @@ public class MakesController {
     @PostMapping("/create")
     public String createMake(
             @ModelAttribute @Valid MakePayload payload,
-            @RequestParam("titleImg") MultipartFile titleImg
+            @RequestParam(value = "title", required = false) MultipartFile title,
+            @RequestParam(value = "file", required = false) MultipartFile[] files
     ) {
-        service.create(payload, titleImg);
+        service.create(payload, title, files);
         return "redirect:/moderator/menu";
     }
 }

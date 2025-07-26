@@ -21,15 +21,4 @@ public record MakePayload(
         @EmptyOrSize(message = "Owner have to be between 6 and 64 characters long.", min = 6, max = 64)
         String owner
 ) {
-        private boolean isEmpty(String field) {
-                return field == null || field.isEmpty();
-        }
-
-        public boolean hasInfo() {
-                return !(isEmpty(country) &&
-                        isEmpty(description) &&
-                        foundedAt == null &&
-                        isEmpty(founder) &&
-                        isEmpty(owner));
-        }
 }

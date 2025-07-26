@@ -10,35 +10,46 @@
 
 <div>
     <h1 th:text="${make.name}"></h1>
-    <section th:if="${make.country != null}">
-        <h3>Country:</h3>
-        <span th:text="${make.country}"></span><br>
+    <section th:if="${make.titleImage}">
+        <h3>Title image: </h3>
+        <img th:src="${make.titleImage.url}" alt="">
     </section>
 
-    <section th:if="${make.description != null}">
-        <h3>Description: </h3>
-        <span th:text="${make.description}"></span>
+    <section th:if="${make.images}">
+        <ul>
+            <li th:each="image : ${make.images}">
+                <img th:src="${image.url}" alt="Here must be image"/><br>
+                <span th:text="'Image uploaded at: ' + ${image.uploadedAt}"></span><br>
+            </li>
+        </ul>
     </section>
 
-    <section th:if="${make.foundedAt != null}">
-        <h3>Founded at: </h3>
-        <span th:text="${make.foundedAt}"></span>
-    </section>
+    <div th:if="${make.information}">
+        <section th:if="${make.information.country}">
+            <h3>Country:</h3>
+            <span th:text="${make.information.country}"></span><br>
+        </section>
 
-    <section th:if="${make.founder != null}">
-        <h3>Founder: </h3>
-        <span th:text="${make.founder}"></span>
-    </section>
+        <section th:if="${make.information.description}">
+            <h3>Description: </h3>
+            <span th:text="${make.information.description}"></span>
+        </section>
 
-    <section th:if="${make.owner != null}">
-        <h3>Owner: </h3>
-        <span th:text="${make.owner}"></span>
-    </section>
+        <section th:if="${make.information.foundedAt}">
+            <h3>Founded at: </h3>
+            <span th:text="${make.information.foundedAt}"></span>
+        </section>
 
-    <section>
-        <img th:if="${make.titleImgUrl != null}" th:src="${make.titleImgUrl}" alt="">
-    </section>
+        <section th:if="${make.information.founder}">
+            <h3>Founder: </h3>
+            <span th:text="${make.information.founder}"></span>
+        </section>
 
+        <section th:if="${make.information.owner}">
+            <h3>Owner: </h3>
+            <span th:text="${make.information.owner}"></span>
+        </section>
+    </div>
 </div>
 </body>
 </html>

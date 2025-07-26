@@ -18,6 +18,11 @@ import re1kur.app.service.EngineService;
 public class EnginesController {
     private final EngineService engineService;
 
+    @GetMapping("/")
+    public String listRedirect() {
+        return "redirect:/engines/list";
+    }
+
     @GetMapping
     public String enginesRedirect() {
         return "redirect:/engines/list";
@@ -30,7 +35,9 @@ public class EnginesController {
     }
 
     @PostMapping("/create")
-    public String createEngine(@ModelAttribute EnginePayload payload) {
+    public String createEngine(
+            @ModelAttribute EnginePayload payload
+    ) {
         engineService.create(payload);
         return "redirect:/moderator/menu";
         //TODO: maybe the better redirect on the new engine profile page
