@@ -66,7 +66,9 @@ public class CarInformationMapperImpl implements CarInformationMapper {
     }
 
     @Override
-    public CarInformation update(CarInformation information, CarUpdatePayload payload, Car car) {
+    public CarInformation update(CarUpdatePayload payload, Car car) {
+        CarInformation information = car.getInformation();
+
         if (information == null)
             information = CarInformation.builder().car(car).build();
 

@@ -1,6 +1,7 @@
 package re1kur.app.mapper.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import re1kur.app.core.annotations.Mapper;
 import re1kur.app.core.dto.MakeFullDto;
 import re1kur.app.core.dto.MakeDto;
@@ -15,7 +16,9 @@ import re1kur.app.mapper.MakeInformationMapper;
 import re1kur.app.mapper.MakeMapper;
 
 import java.util.List;
+import java.util.Objects;
 
+@Slf4j
 @Mapper
 @RequiredArgsConstructor
 public class MakeMapperImpl implements MakeMapper {
@@ -38,31 +41,31 @@ public class MakeMapperImpl implements MakeMapper {
     }
 
     @Override
-    public Make write(MakePayload payload) {
+    public Make create(MakePayload payload) {
         return Make.builder()
                 .name(payload.name())
                 .build();
     }
 
     @Override
-    public MakeUpdatePayload readUpdate(Make make) {
-        return MakeUpdatePayload.builder()
-                .name(make.getName())
-//                .country(make.getCountry())
-//                .description(make.getDescription())
-//                .titleImageUrl(make.getTitleImageUrl())
-                .build();
-    }
+    public Make update(Make make, MakeUpdatePayload payload) {
+        String newImageId = payload.titleImageId();
+        Image titleImage = make.getTitleImage();
 
-    @Override
-    public Make update(MakeUpdatePayload make, int id) {
-        return Make.builder()
-                .id(id)
-                .name(make.getName())
-//                .country(make.getCountry())
-//                .description(make.getDescription())
-//                .titleImageUrl(make.getTitleImageUrl())
-                .build();
+        make.setName(payload.name());
+        make.setInformation(infoMapper.update(make, payload));
+
+        if ((titleImage == null && newImageId != null)
+                || (titleImage != null && !Objects.equals(titleImage.getId(), newImageId))
+        ) {
+            Image image = make.getImages().stream()
+                    .filter(img -> img.getId().equals(newImageId))
+                    .findFirst().orElse(null);
+
+            make.setTitleImage(image);
+        }
+
+        return make;
     }
 
     @Override
@@ -82,5 +85,4 @@ public class MakeMapperImpl implements MakeMapper {
                 .name(make.getName())
                 .build();
     }
-
 }

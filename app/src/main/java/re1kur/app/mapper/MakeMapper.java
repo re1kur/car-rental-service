@@ -5,16 +5,13 @@ import re1kur.app.core.dto.MakeDto;
 import re1kur.app.core.dto.MakeShortDto;
 import re1kur.app.core.payload.MakeUpdatePayload;
 import re1kur.app.core.payload.MakePayload;
-import re1kur.app.entity.image.Image;
 import re1kur.app.entity.make.Make;
 
 public interface MakeMapper {
 
-    Make write (MakePayload make);
+    Make create(MakePayload make);
 
-    MakeUpdatePayload readUpdate(Make make);
-
-    Make update(MakeUpdatePayload make, int id);
+    Make update(Make make, MakeUpdatePayload payload);
 
     MakeFullDto readFull(Make make);
 

@@ -3,6 +3,7 @@ package re1kur.app.mapper.impl;
 import re1kur.app.core.annotations.Mapper;
 import re1kur.app.core.dto.MakeInformationDto;
 import re1kur.app.core.payload.MakePayload;
+import re1kur.app.core.payload.MakeUpdatePayload;
 import re1kur.app.entity.make.Make;
 import re1kur.app.entity.make.MakeInformation;
 import re1kur.app.mapper.MakeInformationMapper;
@@ -67,5 +68,62 @@ public class MakeInformationMapperImpl implements MakeInformationMapper {
                 .founder(information.getFounder())
                 .owner(information.getOwner())
                 .build();
+    }
+
+    @Override
+    public MakeInformation update(Make make, MakeUpdatePayload payload) {
+        MakeInformation information = make.getInformation();
+        String description = payload.description();
+        String country = payload.country();
+        LocalDate foundedAt = payload.foundedAt();
+        String owner = payload.owner();
+        String founder = payload.founder();
+
+        if (information == null) {
+            information = MakeInformation.builder().make(make).build();
+        }
+
+        boolean hasInfo = false;
+
+        if (isNotEmpty(description)) {
+            information.setDescription(description);
+            hasInfo = true;
+        } else {
+            information.setDescription(null);
+        }
+
+        if (isNotEmpty(country)) {
+            information.setCountry(country);
+            hasInfo = true;
+        } else {
+            information.setCountry(null);
+        }
+
+        if (foundedAt != null) {
+            information.setFoundedAt(foundedAt);
+            hasInfo = true;
+        } else {
+            information.setFoundedAt(null);
+        }
+
+        if (isNotEmpty(owner)) {
+            information.setOwner(owner);
+            hasInfo = true;
+        } else {
+            information.setOwner(null);
+        }
+
+        if (isNotEmpty(founder)) {
+            information.setFounder(founder);
+            hasInfo = true;
+        } else {
+            information.setFounder(null);
+        }
+
+        if (hasInfo) {
+            return information;
+        }
+
+        return null;
     }
 }

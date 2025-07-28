@@ -22,10 +22,7 @@ import re1kur.app.repository.MakeRepository;
 import re1kur.app.service.FileStoreService;
 import re1kur.app.service.MakeService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -57,7 +54,7 @@ public class MakeServiceImpl implements MakeService {
         if (repo.existsByName(name))
             throw new MakeAlreadyExistsException("Make [%s] already exists.".formatted(name));
 
-        Make mapped = makeMapper.write(payload);
+        Make mapped = makeMapper.create(payload);
 
         Make saved = repo.save(mapped);
 
@@ -116,22 +113,34 @@ public class MakeServiceImpl implements MakeService {
     @Transactional
     public MakeFullDto read(Integer id) {
         return repo.findById(id).map(makeMapper::readFull)
-                .orElseThrow(() -> new MakeNotFoundException("Make with ID [%d] was not found.".formatted(id)));
+                .orElseThrow(() -> new MakeNotFoundException("Make [%d] was not found.".formatted(id)));
     }
 
     @Override
-    public void update(MakeUpdatePayload update, Integer id) {
-//        if (update.getImage() != null) {
-//            String url = fileStoreService.uploadMakeImage(update.getImage());
-//            update.setTitleImageUrl(url);
-//        }
-        Make mapped = makeMapper.update(update, id);
-        repo.save(mapped);
+    @Transactional
+    public void update(MakeUpdatePayload payload, Integer id) {
+        log.info("UPDATE MAKE [{}]", id);
+        String name = payload.name();
+
+        Make found = repo.findById(id).orElseThrow(() ->
+                new MakeNotFoundException("Make [%d] was not found.".formatted(id))
+        );
+
+        if (!Objects.equals(found.getName(), name)) {
+            if (repo.existsByName(name))
+                throw new MakeAlreadyExistsException("Make [%s] already exists.".formatted(name));
+        }
+
+        Make updated = makeMapper.update(found, payload);
+
+        repo.save(updated);
+
+        log.info("UPDATED MAKE [{}]", id);
     }
 
     @Override
     public Make get(Integer id) {
         return repo.findById(id).orElseThrow(() ->
-                new MakeNotFoundException("Make with ID [%d] was not found.".formatted(id)));
+                new MakeNotFoundException("Make [%d] was not found.".formatted(id)));
     }
 }

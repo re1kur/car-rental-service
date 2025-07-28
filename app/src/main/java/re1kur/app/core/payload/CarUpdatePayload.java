@@ -2,6 +2,7 @@ package re1kur.app.core.payload;
 
 import jakarta.validation.constraints.*;
 import lombok.Builder;
+import re1kur.app.core.annotations.EmptyOrSize;
 
 @Builder
 public record CarUpdatePayload (
@@ -32,14 +33,17 @@ public record CarUpdatePayload (
 
         String description,
 
+        @EmptyOrSize(message = "Color have to be between 3 and 20 characters long.", min = 3, max = 20)
         String color,
 
         Integer seats,
 
         Integer mileage,
 
+        @EmptyOrSize(message = "Fuel type have to be between 3 and 20 characters long.", min = 3, max = 20)
         String fuelType,
 
+        @EmptyOrSize(message = "Transmission have to be between 3 and 30 characters long.", min = 3, max = 30)
         String transmission,
 
         String titleImageId

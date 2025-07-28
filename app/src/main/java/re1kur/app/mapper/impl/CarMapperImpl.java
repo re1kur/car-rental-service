@@ -121,7 +121,7 @@ public class CarMapperImpl implements CarMapper {
         found.setEngine(engine);
         found.setLicensePlate(payload.licensePlate());
         found.setModel(payload.model());
-        found.setInformation(infoMapper.update(found.getInformation(), payload, found));
+        found.setInformation(infoMapper.update(payload, found));
 
         if ((titleImage == null && titleImageId != null)
                 || (titleImage != null && !Objects.equals(titleImage.getId(), titleImageId))) {
@@ -133,7 +133,6 @@ public class CarMapperImpl implements CarMapper {
 
             found.setTitleImage(image);
         }
-
 
         return found;
     }

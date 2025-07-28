@@ -2,28 +2,30 @@ package re1kur.app.core.payload;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
+import re1kur.app.core.annotations.EmptyOrSize;
 
-@Data
+import java.time.LocalDate;
+
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class MakeUpdatePayload {
-    @NotBlank(message = "The make name mustn't only name with backspace chars.")
-    @Size(message = "The make name have to be lesser and greater than 64 and 3 chars respectively.", min = 3, max = 64)
-    private String name;
+public record MakeUpdatePayload(
+        @NotBlank(message = "Name cannot be empty or contain backspaces.")
+        @Size(message = "Name have to be between 64 and 3 characters long.", min = 3, max = 64)
+        String name,
 
-    @NotBlank(message = "The country haven't to be only name with backspace chars.")
-    @Size(message = "The country haven't to be lesser and greater than 32 and 3 chars respectively. ", min = 3, max = 32)
-    private String country;
+        @EmptyOrSize(message = "Country have to be between 32 and 3 characters long.", min = 3, max = 32)
+        String country,
 
-    private String description;
+        String description,
 
-    private String titleImageUrl;
+        LocalDate foundedAt,
 
-    private MultipartFile image;
+        @EmptyOrSize(message = "Founder have to be between 6 and 64 characters long.", min = 6, max = 64)
+        String founder,
+
+        @EmptyOrSize(message = "Owner have to be between 6 and 64 characters long.", min = 6, max = 64)
+        String owner,
+
+        String titleImageId
+) {
 }
