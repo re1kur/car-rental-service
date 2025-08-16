@@ -1,0 +1,33 @@
+#file: noinspection undefined
+spring:
+  application:
+    name: rental-service-dev
+  docker:
+    compose:
+      enabled: true
+      file: ./build/dev/docker-compose-dev.yml
+  jpa:
+    show-sql: true
+  liquibase:
+    change-log: db/changelog/db.changelog-master-dev.yml
+
+minio:
+  access-key: developer
+  secret-key: developer
+  endpoint: http://localhost:9000
+  endpoint-override: http://localhost:9000
+  default-bucket: developer
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+    org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
+    org.apache.coyote.http11: DEBUG
+    org.springframework.web.multipart.support.StandardMultipartHttpServletRequest: TRACE
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter: TRACE
+    org.springframework.http.converter: TRACE
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet.DispatcherServlet: TRACE
+    org.springframework.web.servlet.mvc.method.annotation.ServletModelAttributeMethodProcessor: TRACE

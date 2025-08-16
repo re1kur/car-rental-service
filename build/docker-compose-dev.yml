@@ -1,0 +1,16 @@
+name: dev-app
+services:
+  postgres:
+    image: postgres:17-alpine
+    env_file:
+      - build/sql.env
+    ports:
+      - "5432:5432"
+  minio:
+    image: quay.io/minio/minio:latest
+    env_file:
+      - build/minio.env
+    command: server /data --console-address ":9001"
+    ports:
+      - '9000:9000'
+      - '9001:9001'
