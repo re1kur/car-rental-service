@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Car types — Car Rental Service</title>
+</head>
+
+<header th:insert="fragments/header.html :: pages">
+</header>
+
+<body>
+<div>
+    <div th:if="${not #lists.isEmpty(carTypes)}">
+        <div th:each="carType : ${carTypes}">
+            <article>
+                <a th:href="@{/car-types/{id}(id=${carType.id})}">
+                    <span th:text="${carType.name}"></span><br>
+                </a>
+            </article>
+            <hr>
+        </div>
+    </div>
+</div>
+</body>
+</html>

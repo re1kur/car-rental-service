@@ -18,29 +18,7 @@ public class CarTypesController {
     private final CarTypeService carTypeService;
 
     @GetMapping
-    public String carTypesRedirect() {
-        return "redirect:/car-types/list";
-    }
-
-    @GetMapping("/create")
-    public String getCarTypeCreatePage(Model model) {
-        model.addAttribute("carType", new CarTypePayload(null));
-        return "/car-type/create.html";
-    }
-
-    @PostMapping("/create")
-    public String createCarType(
-            @ModelAttribute CarTypePayload payload
-    ) {
-        carTypeService.create(payload);
-
-        return "redirect:/moderator/menu";
-
-        //TODO: maybe the better idea is redirect to new cartype profile page
-    }
-
-    @GetMapping("/list")
-    public String getCarTypeList(
+    public String getCarTypes(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "5") Integer size,
             Model model
@@ -53,6 +31,23 @@ public class CarTypesController {
         model.addAttribute("page", pageDtos.getNumber());
         model.addAttribute("totalPages", pageDtos.getTotalPages());
 
-        return "/car-type/list.html";
+        return "/car-types/list.html";
+    }
+
+    @GetMapping("/create")
+    public String getCarTypeCreatePage(Model model) {
+        model.addAttribute("carType", new CarTypePayload(null));
+        return "/car-types/create.html";
+    }
+
+    @PostMapping("/create")
+    public String createCarType(
+            @ModelAttribute CarTypePayload payload
+    ) {
+        carTypeService.create(payload);
+
+        return "redirect:/moderator/menu";
+
+        //TODO: maybe the better idea is redirect to new cartype profile page
     }
 }

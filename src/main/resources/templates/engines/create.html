@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>New engine — Car Rental Service</title>
-
 </head>
+
+<header th:insert="fragments/header.html :: pages">
+</header>
+
 <body>
 <div>
-    <form class="edit-form" method="post" th:action="@{/engines/create}">
+    <form method="post" th:action="@{/engines/create}">
         <h4>Name:</h4>
         <label for="name">
             <input th:field="*{engine.name}" type="text" name="name" id="name"

@@ -1,0 +1,41 @@
+name: dev-app
+services:
+  postgres:
+    image: postgres:17-alpine
+    env_file:
+      - environment/sql.env
+    ports:
+      - "5432:5432"
+  minio:
+    image: quay.io/minio/minio:latest
+    env_file:
+      - environment/minio.env
+    command: server /data --console-address ":9001"
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+  kc-postgres:
+    image: postgres:17-alpine
+    env_file:
+      - environment/sql.env
+    networks:
+      - keycloak_net
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2
+    command: start-dev
+    env_file: keycloak/environment/keycloak.env
+    volumes:
+      - ./keycloak/init/realms:/tmp/realms
+      - ./keycloak/init/scripts/commands.sh:/tmp/scripts/commands.sh
+    entrypoint: ["sh", "/tmp/scripts/commands.sh"]
+    ports:
+      - "9090:8080"
+    depends_on:
+      - kc-postgres
+    networks:
+      - keycloak_net
+
+networks:
+  keycloak_net:
+    driver: bridge
+    external: false

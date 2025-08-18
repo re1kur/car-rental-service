@@ -1,53 +1,106 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Navigation</title>
 </head>
 <body>
-<div th:fragment="to-car">
-    <a th:href="@{/cars/{id}(id=${car.id})}" class="header-link">&#8592; To car</a>
-</div>
-<div th:fragment="to-make">
-    <a th:href="@{/makes/{id}(id=${make.id})}" class="header-link">&#8592; To make</a>
-</div>
-<div th:fragment="to-cars-list">
-    <a th:href="@{/cars/list}" class="header-link">&#8592; To list</a>
-</div>
-<div th:fragment="to-makes-list">
-    <a th:href="@{/makes/list}" class="header-link">&#8592; To list</a>
-</div>
-<div th:fragment="car-edit">
-    <a th:href="@{/cars/{id}/edit(id=${car.id})}" class="header-link">Edit</a>
-</div>
-<div th:fragment="make-edit">
-    <a th:href="@{/makes/{id}/edit(id=${make.id})}" class="header-link">Edit</a>
+
+<div sec:authorize="hasRole('ADMIN')" th:fragment="createMake">
+    <a th:href="@{/makes/create}">
+        New make
+    </a>
 </div>
 
-<div th:fragment="make-header" class="header">
-    <a th:href="@{/cars/list}" class="header-link">Cars</a>
-    <a th:href="@{/makes/list}" class="header-link">Makes</a>
-    <a th:href="@{/makes/{id}/edit(id=${make.id})}" class="header-link">Edit</a>
+<div sec:authorize="hasRole('ADMIN')" th:fragment="createCar">
+    <a th:href="@{/cars/create}">
+        New car
+    </a>
 </div>
 
-<div th:fragment="cars-header" class="header">
-    <a th:href="@{/}" class="header-link">Home</a>
-    <a th:href="@{/cars/create}" class="header-link">New car</a>
-    <a th:href="@{/cars/list}" class="header-link">Cars</a>
-    <a th:href="@{/makes/list}" class="header-link">Makes</a>
+<div sec:authorize="hasRole('ADMIN')" th:fragment="createCarType">
+    <a th:href="@{/car-types/create}">
+        New car type
+    </a>
 </div>
 
-<div th:fragment="makes-header" class="header">
-    <a th:href="@{/}" class="header-link">Home</a>
-    <a th:href="@{/makes/create}" class="header-link">New Make</a>
-    <a th:href="@{/cars/list}" class="header-link">Cars</a>
-    <a th:href="@{/makes/list}" class="header-link">Makes</a>
+<div sec:authorize="hasRole('ADMIN')" th:fragment="createEngine">
+    <a th:href="@{/engines/create}">
+        New engine
+    </a>
 </div>
 
-<div th:fragment="car-header" class="header">
-    <a th:href="@{/cars/list}" class="header-link">Cars</a>
-    <a th:href="@{/makes/list}" class="header-link">Makes</a>
-    <a th:href="@{/cars/{id}/edit(id=${car.id})}" class="header-link">Edit</a>
+<div th:fragment="pages">
+    <a th:href="@{/}">
+        Home
+    </a>
+    <a th:href="@{/cars}">
+        Cars
+    </a>
+    <a th:href="@{/makes}">
+        Makes
+    </a>
+    <a th:href="@{/engines}">
+        Engines
+    </a>
+    <a th:href="@{/car-types}">
+        Car types
+    </a>
+    <a sec:authorize="hasRole('ADMIN')" th:href="@{/moderator/menu}">
+        Moderator-menu
+    </a>
+    <a sec:authorize="isAuthenticated()" th:href="@{/profile}">
+        Profile
+    </a>
+
+    <a sec:authorize="!isAuthenticated()" th:href="@{/login}">
+        Log in
+    </a>
 </div>
+
+<!--<div th:fragment="to-car">-->
+<!--    <a th:href="@{/cars/{id}(id=${car.id})}" class="header-link">&#8592; To car</a>-->
+<!--</div>-->
+<!--<div th:fragment="to-make">-->
+<!--    <a th:href="@{/makes/{id}(id=${make.id})}" class="header-link">&#8592; To make</a>-->
+<!--</div>-->
+<!--<div th:fragment="to-cars-list">-->
+<!--    <a th:href="@{/cars/list}" class="header-link">&#8592; To list</a>-->
+<!--</div>-->
+<!--<div th:fragment="to-makes-list">-->
+<!--    <a th:href="@{/makes/list}" class="header-link">&#8592; To list</a>-->
+<!--</div>-->
+<!--<div th:fragment="car-edit">-->
+<!--    <a th:href="@{/cars/{id}/edit(id=${car.id})}" class="header-link">Edit</a>-->
+<!--</div>-->
+<!--<div th:fragment="make-edit">-->
+<!--    <a th:href="@{/makes/{id}/edit(id=${make.id})}" class="header-link">Edit</a>-->
+<!--</div>-->
+
+<!--<div th:fragment="make-header" class="header">-->
+<!--    <a th:href="@{/cars/list}" class="header-link">Cars</a>-->
+<!--    <a th:href="@{/makes/list}" class="header-link">Makes</a>-->
+<!--    <a th:href="@{/makes/{id}/edit(id=${make.id})}" class="header-link">Edit</a>-->
+<!--</div>-->
+
+<!--<div th:fragment="cars-header" class="header">-->
+<!--    <a th:href="@{/}" class="header-link">Home</a>-->
+<!--    <a th:href="@{/cars/create}" class="header-link">New car</a>-->
+<!--    <a th:href="@{/cars/list}" class="header-link">Cars</a>-->
+<!--    <a th:href="@{/makes/list}" class="header-link">Makes</a>-->
+<!--</div>-->
+
+<!--<div th:fragment="makes-header" class="header">-->
+<!--    <a th:href="@{/}" class="header-link">Home</a>-->
+<!--    <a th:href="@{/makes/create}" class="header-link">New Make</a>-->
+<!--    <a th:href="@{/cars/list}" class="header-link">Cars</a>-->
+<!--    <a th:href="@{/makes/list}" class="header-link">Makes</a>-->
+<!--</div>-->
+
+<!--<div th:fragment="car-header" class="header">-->
+<!--    <a th:href="@{/cars/list}" class="header-link">Cars</a>-->
+<!--    <a th:href="@{/makes/list}" class="header-link">Makes</a>-->
+<!--    <a th:href="@{/cars/{id}/edit(id=${car.id})}" class="header-link">Edit</a>-->
+<!--</div>-->
 </body>
 </html>

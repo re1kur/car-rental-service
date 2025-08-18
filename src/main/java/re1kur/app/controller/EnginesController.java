@@ -20,31 +20,11 @@ public class EnginesController {
 
     @GetMapping("/")
     public String listRedirect() {
-        return "redirect:/engines/list";
+        return "redirect:/engines";
     }
 
     @GetMapping
-    public String enginesRedirect() {
-        return "redirect:/engines/list";
-    }
-
-    @GetMapping("/create")
-    public String getEngineCreatePage(Model model) {
-        model.addAttribute("engine", new EnginePayload(null));
-        return "/engine/create.html";
-    }
-
-    @PostMapping("/create")
-    public String createEngine(
-            @ModelAttribute EnginePayload payload
-    ) {
-        engineService.create(payload);
-        return "redirect:/moderator/menu";
-        //TODO: maybe the better redirect on the new engine profile page
-    }
-
-    @GetMapping("/list")
-    public String getEnginePage(
+    public String getEngines(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "5") Integer size,
             Model model
@@ -57,6 +37,21 @@ public class EnginesController {
         model.addAttribute("page", pageDtos.getNumber());
         model.addAttribute("totalPages", pageDtos.getTotalPages());
 
-        return "/engine/list.html";
+        return "/engines/list.html";
+    }
+
+    @GetMapping("/create")
+    public String getEngineCreatePage(Model model) {
+        model.addAttribute("engine", new EnginePayload(null));
+        return "/engines/create.html";
+    }
+
+    @PostMapping("/create")
+    public String createEngine(
+            @ModelAttribute EnginePayload payload
+    ) {
+        engineService.create(payload);
+        return "redirect:/moderator/menu";
+        //TODO: maybe the better redirect on the new engine profile page
     }
 }

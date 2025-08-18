@@ -1,27 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Engines — Car Rental Service</title>
 </head>
+
+<header th:insert="fragments/header.html :: pages">
+</header>
+
 <body>
-<div class="container">
-    <div class="makes-list" th:if="${not #lists.isEmpty(engines)}">
-        <div th:each="engine : ${engines}" class="make-item">
+<div>
+    <div th:if="${not #lists.isEmpty(engines)}">
+        <div th:each="engine : ${engines}">
             <article>
-                <a th:href="@{/engines/{id}(id=${engine.id})}" class="make-link">
-                    <span class="make-name" th:text="${engine.name}"></span><br>
+                <a th:href="@{/engines/{id}(id=${engine.id})}">
+                    <span th:text="${engine.name}"></span><br>
                 </a>
-<!--                <section class="make-details">-->
-<!--                    <span class="make-country" th:text="'Country: ' + ${make.country}"></span><br>-->
-<!--                    <span class="make-description" th:text="'Description: ' + ${make.description}"></span><br>-->
-<!--                </section>-->
-<!--                <footer class="make-footer">-->
-<!--                    <a th:href="@{/engines/list}" class="make-cars-link">CarTypes</a>-->
-<!--                </footer>-->
-<!--                <img th:if="${make.titleImageUrl != null}" th:src="${make.titleImageUrl}" alt="">-->
             </article>
-            <hr class="make-separator">
+            <hr>
         </div>
     </div>
 </div>

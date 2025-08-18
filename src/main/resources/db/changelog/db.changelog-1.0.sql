@@ -1,32 +1,32 @@
 --liquibase formatted sql
 
+----changeset re1kur:1
+--CREATE TABLE IF NOT EXISTS users
+--(
+--    id             uuid PRIMARY KEY,
+--    email          VARCHAR(256) NOT NULL UNIQUE,
+--    password       VARCHAR(64)  NOT NULL,
+--    email_verified BOOLEAN      NOT NULL DEFAULT FALSE
+--);
+--
+----changeset re1kur:2
+--CREATE TABLE IF NOT EXISTS roles
+--(
+--    id   SMALLSERIAL PRIMARY KEY,
+--    name VARCHAR(16) NOT NULL UNIQUE
+--);
+--
+----changeset re1kur:3
+--CREATE TABLE IF NOT EXISTS users_roles
+--(
+--    user_id uuid,
+--    role_id SMALLINT,
+--    PRIMARY KEY (user_id, role_id),
+--    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+--    FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
+--);
+
 --changeset re1kur:1
-CREATE TABLE IF NOT EXISTS users
-(
-    id             uuid PRIMARY KEY,
-    email          VARCHAR(256) NOT NULL UNIQUE,
-    password       VARCHAR(64)  NOT NULL,
-    email_verified BOOLEAN      NOT NULL DEFAULT FALSE
-);
-
---changeset re1kur:2
-CREATE TABLE IF NOT EXISTS roles
-(
-    id   SMALLSERIAL PRIMARY KEY,
-    name VARCHAR(16) NOT NULL UNIQUE
-);
-
---changeset re1kur:3
-CREATE TABLE IF NOT EXISTS users_roles
-(
-    user_id uuid,
-    role_id SMALLINT,
-    PRIMARY KEY (user_id, role_id),
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
-);
-
---changeset re1kur:4
 CREATE TABLE IF NOT EXISTS files
 (
     id             VARCHAR(64) PRIMARY KEY,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS files
     url_expires_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
---changeset re1kur:5
+--changeset re1kur:2
 CREATE TABLE IF NOT EXISTS makes
 (
     id             SMALLSERIAL PRIMARY KEY,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS makes
     FOREIGN KEY (title_image_id) REFERENCES files (id)
 );
 
---changeset re1kur:6
+--changeset re1kur:3
 CREATE TABLE IF NOT EXISTS make_information
 (
     make_id     SMALLINT PRIMARY KEY,
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS make_information
     FOREIGN KEY (make_id) REFERENCES makes (id) ON DELETE CASCADE
 );
 
---changeset re1kur:7
+--changeset re1kur:4
 CREATE TABLE IF NOT EXISTS make_images
 (
     make_id  SMALLINT,
@@ -67,21 +67,21 @@ CREATE TABLE IF NOT EXISTS make_images
     FOREIGN KEY (image_id) REFERENCES files (id) ON DELETE CASCADE
 );
 
---changeset re1kur:8
+--changeset re1kur:5
 CREATE TABLE IF NOT EXISTS car_types
 (
     id   SMALLSERIAL PRIMARY KEY,
     name VARCHAR(16) NOT NULL UNIQUE
 );
 
---changeset re1kur:9
+--changeset re1kur:6
 CREATE TABLE IF NOT EXISTS engines
 (
     id   SMALLSERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL UNIQUE
 );
 
---changeset re1kur:10
+--changeset re1kur:7
 CREATE TABLE IF NOT EXISTS cars
 (
     id             SERIAL UNIQUE PRIMARY KEY,
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS cars
     FOREIGN KEY (title_image_id) REFERENCES files (id) ON DELETE CASCADE
 );
 
---changeset re1kur:11
+--changeset re1kur:8
 CREATE TABLE IF NOT EXISTS car_information
 (
     car_id       INTEGER PRIMARY KEY,
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS car_information
     FOREIGN KEY (car_id) REFERENCES cars (id) ON DELETE CASCADE
 );
 
---changeset re1kur:12
+--changeset re1kur:9
 CREATE TABLE IF NOT EXISTS car_images
 (
     car_id   INTEGER,
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS car_images
     FOREIGN KEY (image_id) REFERENCES files (id) ON DELETE CASCADE
 );
 
--- --changeset re1kur:11
+-- --changeset re1kur:1
 -- CREATE TABLE IF NOT EXISTS rentals
 -- (
 --     id          SERIAL PRIMARY KEY,

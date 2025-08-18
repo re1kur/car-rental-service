@@ -33,17 +33,7 @@ public class CarsController {
     private Integer pageSize;
 
     @GetMapping
-    public String redirect() {
-        return "redirect:/cars/list";
-    }
-
-    @GetMapping("/")
-    public String redirectSlash() {
-        return "redirect:/cars/list";
-    }
-
-    @GetMapping("/list")
-    public String listCars(
+    public String getCars(
             Model model,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute(name = "filter") CarFilter filter
@@ -56,6 +46,11 @@ public class CarsController {
         model.addAttribute("filter", filter);
 
         return "cars/list.html";
+    }
+
+    @GetMapping("/")
+    public String redirectSlash() {
+        return "redirect:/cars";
     }
 
     @GetMapping("/create")

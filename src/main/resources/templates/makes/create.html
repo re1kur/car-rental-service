@@ -6,6 +6,9 @@
     <title>New Make - Car Rental Service </title>
 </head>
 
+<header th:insert="fragments/header.html :: pages">
+</header>
+
 <body>
 <div>
     <form method="post" th:action="@{/makes/create}" enctype="multipart/form-data">

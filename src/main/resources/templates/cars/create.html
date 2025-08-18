@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>New Car &ndash; Car Rental Service</title>
 </head>
+<header th:insert="fragments/header.html :: pages">
+</header>
 <body>
 <div class="container">
     <form method="post" th:action="@{/cars/create}" enctype="multipart/form-data">

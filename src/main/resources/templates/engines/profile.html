@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title th:text="${engine.name} + ' — Car Rental Service'"></title>
 </head>
-<body>
 
+<header th:insert="fragments/header.html :: pages">
+</header>
+
+<body>
 <div>
     <h1 th:text="${engine.name}"></h1>
 </div>

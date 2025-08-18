@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>Makes - Car Rental Service</title>
 </head>
-<body>
 
+<header th:insert="fragments/header.html :: pages">
+</header>
+
+<body>
 <div th:if="${not #lists.isEmpty(makes)}">
     <div th:each="make : ${makes}">
         <img th:if="${make.titleImgUrl != null}"
@@ -18,10 +21,10 @@
             <span>Profile</span>
         </a><br>
 
-        <a th:href="@{/cars/list(makeId=${make.id})}">
+        <a th:href="@{/cars(makeId=${make.id})}">
             <span th:text="'Cars by ' + ${make.name}"></span>
         </a><br>
-        <hr class="make-separator">
+        <hr>
     </div>
 </div>
 

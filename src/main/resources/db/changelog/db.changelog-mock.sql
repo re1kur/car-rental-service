@@ -1,5 +1,4 @@
 --liquibase formatted sql
---liquibase formatted sql
 
 --changeset re1kur:1
 INSERT INTO makes (name)

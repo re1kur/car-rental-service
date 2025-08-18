@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title th:text="'Updating ' + ${make.name} + ' — Car Rental Service'"></title>
 </head>
+
+<header th:insert="fragments/header.html :: pages">
+</header>
+
 <body>
 <div>
     <form method="post" th:action="@{/makes/{id}/update(id=${make.id})}" enctype="multipart/form-data">

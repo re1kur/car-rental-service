@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title th:text="${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service' "></title>
 </head>
-
+<header th:insert="fragments/header.html :: pages">
+</header>
 <body>
 <div>
     <h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>

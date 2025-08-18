@@ -20,23 +20,23 @@ public class MakesController {
 
     @GetMapping("/")
     public String redirectListSlash() {
-        return "redirect:/makes/list";
+        return "redirect:/makes";
     }
 
     @GetMapping
-    public String redirectList() {
-        return "redirect:/makes/list";
-    }
-
-    @GetMapping("/list")
-    public String getList(Model model) {
+    public String getMakes(
+            Model model
+    ) {
         List<MakeDto> makes = service.readAll();
         model.addAttribute("makes", makes);
+
         return "/makes/list.html";
     }
 
     @GetMapping("/create")
-    public String getCreateMake(Model model) {
+    public String getCreateMake(
+            Model model
+    ) {
         model.addAttribute("make", null);
         return "/makes/create.html";
     }

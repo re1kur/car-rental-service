@@ -23,7 +23,7 @@ public class EngineController {
         EngineDto engineDto = engineService.read(id);
         model.addAttribute("engine", engineDto);
 
-        return "/engine/profile.html";
+        return "/engines/profile.html";
     }
 
     @GetMapping("/update")
@@ -33,7 +33,7 @@ public class EngineController {
         EngineDto engine = engineService.read(id);
         model.addAttribute("engine", engine);
 
-        return "/engine/update.html";
+        return "/engines/update.html";
     }
 
     @PostMapping("/update")

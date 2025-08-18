@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>User-Info</title>
-    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
-    <link rel="stylesheet" th:href="@{/css/main-header.css}">
 </head>
+
+<header th:include="fragments/header.html :: pages">
+</header>
+
 <body>
 <h1>User-Information</h1>
 <section>
@@ -17,6 +19,4 @@
     <span th:text="${user.username}"></span>
 </section>
 </body>
-<footer th:replace="~{/fragments/footer :: main-footer}">
-</footer>
 </html>

@@ -2,9 +2,6 @@
 spring:
   application:
     name: rental-service-prod
-  docker:
-    compose:
-      enabled: false
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
 

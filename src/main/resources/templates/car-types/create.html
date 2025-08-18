@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <title>New car type — Car Rental Service</title>
 </head>
+
+<header th:insert="fragments/header.html :: pages">
+</header>
+
 <body>
-<div class="container">
-    <form class="edit-form" method="post" th:action="@{/car-types/create}">
+<div>
+    <form method="post" th:action="@{/car-types/create}">
         <h4>Name:</h4>
         <label for="name">
             <input th:field="*{carType.name}" type="text" name="name" id="name"
@@ -16,6 +20,4 @@
     </form>
 </div>
 </body>
-<footer th:insert="~{/fragments/footer :: main-footer}">
-</footer>
 </html>

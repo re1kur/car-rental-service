@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Validation Error</title>
 </head>
+
+<header th:include="fragments/header.html :: pages">
+</header>
+
 <body>
     <div style="color: red;">
         <h3>Validation failed</h3>

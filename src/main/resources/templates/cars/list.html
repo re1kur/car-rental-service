@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <title>Cars &ndash; Car Rental Service</title>
 </head>
+<header th:insert="fragments/header.html :: pages">
+</header>
 <body>
 <div>
     <section>
-        <form th:action="@{/cars/list}" method="get">
+        <form th:action="@{/cars}" method="get">
             <div>
                 <label for="model">Model:</label>
                 <input type="text" name="model" id="model"
@@ -84,7 +86,7 @@
             </label>
 
             <label th:each="pageNumber : ${#numbers.sequence(page.firstNumber, page.lastNumber)}">
-                <a th:href="@{/cars/list(
+                <a th:href="@{/cars(
                     page=${pageNumber},
                     model=${filter.model},
                     makeId=${filter.makeId},
@@ -94,7 +96,7 @@
             </label>
 
             <label>
-                <a th:href="${page.nextNumber != null ? '/cars/list?'
+                <a th:href="${page.nextNumber != null ? '/cars?'
                  + 'page=' + page.nextNumber
                  + '&model=' + (filter.model != null ? filter.model : '')
                  + '&makeId=' + (filter.makeId != null ? filter.makeId : '')
@@ -106,5 +108,4 @@
         </div>
     </nav>
 </footer>
-
 </html>

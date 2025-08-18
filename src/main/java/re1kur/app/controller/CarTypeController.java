@@ -23,7 +23,7 @@ public class CarTypeController {
         CarTypeDto carTypeDto = carTypeService.read(id);
         model.addAttribute("carType", carTypeDto);
 
-        return "/car-type/profile.html";
+        return "/car-types/profile.html";
     }
 
     @GetMapping("/update")
@@ -33,7 +33,7 @@ public class CarTypeController {
     ) {
         CarTypeDto type = carTypeService.read(id);
         model.addAttribute("carType", type);
-        return "/car-type/update.html";
+        return "/car-types/update.html";
     }
 
     @PostMapping("/update")

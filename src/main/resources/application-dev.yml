@@ -2,13 +2,29 @@
 spring:
   application:
     name: rental-service-dev
-  docker:
-    compose:
-      enabled: true
-      file: ./build/dev/docker-compose-dev.yml
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: car-rental-app
+            client-secret: kvTfHzdUWRInkgRNmN6Ruixl2KuBhB8E
+            scope: openid
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9090/realms/rental-service-realm
+            user-name-attribute: preferred_username
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/developer
+    username: developer
+    password: developer
   jpa:
     show-sql: true
   liquibase:
+    url: jdbc:postgresql://localhost:5432/developer
+    user: developer
+    password: developer
     change-log: db/changelog/db.changelog-master-dev.yml
 
 minio:
