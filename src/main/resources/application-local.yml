@@ -1,0 +1,34 @@
+#file: noinspection undefined
+spring:
+  application:
+    name: rental-service-local
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml
+  jpa:
+    show-sql: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/developer
+    username: developer
+    password: developer
+
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: car-rental-app
+            client-secret: kvTfHzdUWRInkgRNmN6Ruixl2KuBhB8E
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/keycloak
+            scope: openid
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9090/realms/rental-service-realm
+            user-name-attribute: preferred_username
+
+minio:
+  access-key: developer
+  secret-key: developer
+  endpoint: http://localhost:9000
+  endpoint-override: http://localhost:9000
+  default-bucket: developer
