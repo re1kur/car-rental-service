@@ -13,14 +13,11 @@ public class ModeratorController {
 
     @GetMapping("/")
     public String getMenuRedirect() {
-        log.info("redirect to menu");
         return "redirect:/moderator/menu";
     }
 
     @GetMapping("/menu")
     public String getMenuResponsibilities() {
-        log.info("moderator menu");
-        return "/moderator/menu.html";
+        return "moderator/menu.html";
     }
-
 }

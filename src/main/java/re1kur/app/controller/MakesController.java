@@ -30,7 +30,7 @@ public class MakesController {
         List<MakeDto> makes = service.readAll();
         model.addAttribute("makes", makes);
 
-        return "/makes/list.html";
+        return "makes/list.html";
     }
 
     @GetMapping("/create")
@@ -38,7 +38,7 @@ public class MakesController {
             Model model
     ) {
         model.addAttribute("make", null);
-        return "/makes/create.html";
+        return "makes/create.html";
     }
 
     @PostMapping("/create")

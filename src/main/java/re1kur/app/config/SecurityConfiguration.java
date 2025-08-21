@@ -28,6 +28,21 @@ public class SecurityConfiguration {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(
+                                        "/cars/create",
+                                        "/makes/create",
+                                        "/car-types/create",
+                                        "/engines/create",
+                                        "/cars/*/update",
+                                        "/makes/*/update",
+                                        "/car-types/*/update",
+                                        "/engines/*/update",
+                                        "/cars/*/delete",
+                                        "/car-types/*/delete",
+                                        "/engines/*/delete",
+                                        "/makes/*/delete",
+                                        "/moderator/**",
+                                        "/moderator").hasRole("ADMIN")
+                                .requestMatchers(
                                         "/",
                                         "/cars",
                                         "/makes",
@@ -39,26 +54,11 @@ public class SecurityConfiguration {
                                         "/v3/api-docs",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
-                                        "/swagger-ui.html").permitAll()
-                                .requestMatchers(
-                                        "/cars/{id}",
-                                        "/makes/{id}",
-                                        "/engines/{id}",
-                                        "/car-types/{id}"
-                                ).authenticated()
-                                .requestMatchers(
-                                        "/cars/create",
-                                        "/cars/{id}/update",
-                                        "/makes/create",
-                                        "/makes/{id}/update",
-                                        "/car-types/create",
-                                        "/car-types/{id}/update",
-                                        "/engines/create",
-                                        "/engines/{id}/update",
-                                        "/cars/{id}/delete",
-                                        "/car-types/{id}/delete",
-                                        "/engines/{id}/delete",
-                                        "/makes/{id}/delete").hasRole("ADMIN")
+                                        "/swagger-ui.html",
+                                        "/cars/*",
+                                        "/makes/*",
+                                        "/engines/*",
+                                        "/car-types/*").permitAll()
                                 .anyRequest().authenticated())
                 .oauth2Login(Customizer.withDefaults())
                 .logout(logout -> logout
@@ -66,6 +66,7 @@ public class SecurityConfiguration {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID"));
+        //todo: logout, http-status-exception-handlers
         return http.build();
     }
 

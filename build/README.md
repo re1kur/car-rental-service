@@ -1,1 +1,0 @@
-THERE IS docker-compose.yml for local developing. use it for profile dev. app depends on services that contain in /build/docker-compose.yml file.

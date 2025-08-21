@@ -31,13 +31,13 @@ public class CarTypesController {
         model.addAttribute("page", pageDtos.getNumber());
         model.addAttribute("totalPages", pageDtos.getTotalPages());
 
-        return "/car-types/list.html";
+        return "car-types/list.html";
     }
 
     @GetMapping("/create")
     public String getCarTypeCreatePage(Model model) {
         model.addAttribute("carType", new CarTypePayload(null));
-        return "/car-types/create.html";
+        return "car-types/create.html";
     }
 
     @PostMapping("/create")

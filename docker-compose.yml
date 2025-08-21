@@ -1,0 +1,44 @@
+services:
+  minio:
+    image: quay.io/minio/minio:latest
+    env_file:
+      - docker/minio/environment/minio.env
+    command: server /data --console-address ":9001"
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+
+  postgres:
+    image: postgres:17-alpine
+    env_file:
+      - docker/psql/environment/sql.env
+
+  kc-postgres:
+    image: postgres:17-alpine
+    env_file:
+      - docker/psql/environment/sql.env
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2
+    command: start-dev
+    env_file: docker/keycloak/environment/keycloak.env
+    volumes:
+      - ./docker/keycloak/init/realms:/tmp/realms
+      - ./docker/keycloak/init/scripts/commands.sh:/tmp/scripts/commands.sh
+    entrypoint: [ "sh", "/tmp/scripts/commands.sh" ]
+    ports:
+      - "9090:8080"
+    depends_on:
+      - kc-postgres
+
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    env_file:
+      - docker/app/environment/variables.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - keycloak
+      - postgres

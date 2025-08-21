@@ -37,13 +37,13 @@ public class EnginesController {
         model.addAttribute("page", pageDtos.getNumber());
         model.addAttribute("totalPages", pageDtos.getTotalPages());
 
-        return "/engines/list.html";
+        return "engines/list.html";
     }
 
     @GetMapping("/create")
     public String getEngineCreatePage(Model model) {
         model.addAttribute("engine", new EnginePayload(null));
-        return "/engines/create.html";
+        return "engines/create.html";
     }
 
     @PostMapping("/create")

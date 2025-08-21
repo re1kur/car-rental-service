@@ -15,7 +15,7 @@ import re1kur.app.service.MakeService;
 
 
 @Controller
-@RequestMapping("cars/{id}")
+@RequestMapping("/cars/{id}")
 @RequiredArgsConstructor
 public class CarController {
     private final CarService service;
@@ -32,7 +32,7 @@ public class CarController {
         CarFullDto found = service.readFull(id);
         model.addAttribute("car", found);
 
-        return "/cars/profile.html";
+        return "cars/profile.html";
     }
 
     @GetMapping("/update")
@@ -46,7 +46,7 @@ public class CarController {
         model.addAttribute("carTypes", carTypeService.readAll());
         model.addAttribute("car", car);
 
-        return "/cars/update.html";
+        return "cars/update.html";
     }
 
     @PostMapping("/update")

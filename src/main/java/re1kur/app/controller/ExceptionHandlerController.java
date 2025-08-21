@@ -28,7 +28,7 @@ public class ExceptionHandlerController {
         model.addAttribute("errors", ex.getBindingResult().getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(toList()));
-        return "/errors/valid-error";
+        return "errors/valid-error";
     }
 
     @ExceptionHandler(exception = IOException.class)

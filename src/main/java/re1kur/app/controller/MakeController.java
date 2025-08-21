@@ -20,7 +20,7 @@ public class MakeController {
             @PathVariable(name = "id") Integer id
     ) {
         model.addAttribute("make", service.read(id));
-        return "/makes/profile.html";
+        return "makes/profile.html";
     }
 
     @GetMapping("/update")
@@ -29,7 +29,7 @@ public class MakeController {
             Model model
     ) {
         model.addAttribute("make", service.read(makeId));
-        return "/makes/update.html";
+        return "makes/update.html";
     }
 
     @PostMapping("/update")
