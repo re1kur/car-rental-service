@@ -10,7 +10,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/developer
     username: developer
     password: developer
-
+  devtools:
+    add-properties: false
   security:
     oauth2:
       client:

@@ -2,17 +2,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>New Car &ndash; Car Rental Service</title>
+    <title>New Car — Car Rental Service</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-form.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
-<header th:insert="fragments/header.html :: pages">
-</header>
 <body>
-<div class="container">
-    <form method="post" th:action="@{/cars/create}" enctype="multipart/form-data">
-        <section class="form-group">
+
+<header th:insert="fragments/header.html :: pages"></header>
+
+<div class="container edit-create-wrapper">
+    <form method="post" th:action="@{/cars/create}" enctype="multipart/form-data" class="edit-form">
+
+        <section class="form-section">
             <h2>Common information</h2>
 
-            <label for="makeId">Make:
+            <div class="form-group">
+                <label for="makeId">Make:</label>
                 <select id="makeId" name="makeId" required>
                     <option value="" disabled selected>Choose the make</option>
                     <option th:each="make : ${makes}"
@@ -21,15 +27,17 @@
                             th:selected="${payload != null ? payload.makeId == make.id : ''}">
                     </option>
                 </select>
-            </label><br>
+            </div>
 
-            <label for="model">Model:
+            <div class="form-group">
+                <label for="model">Model:</label>
                 <input type="text" name="model" id="model"
                        th:value="${payload != null ? payload.model : ''}"
                        placeholder="Camry" required>
-            </label><br>
+            </div>
 
-            <label for="carTypeId">Type of car:
+            <div class="form-group">
+                <label for="carTypeId">Type of car:</label>
                 <select id="carTypeId" name="carTypeId" required>
                     <option value="" disabled selected>Choose the type</option>
                     <option th:each="carType : ${carTypes}"
@@ -38,9 +46,10 @@
                             th:selected="${payload != null ? payload.carTypeId == carType.id : ''}">
                     </option>
                 </select>
-            </label><br>
+            </div>
 
-            <label for="engineId">Engine:
+            <div class="form-group">
+                <label for="engineId">Engine:</label>
                 <select id="engineId" name="engineId" required>
                     <option value="" disabled selected>Choose the engine</option>
                     <option th:each="engine : ${engines}"
@@ -49,108 +58,103 @@
                             th:selected="${payload != null ? payload.engineId == engine.id : ''}">
                     </option>
                 </select>
-            </label><br>
+            </div>
 
-            <label for="year">Year:
+            <div class="form-group">
+                <label for="year">Year:</label>
                 <input type="text" name="year" id="year"
                        th:value="${payload != null ? payload.year : ''}"
-                       placeholder="____" required max="4">
-            </label><br>
+                       placeholder="2023" maxlength="4" required>
+            </div>
 
-            <label for="licensePlate">License plate:
+            <div class="form-group">
+                <label for="licensePlate">License plate:</label>
                 <input type="text" name="licensePlate" id="licensePlate"
                        th:value="${payload != null ? payload.licensePlate : ''}"
                        placeholder="AAA111" required>
-            </label><br>
+            </div>
         </section>
 
 
-        <section>
+        <section class="form-section">
             <h2>Detailed information</h2>
-            <label for="description">Description:
-                <input type="text"
-                       id="description"
-                       name="description"
-                       placeholder="Experience smooth driving with the Toyota Corolla 2022
-                       – perfect for city trips and long drives. Known for its excellent fuel economy, comfort, and safety features.
-                       Ideal for small families or business travel."
-                       th:value="${payload != null ? payload.description : ''}">
-            </label><br>
 
-            <label for="color">Color:
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4"
+                          placeholder="Experience smooth driving with the Toyota Corolla 2022 – perfect for city trips and long drives. Known for its excellent fuel economy, comfort, and safety features. Ideal for small families or business travel."
+                          th:text="${payload != null ? payload.description : ''}"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="color">Color:</label>
                 <input type="text"
                        id="color"
                        name="color"
                        placeholder="Red"
                        th:value="${payload != null ? payload.color : ''}">
-            </label><br>
+            </div>
 
-            <label for="mileage">Mileage:
+            <div class="form-group">
+                <label for="mileage">Mileage:</label>
                 <input type="text"
                        name="mileage"
                        id="mileage"
                        placeholder="Mileage"
                        th:value="${payload != null ? payload.mileage : ''}">
-            </label><br>
+            </div>
 
-            <label for="seats">Seats:
+            <div class="form-group">
+                <label for="seats">Seats:</label>
                 <input type="text"
                        name="seats"
                        id="seats"
                        placeholder="5"
                        th:value="${payload != null ? payload.seats : ''}">
-            </label><br>
+            </div>
 
-            <label for="fuelType">Fuel type:
+            <div class="form-group">
+                <label for="fuelType">Fuel type:</label>
                 <select id="fuelType" name="fuelType">
                     <option value="" disabled selected>Choose fuel type</option>
-                    <option th:value="'Gasoline'" th:text="'Gasoline'"
-                            th:selected="${payload.fuelType == 'Gasoline'}"></option>
-                    <option th:value="'Diesel'" th:text="'Diesel'"
-                            th:selected="${payload.fuelType == 'Diesel'}"></option>
-                    <option th:value="'Ethanol'" th:text="'Ethanol'"
-                            th:selected="${payload.fuelType == 'Ethanol'}"></option>
-                    <option th:value="'Electric'" th:text="'Electric'"
-                            th:selected="${payload.fuelType == 'Electric'}"></option>
-                    <option th:value="'Hybrid electric'" th:text="'Hybrid electric'"
-                            th:selected="${payload.fuelType == 'Hybrid electric'}"></option>
-                    <option th:value="'Natural gas'" th:text="'Natural gas'"
-                            th:selected="${payload.fuelType == 'Natural gas'}"></option>
+                    <option th:value="'Gasoline'" th:selected="${payload.fuelType == 'Gasoline'}">Gasoline</option>
+                    <option th:value="'Diesel'" th:selected="${payload.fuelType == 'Diesel'}">Diesel</option>
+                    <option th:value="'Ethanol'" th:selected="${payload.fuelType == 'Ethanol'}">Ethanol</option>
+                    <option th:value="'Electric'" th:selected="${payload.fuelType == 'Electric'}">Electric</option>
+                    <option th:value="'Hybrid electric'" th:selected="${payload.fuelType == 'Hybrid electric'}">Hybrid electric</option>
+                    <option th:value="'Natural gas'" th:selected="${payload.fuelType == 'Natural gas'}">Natural gas</option>
                 </select>
-            </label><br>
+            </div>
 
-            <label for="transmission">Transmission:
+            <div class="form-group">
+                <label for="transmission">Transmission:</label>
                 <select id="transmission" name="transmission">
                     <option value="" selected disabled>Choose transmission</option>
-                    <option th:value="'Automatic transmission'"
-                            th:selected="${payload.transmission == 'Automatic transmission'}">
-                        Automatic transmission
-                    </option>
-                    <option th:value="'Manual transmission'"
-                            th:selected="${payload.transmission == 'Manual transmission'}">Manual
-                        transmission
-                    </option>
-                    <option th:value="'Semi-automatic transmission'"
-                            th:selected="${payload.transmission == 'Semi-automatic transmission'}">Semi-automatic
-                        transmission
-                    </option>
+                    <option th:value="'Automatic transmission'" th:selected="${payload.transmission == 'Automatic transmission'}">Automatic transmission</option>
+                    <option th:value="'Manual transmission'" th:selected="${payload.transmission == 'Manual transmission'}">Manual transmission</option>
+                    <option th:value="'Semi-automatic transmission'" th:selected="${payload.transmission == 'Semi-automatic transmission'}">Semi-automatic transmission</option>
                 </select>
-            </label><br>
+            </div>
         </section>
 
-        <section>
-            <label for="title">Title image:
+
+        <section class="form-section">
+            <h2>Images</h2>
+
+            <div class="form-group labelFile">
+                <label for="title">Title image:</label>
                 <input type="file" name="title" id="title" accept="image/*">
-            </label><br>
-        </section>
+            </div>
 
-        <section>
-            <label for="file">Image:
+            <div class="form-group labelFile">
+                <label for="file">Gallery images:</label>
                 <input type="file" id="file" name="file" accept="image/*" multiple>
-            </label><br>
+            </div>
         </section>
 
-        <button type="submit">Create</button>
+        <div class="form-actions">
+            <button type="submit">Create</button>
+        </div>
     </form>
 </div>
 </body>

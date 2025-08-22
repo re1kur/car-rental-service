@@ -2,68 +2,75 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service' "></title>
+    <title th:text="${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service'"></title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
-<header th:insert="fragments/header.html :: pages">
-</header>
 <body>
-<div>
+
+<header th:insert="fragments/header.html :: pages"></header>
+
+<div class="container">
+
     <h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>
+
     <section>
-        <label>
+        <label class="field">
             <span th:text="${'Available: ' + (car.available ? 'Yes' : 'No')}"></span>
         </label>
     </section>
-    <section>
-        <h2>Common:</h2>
-        <label  th:if="${car.titleImage}"><span>Title image: </span><br>
-            <img th:src="${car.titleImage.url}"
-            alt="Here must be title image."><br>
-        </label>
 
-        <section th:if="${not #lists.isEmpty(car.images.empty)}">
+    <section>
+        <h2>Details</h2>
+
+        <div th:if="${car.titleImage}" class="image-gallery">
+            <span class="field">Title image:</span>
+            <img th:src="${car.titleImage.url}" alt="Title image">
+        </div>
+
+        <div th:if="${car.images != null and !#lists.isEmpty(car.images)}" class="image-gallery">
+            <h3>Gallery</h3>
             <ul>
                 <li th:each="image : ${car.images}">
-                    <img th:src="${image.url}" alt="Here must be image"/><br>
-                    <span th:text="'Image uploaded at: ' + ${image.uploadedAt}"></span><br>
+                    <img th:src="${image.url}" alt="Image">
+                    <span th:text="'Uploaded at: ' + ${image.uploadedAt}"></span>
                 </li>
             </ul>
-        </section>
+        </div>
 
-        <label>
-            <span>Make: </span>
+        <label class="field">
+            <span>Make:</span>
             <span th:text="${car.make.name}"></span>
-        </label><br>
+        </label>
 
-        <label>
-            <span>Model: </span>
+        <label class="field">
+            <span>Model:</span>
             <span th:text="${car.model}"></span>
-        </label><br>
+        </label>
 
-        <label>
-            <span>Type: </span>
+        <label class="field">
+            <span>Type:</span>
             <span th:text="${car.carType.name}"></span>
-        </label><br>
+        </label>
 
-        <label>
-            <span>Engine: </span>
+        <label class="field">
+            <span>Engine:</span>
             <span th:text="${car.engine.name}"></span>
-        </label><br>
+        </label>
 
-        <label>
-            <span>Year: </span>
+        <label class="field">
+            <span>Year:</span>
             <span th:text="${car.year}"></span>
-        </label><br>
+        </label>
 
-        <label>
-            <span>License plate: </span>
+        <label class="field">
+            <span>License plate:</span>
             <span th:text="${car.licensePlate}"></span>
-        </label><br>
+        </label>
     </section>
 
-
     <section th:if="${car.information}">
-        <h2>Information:</h2>
+        <h2>Additional Information</h2>
         <ul>
             <li th:if="${car.information.description}" th:text="'Description: ' + ${car.information.description}"></li>
             <li th:if="${car.information.color}" th:text="'Color: ' + ${car.information.color}"></li>
@@ -73,6 +80,8 @@
             <li th:if="${car.information.transmission}" th:text="'Transmission: ' + ${car.information.transmission}"></li>
         </ul>
     </section>
+
 </div>
+
 </body>
 </html>

@@ -3,20 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>New car type — Car Rental Service</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-form.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
-
-<header th:insert="fragments/header.html :: pages">
-</header>
-
 <body>
-<div>
-    <form method="post" th:action="@{/car-types/create}">
-        <h4>Name:</h4>
-        <label for="name">
-            <input th:field="*{carType.name}" type="text" name="name" id="name"
-                   placeholder="Sedan" required>
-        </label><br>
-        <button type="submit">Create</button>
+
+<header th:insert="fragments/header.html :: pages"></header>
+
+<div class="container edit-create-wrapper">
+    <form method="post" th:action="@{/car-types/create}" class="edit-form">
+
+        <section class="form-section">
+            <h2>Common information</h2>
+
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name"
+                       th:value="${payload != null ? payload.name : ''}"
+                       placeholder="Sedan" required>
+            </div>
+        </section>
+
+        <div class="form-actions">
+            <button type="submit">Create</button>
+        </div>
     </form>
 </div>
 </body>

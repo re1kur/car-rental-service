@@ -2,10 +2,12 @@ package re1kur.app.mapper.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import re1kur.app.core.annotations.Mapper;
 import re1kur.app.core.dto.MakeFullDto;
 import re1kur.app.core.dto.MakeDto;
 import re1kur.app.core.dto.MakeShortDto;
+import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.payload.MakeUpdatePayload;
 import re1kur.app.core.payload.MakePayload;
 import re1kur.app.entity.File;
@@ -74,7 +76,7 @@ public class MakeMapperImpl implements MakeMapper {
         return MakeDto.builder()
                 .id(make.getId())
                 .name(make.getName())
-                .titleImgUrl(titleImage != null ? titleImage.getUrl() : null)
+                .titleImage(imageMapper.read(titleImage))
                 .build();
     }
 
@@ -84,5 +86,21 @@ public class MakeMapperImpl implements MakeMapper {
                 .id(make.getId())
                 .name(make.getName())
                 .build();
+    }
+
+    @Override
+    public PageDto<MakeDto> readPage(Page<Make> page) {
+        boolean hasNext = page.hasNext();
+        boolean hasPrevious = page.hasPrevious();
+        return new PageDto<>(
+                page.getContent().stream().map(this::read).toList(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalPages(),
+                hasNext ? page.nextPageable().getPageNumber() : 0,
+                hasPrevious ? page.previousPageable().getPageNumber() : 0,
+                hasNext ? page.nextOrLastPageable().getPageNumber() : 0,
+                hasPrevious ? page.previousOrFirstPageable().getPageNumber() : 0
+        );
     }
 }

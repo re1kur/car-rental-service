@@ -3,23 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Engines — Car Rental Service</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-list.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
 
-<header th:insert="fragments/header.html :: pages">
-</header>
-
 <body>
-<div>
-    <div th:if="${not #lists.isEmpty(engines)}">
-        <div th:each="engine : ${engines}">
-            <article>
-                <a th:href="@{/engines/{id}(id=${engine.id})}">
-                    <span th:text="${engine.name}"></span><br>
-                </a>
-            </article>
-            <hr>
+
+<header th:insert="fragments/header.html :: pages"></header>
+
+<div class="list-container">
+
+    <table th:if="${page.content.empty}" class="no-items">
+        <thead>
+        <tr>
+            <th>Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Engines are not found.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:each="engine : ${page.content}" class="item-card">
+        <div class="item-info">
+            <h2 th:text="${engine.name}"></h2>
+        </div>
+        <div class="item-footer">
+            <a th:href="@{/engines/{id}(id=${engine.id})}">Profile</a>
         </div>
     </div>
 </div>
+
+<footer th:if="${!page.content.empty}">
+    <nav class="pagination" aria-label="Pagination">
+        <a th:href="${page.prevNumber != null ? '/engines?'
+             + 'page=' + page.prevNumber
+             : '#'}"
+           class="page-link" th:text="'Previous'"></a>
+
+        <span th:each="pageNumber : ${#numbers.sequence(page.firstNumber, page.lastNumber)}">
+            <a th:href="@{/engines(
+                page=${pageNumber})}"
+               class="page-link" th:text="${pageNumber + 1}"></a>
+        </span>
+
+        <a th:href="${page.nextNumber != null ? '/engines?'
+             + 'page=' + page.nextNumber
+             : '#'}"
+           class="page-link" th:text="'Next'"></a>
+    </nav>
+</footer>
 </body>
 </html>

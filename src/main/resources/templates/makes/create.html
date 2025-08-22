@@ -1,72 +1,85 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">#
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>New Make - Car Rental Service </title>
+    <title>New Make — Car Rental Service </title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-form.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
-
-<header th:insert="fragments/header.html :: pages">
-</header>
-
 <body>
-<div>
-    <form method="post" th:action="@{/makes/create}" enctype="multipart/form-data">
-        <h2>Make information.</h2>
 
-        <h4>Name:</h4>
-        <label for="name">
-            <input type="text" name="name"
-                   id="name" placeholder="Toyota" required>
-        </label><br>
+<header th:insert="fragments/header.html :: pages"></header>
 
-        <h4>Country:</h4>
-        <label for="country">
-            <input type="text" name="country"
-                   id="country" placeholder="Japan">
-        </label><br>
+<div class="container edit-create-wrapper">
+    <form method="post" th:action="@{/makes/create}" enctype="multipart/form-data" class="edit-form">
 
-        <h4>Description:</h4>
-        <label for="description"><br>
-            <textarea id="description"
-                      placeholder="Japanese multinational automotive manufacturer" rows="4" cols="80"
-                      style="resize: none"
-                      name="description">
-            </textarea>
-        </label><br>
+        <section class="form-section">
+            <h2>Common information</h2>
 
-        <h4>Founder:</h4>
-        <label for="founder">
-            <input type="text" name="founder" id="founder" placeholder="Mads Mikkelsen">
-        </label><br>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name"
+                       th:value="${payload != null ? payload.name : ''}"
+                       placeholder="Toyota" required>
+            </div>
 
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input type="text" name="country" id="country"
+                       th:value="${payload != null ? payload.country : ''}"
+                       placeholder="Japan">
+            </div>
 
-        <h4>Date of foundation:</h4>
-        <label for="foundedAt">
-            <input type="date" name="foundedAt" id="foundedAt" placeholder="2018-07-22">
-        </label><br>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description"
+                          placeholder="Japanese multinational automotive manufacturer" rows="4" cols="80"
+                          style="resize: none"
+                          name="description">
+                </textarea>
+            </div>
 
+            <div class="form-group">
+                <label for="founder">Founder:</label>
+                <input type="text" name="founder" id="founder"
+                       th:value="${payload != null ? payload.founder : ''}"
+                       placeholder="Mads Mikkelsen">
+            </div>
 
-        <h4>Owner:</h4>
-        <label for="owner">
-            <input type="text" name="owner" id="owner" placeholder="BMW Group">
-        </label><br>
+            <div class="form-group">
+                <label for="foundedAt">Date of foundation:</label>
+                <input type="date" name="foundedAt" id="foundedAt"
+                       th:value="${payload != null ? payload.foundedAt : ''}"
+                       placeholder="2018-07-22">
+            </div>
 
-        <section>
-            <h4>Title image:</h4>
-            <label for="title">
-                <input type="file" name="title" id="title" accept="image/*">
-            </label><br>
+            <div class="form-group">
+                <label for="owner">Owner:</label>
+                <input type="text" name="owner" id="owner"
+                       th:value="${payload != null ? payload.owner : ''}"
+                       placeholder="BMW Group">
+            </div>
+
+            <section class="form-section">
+                <h2>Images</h2>
+
+                <div class="form-group labelFile">
+                    <label for="title">Title image:</label>
+                    <input type="file" name="title" id="title" accept="image/*">
+                </div>
+
+                <div class="form-group labelFile">
+                    <label for="file">Gallery images:</label>
+                    <input type="file" id="file" name="file" accept="image/*" multiple>
+                </div>
+            </section>
+
         </section>
 
-        <section>
-            <h4>Other images:</h4>
-            <label for="file">
-                <input type="file" id="file" name="file" accept="image/*" multiple>
-            </label><br>
-        </section>
-
-        <button type="submit">Create</button>
+        <div class="form-actions">
+            <button type="submit">Create</button>
+        </div>
     </form>
 </div>
 </body>

@@ -1,21 +1,18 @@
-body {
+.edit-create-wrapper {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
     color: #333;
     line-height: 1.6;
 }
 
-input[type="radio"]:checked + .image-container {
+.edit-create-wrapper input[type="radio"]:checked + .image-container {
     border: 4px solid #e8491d;
 }
 
-input[type="radio"] {
+.edit-create-wrapper input[type="radio"] {
     display: none;
 }
 
-.image-container {
+.edit-create-wrapper .image-container {
     width: 325px;
     height: 140px;
     overflow: hidden;
@@ -26,36 +23,26 @@ input[type="radio"] {
     cursor: pointer;
 }
 
-.image-container img {
+.edit-create-wrapper .image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
-    padding: 20px;
-}
-
-.edit-form {
+.edit-create-wrapper .edit-form {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.form-group {
-}
-
-.form-group label {
+.edit-create-wrapper .form-group label {
     display: block;
     font-weight: bold;
 }
 
-.form-group input,
-.form-group select {
+.edit-create-wrapper .form-group input,
+.edit-create-wrapper .form-group select {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
@@ -64,14 +51,15 @@ input[type="radio"] {
     font-size: 14px;
 }
 
-.edit-form h3, h2 {
+.edit-create-wrapper .edit-form h2,
+.edit-create-wrapper .edit-form h3 {
     color: #e8491d;
     margin-bottom: 15px;
     border-bottom: 1px solid #ccc;
     padding-bottom: 10px;
 }
 
-.edit-form button {
+.edit-create-wrapper .edit-form button {
     background-color: #e8491d;
     color: #fff;
     padding: 10px 15px;
@@ -82,19 +70,18 @@ input[type="radio"] {
     transition: background-color 0.3s ease;
 }
 
-.edit-form button:hover {
+.edit-create-wrapper .edit-form button:hover {
     background-color: #c73810;
 }
 
-.labelFile label {
+.edit-create-wrapper .labelFile label {
     font-weight: bold;
     margin-bottom: 5px;
     display: block;
     color: #333;
-
 }
 
-.labelFile input[type="file"] {
+.edit-create-wrapper .labelFile input[type="file"] {
     padding: 8px 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -105,11 +92,11 @@ input[type="radio"] {
     transition: border-color 0.2s ease;
 }
 
-.labelFile input[type="file"]:hover {
+.edit-create-wrapper .labelFile input[type="file"]:hover {
     border-color: #999;
 }
 
-.labelFile input[type="file"]::file-selector-button {
+.edit-create-wrapper .labelFile input[type="file"]::file-selector-button {
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #eee;
@@ -120,7 +107,7 @@ input[type="radio"] {
     color: #444;
 }
 
-.labelFile input[type="file"]::file-selector-button:hover {
+.edit-create-wrapper .labelFile input[type="file"]::file-selector-button:hover {
     background-color: #ddd;
     border-color: #999;
 }

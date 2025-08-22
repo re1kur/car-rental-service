@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="'Update ' + ${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service'"></title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-form.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
-
-<header th:insert="fragments/header.html :: pages">
-</header>
-
 <body>
-<div>
-    <form method="post" th:action="@{/cars/{id}/update(id=${car.id})}">
-        <h2>Common:</h2>
+
+<header th:insert="fragments/header.html :: pages"></header>
+
+<div class="container edit-create-wrapper">
+    <form class="edit-form" method="post" th:action="@{/cars/{id}/update(id=${car.id})}">
+        <h2>Common</h2>
         <section>
-            <label for="makeId">Make:
+            <div class="form-group">
+                <label for="makeId">Make:</label>
                 <select id="makeId" name="makeId" required>
                     <option value="" disabled selected>Choose the make</option>
                     <option th:each="make : ${makes}"
@@ -22,9 +25,10 @@
                             th:selected="${car.make.id == make.id}">
                     </option>
                 </select>
-            </label><br>
+            </div>
 
-            <label for="carTypeId">Type of car:
+            <div class="form-group">
+                <label for="carTypeId">Type of car:</label>
                 <select id="carTypeId" name="carTypeId" required>
                     <option value="" disabled selected>Choose the type</option>
                     <option th:each="carType : ${carTypes}"
@@ -33,9 +37,10 @@
                             th:selected="${car.carTypeId == carType.id}">
                     </option>
                 </select>
-            </label><br>
+            </div>
 
-            <label for="engineId">Engine:
+            <div class="form-group">
+                <label for="engineId">Engine:</label>
                 <select id="engineId" name="engineId" required>
                     <option value="" disabled selected>Choose the engine</option>
                     <option th:each="engine : ${engines}"
@@ -44,28 +49,29 @@
                             th:selected="${car.engineId == engine.id}">
                     </option>
                 </select>
-            </label><br>
+            </div>
 
-            <label for="model">Model:
+            <div class="form-group">
+                <label for="model">Model:</label>
                 <input type="text" name="model" id="model"
-                       th:value="${car.model}"
-                       placeholder="Camry" required>
-            </label><br>
+                       th:value="${car.model}" placeholder="Camry" required>
+            </div>
 
-            <label for="year">Year:
+            <div class="form-group">
+                <label for="year">Year:</label>
                 <input type="text" name="year" id="year"
-                       th:value="${car.year}"
-                       placeholder="____" required max="4">
-            </label><br>
+                       th:value="${car.year}" placeholder="____" maxlength="4" required>
+            </div>
 
-            <label for="licensePlate">License plate:
+            <div class="form-group">
+                <label for="licensePlate">License plate:</label>
                 <input type="text" name="licensePlate" id="licensePlate"
-                       th:value="${car.licensePlate}"
-                       placeholder="AAA111" required>
-            </label><br>
+                       th:value="${car.licensePlate}" placeholder="AAA111" required>
+            </div>
+
             <section th:if="${car.titleImage}">
                 <label>Current title image:</label>
-                <img th:src="${car.titleImage.url}" alt="Current title image.">
+                <img th:src="${car.titleImage.url}" alt="Current title image" class="image-container">
             </section>
 
             <section th:if="${car.images != null and !#lists.isEmpty(car.images)}">
@@ -76,85 +82,66 @@
                                th:id="${'image_' + image.id}"
                                th:value="${image.id}"
                                th:checked="${car.titleImage != null and car.titleImage.id == image.id}">
-                        <img th:src="${image.url}" alt="Image option">
+                        <img th:src="${image.url}" alt="Image option" class="image-container">
                         <span th:text="'Uploaded at: ' + ${image.uploadedAt}"></span>
                     </label>
                 </div>
             </section>
         </section>
 
-
         <section th:if="${car.information}">
-            <h3>Information:</h3>
+            <h3>Information</h3>
 
-            <textarea name="description"
-                      id="description"
-                      rows="4" cols="80"
-                      placeholder="Did not beaten."
-                      th:value="${car.information.description}">
-                 </textarea>
-            <label for="description">Description:
-            </label><br>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea name="description" id="description" rows="4" cols="80"
+                          placeholder="Did not beaten." th:text="${car.information.description}"></textarea>
+            </div>
 
-            <label for="color">Color:
+            <div class="form-group">
+                <label for="color">Color:</label>
                 <input type="text" name="color" id="color" th:value="${car.information.color}" placeholder="Red">
-            </label><br>
+            </div>
 
-            <label for="mileage">Mileage:
+            <div class="form-group">
+                <label for="mileage">Mileage:</label>
                 <input type="text" name="mileage" id="mileage" th:value="${car.information.mileage}" placeholder="5000">
-            </label><br>
+            </div>
 
-            <label for="seats">Seats:
+            <div class="form-group">
+                <label for="seats">Seats:</label>
                 <input type="text" name="seats" id="seats" th:value="${car.information.seats}" placeholder="5">
-            </label><br>
+            </div>
 
-            <label for="fuelType">Fuel type:
+            <div class="form-group">
+                <label for="fuelType">Fuel type:</label>
                 <select id="fuelType" name="fuelType">
-                    <option th:value="''"
-                            th:selected="${car.information.fuelType == null}">Nothing chosen
-                    </option>
-                    <option th:value="'Gasoline'" th:text="'Gasoline'"
-                            th:selected="${car.information.fuelType == 'Gasoline'}"></option>
-                    <option th:value="'Diesel'" th:text="'Diesel'"
-                            th:selected="${car.information.fuelType == 'Diesel'}"></option>
-                    <option th:value="'Ethanol'" th:text="'Ethanol'"
-                            th:selected="${car.information.fuelType == 'Ethanol'}"></option>
-                    <option th:value="'Electric'" th:text="'Electric'"
-                            th:selected="${car.information.fuelType == 'Electric'}"></option>
-                    <option th:value="'Hybrid electric'" th:text="'Hybrid electric'"
-                            th:selected="${car.information.fuelType == 'Hybrid electric'}"></option>
-                    <option th:value="'Natural gas'" th:text="'Natural gas'"
-                            th:selected="${car.information.fuelType == 'Natural gas'}"></option>
+                    <option th:value="''" th:selected="${car.information.fuelType == null}">Nothing chosen</option>
+                    <option th:value="'Gasoline'" th:text="'Gasoline'" th:selected="${car.information.fuelType == 'Gasoline'}"></option>
+                    <option th:value="'Diesel'" th:text="'Diesel'" th:selected="${car.information.fuelType == 'Diesel'}"></option>
+                    <option th:value="'Ethanol'" th:text="'Ethanol'" th:selected="${car.information.fuelType == 'Ethanol'}"></option>
+                    <option th:value="'Electric'" th:text="'Electric'" th:selected="${car.information.fuelType == 'Electric'}"></option>
+                    <option th:value="'Hybrid electric'" th:text="'Hybrid electric'" th:selected="${car.information.fuelType == 'Hybrid electric'}"></option>
+                    <option th:value="'Natural gas'" th:text="'Natural gas'" th:selected="${car.information.fuelType == 'Natural gas'}"></option>
                 </select>
-            </label><br>
+            </div>
 
-            <label for="transmission">Transmission:
+            <div class="form-group">
+                <label for="transmission">Transmission:</label>
                 <select id="transmission" name="transmission">
-                    <option th:value="''"
-                            th:selected="${car.information.transmission == null}">
-                        Nothing chosen
-                    </option>
-
-                    <option th:value="'Automatic transmission'"
-                            th:selected="${car.information.transmission == 'Automatic transmission'}">
-                        Automatic transmission
-                    </option>
-
-                    <option th:value="'Manual transmission'"
-                            th:selected="${car.information.transmission == 'Manual transmission'}">Manual
-                        transmission
-                    </option>
-
-                    <option th:value="'Semi-automatic transmission'"
-                            th:selected="${car.information.transmission == 'Semi-automatic transmission'}">
-                        Semi-automatic
-                        transmission
-                    </option>
+                    <option th:value="''" th:selected="${car.information.transmission == null}">Nothing chosen</option>
+                    <option th:value="'Automatic transmission'" th:selected="${car.information.transmission == 'Automatic transmission'}">Automatic transmission</option>
+                    <option th:value="'Manual transmission'" th:selected="${car.information.transmission == 'Manual transmission'}">Manual transmission</option>
+                    <option th:value="'Semi-automatic transmission'" th:selected="${car.information.transmission == 'Semi-automatic transmission'}">Semi-automatic transmission</option>
                 </select>
-            </label><br>
+            </div>
         </section>
-        <button type="submit">Update</button>
+
+        <div class="form-actions">
+            <button type="submit">Update</button>
+        </div>
     </form>
 </div>
+
 </body>
 </html>

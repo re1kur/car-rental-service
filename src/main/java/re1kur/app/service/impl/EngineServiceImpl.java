@@ -2,11 +2,11 @@ package re1kur.app.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import re1kur.app.core.dto.EngineDto;
+import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.exception.EngineAlreadyExistsException;
 import re1kur.app.core.exception.EngineNotFoundException;
 import re1kur.app.core.payload.EnginePayload;
@@ -82,8 +82,8 @@ public class EngineServiceImpl implements EngineService {
     }
 
     @Override
-    public Page<EngineDto> readPage(Pageable pageable) {
-        return repo.findAll(pageable).map(mapper::read);
+    public PageDto<EngineDto> readPage(Pageable pageable) {
+        return mapper.readPage(repo.findAll(pageable));
     }
 
     @Override

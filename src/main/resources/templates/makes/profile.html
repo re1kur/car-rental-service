@@ -4,54 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${make.name} + ' — Car Rental Service'"></title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
-
-<header th:insert="fragments/header.html :: pages">
-</header>
-
 <body>
-<div>
+
+<header th:insert="fragments/header.html :: pages"></header>
+
+<div class="container">
     <h1 th:text="${make.name}"></h1>
-    <section th:if="${make.titleImage}">
-        <h3>Title image: </h3>
-        <img th:src="${make.titleImage.url}" alt="">
+
+    <section>
+        <h2>Details</h2>
+
+        <div th:if="${make.titleImage}" class="image-gallery">
+            <span class="field">Title image:</span>
+            <img th:src="${make.titleImage.url}" alt="Title image">
+        </div>
+
+        <div th:if="${make.images != null and !#lists.isEmpty(make.images)}" class="image-gallery">
+            <h3>Gallery</h3>
+            <ul>
+                <li th:each="image : ${make.images}">
+                    <img th:src="${image.url}" alt="Image">
+                    <span th:text="'Uploaded at: ' + ${image.uploadedAt}"></span>
+                </li>
+            </ul>
+        </div>
+
+        <section th:if="${make.information}">
+            <label class="field" th:if="${make.information.country}">
+                <span>Country: </span>
+                <span th:text="${make.information.country}"></span><br>
+            </label>
+
+            <label class="field" th:if="${make.information.description}">
+                <span>Description: </span>
+                <span th:text="${make.information.description}"></span><br>
+            </label>
+
+            <label class="field" th:if="${make.information.foundedAt}">
+                <span>Founded at: </span>
+                <span th:text="${make.information.foundedAt}"></span><br>
+            </label>
+
+            <label class="field" th:if="${make.information.founder}">
+                <span>Founder: </span>
+                <span th:text="${make.information.founder}"></span><br>
+            </label>
+
+            <label class="field" th:if="${make.information.owner}">
+                <span>Owner: </span>
+                <span th:text="${make.information.owner}"></span><br>
+            </label>
+        </section>
     </section>
-
-    <section th:if="${make.images}">
-        <ul>
-            <li th:each="image : ${make.images}">
-                <img th:src="${image.url}" alt="Here must be image"/><br>
-                <span th:text="'Image uploaded at: ' + ${image.uploadedAt}"></span><br>
-            </li>
-        </ul>
-    </section>
-
-    <div th:if="${make.information}">
-        <section th:if="${make.information.country}">
-            <h3>Country:</h3>
-            <span th:text="${make.information.country}"></span><br>
-        </section>
-
-        <section th:if="${make.information.description}">
-            <h3>Description: </h3>
-            <span th:text="${make.information.description}"></span>
-        </section>
-
-        <section th:if="${make.information.foundedAt}">
-            <h3>Founded at: </h3>
-            <span th:text="${make.information.foundedAt}"></span>
-        </section>
-
-        <section th:if="${make.information.founder}">
-            <h3>Founder: </h3>
-            <span th:text="${make.information.founder}"></span>
-        </section>
-
-        <section th:if="${make.information.owner}">
-            <h3>Owner: </h3>
-            <span th:text="${make.information.owner}"></span>
-        </section>
-    </div>
 </div>
 </body>
 </html>

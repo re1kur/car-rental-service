@@ -2,15 +2,16 @@ package re1kur.app.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import re1kur.app.core.dto.MakeDto;
+import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.payload.MakePayload;
 import re1kur.app.service.MakeService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/makes")
@@ -25,10 +26,15 @@ public class MakesController {
 
     @GetMapping
     public String getMakes(
-            Model model
+            Model model,
+            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+            @RequestParam(name = "page", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "name", required = false) String name
     ) {
-        List<MakeDto> makes = service.readAll();
-        model.addAttribute("makes", makes);
+        Pageable pageable = PageRequest.of(page, size);
+        PageDto<MakeDto> makes = service.readAll(name, pageable);
+        model.addAttribute("page", makes);
+        model.addAttribute("name", name);
 
         return "makes/list.html";
     }

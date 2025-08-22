@@ -6,6 +6,6 @@ import lombok.Builder;
 public record MakeDto(
         Integer id,
         String name,
-        String titleImgUrl
+        FileDto titleImage
 ) {
 }

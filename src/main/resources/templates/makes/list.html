@@ -3,34 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <title>Makes - Car Rental Service</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-list.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
-
-<header th:insert="fragments/header.html :: pages">
-</header>
-
 <body>
-<div th:if="${not #lists.isEmpty(makes)}">
-    <div th:each="make : ${makes}">
-        <img th:if="${make.titleImgUrl != null}"
-             th:src="${make.titleImgUrl}"
-             th:alt="${make.name + ' logo'}" />
 
-        <h4 th:text="${make.name}"></h4><br>
+<header th:insert="fragments/header.html :: pages"></header>
 
-        <a th:href="@{/makes/{id}(id=${make.id})}">
-            <span>Profile</span>
-        </a><br>
+<div class="list-container">
 
-        <a th:href="@{/cars(makeId=${make.id})}">
-            <span th:text="'Cars by ' + ${make.name}"></span>
-        </a><br>
-        <hr>
+    <section class="filter-container">
+        <form th:action="@{/makes}" method="get" class="filter-form">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" th:value="${name}" class="form-control"
+                       placeholder="Enter name">
+            </div>
+
+            <button type="submit">Find</button>
+        </form>
+    </section>
+
+    <table th:if="${page.content.empty}" class="no-items">
+        <thead>
+        <tr>
+            <th>Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Makes are not found.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:each="make : ${page.content}" class="item-card">
+        <div class="item-info">
+            <h2 th:text="${make.name}"></h2>
+
+            <div th:if="${make.titleImage != null}" class="image-container">
+                <img th:src="${make.titleImage.url}" alt="Make Image">
+            </div>
+            <div>
+                <a th:href="@{/cars(makeId=${make.id})}" class="make-link">
+                    <span th:text="'Cars by ' + ${make.name}"></span>
+                </a>
+            </div>
+        </div>
+
+
+        <div class="item-footer">
+            <a th:href="@{/makes/{id}(id=${make.id})}">Profile</a>
+        </div>
     </div>
 </div>
 
-<div th:if="${#lists.isEmpty(makes)}">
-    <p>No makes available.</p>
-</div>
+<footer th:if="${not #lists.isEmpty(page.content)}">
+    <nav class="pagination" aria-label="Pagination">
+        <a th:href="${page.prevNumber != null
+                      ? '/makes?page=' + page.prevNumber + '&name=' + (name != null ? name : '')
+                      : '#'}"
+           class="page-link"
+           th:text="'Previous'">
+        </a>
+
+        <span th:each="pageNumber : ${#numbers.sequence(page.firstNumber, page.lastNumber)}">
+            <a th:href="@{/makes(page=${pageNumber}, name=${name != null ? name : ''})}"
+               class="page-link"
+               th:text="${pageNumber + 1}">
+            </a>
+        </span>
+
+        <a th:href="${page.nextNumber != null
+                      ? '/makes?page=' + page.nextNumber + '&name=' + (name != null ? name : '')
+                      : '#'}"
+           class="page-link"
+           th:text="'Next'">
+        </a>
+    </nav>
+</footer>
+
 
 </body>
 </html>
+
+<style>
+.make-link {
+        display: inline-block;
+        padding: 4px 6px;
+        color: #333;
+        text-decoration: none;
+        border: 1px solid #333;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.3s;
+}
+.make-link:hover {
+    border-color: #e8491d;
+    color: #e8491d;
+    transform: translateY(-2px);
+}
+
+.make-link span {
+    display: inline-block;
+}
+</style>

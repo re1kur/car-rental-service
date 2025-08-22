@@ -1,13 +1,17 @@
-.header {
+header {
     background: #333;
-    color: #fff;
+    color: #e8491d;
     padding-top: 30px;
     min-height: 70px;
     border-bottom: 3px solid #e8491d;
     text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
-a.header-link {
+.header-link {
     color: #eee;
     text-decoration: none;
     text-transform: uppercase;
@@ -20,7 +24,8 @@ a.header-link {
     font-size: 20px;
 }
 
-a.header-link:hover {
-    background-color: #555;
+.header-link:hover {
+    color: #007BFF;
+    background-color: rgba(0, 123, 255, 0.1);
     color: #fff;
 }

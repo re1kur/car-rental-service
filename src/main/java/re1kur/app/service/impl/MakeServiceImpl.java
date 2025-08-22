@@ -3,10 +3,12 @@ package re1kur.app.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import re1kur.app.core.dto.MakeDto;
+import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.exception.MakeAlreadyExistsException;
 import re1kur.app.core.exception.MakeNotFoundException;
 import re1kur.app.core.dto.MakeFullDto;
@@ -39,6 +41,11 @@ public class MakeServiceImpl implements MakeService {
 
     @Value("${custom.map.images_key}")
     private String IMAGES_KEY;
+
+    @Override
+    public PageDto<MakeDto> readAll(String name, Pageable pageable) {
+        return makeMapper.readPage(repo.findAll(pageable, name));
+    }
 
     @Override
     public List<MakeDto> readAll() {

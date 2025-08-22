@@ -7,56 +7,56 @@
 <body>
 
 <div sec:authorize="hasRole('ADMIN')" th:fragment="createMake">
-    <a th:href="@{/makes/create}">
+    <a class="header-link" th:href="@{/makes/create}">
         New make
     </a>
 </div>
 
 <div sec:authorize="hasRole('ADMIN')" th:fragment="createCar">
-    <a th:href="@{/cars/create}">
+    <a class="header-link" th:href="@{/cars/create}">
         New car
     </a>
 </div>
 
 <div sec:authorize="hasRole('ADMIN')" th:fragment="createCarType">
-    <a th:href="@{/car-types/create}">
+    <a class="header-link" th:href="@{/car-types/create}">
         New car type
     </a>
 </div>
 
 <div sec:authorize="hasRole('ADMIN')" th:fragment="createEngine">
-    <a th:href="@{/engines/create}">
+    <a class="header-link" th:href="@{/engines/create}">
         New engine
     </a>
 </div>
 
 <div th:fragment="pages">
-    <a th:href="@{/}">
+    <a class="header-link" th:href="@{/}">
         Home
     </a>
-    <a th:href="@{/cars}">
+    <a class="header-link" th:href="@{/cars}">
         Cars
     </a>
-    <a th:href="@{/makes}">
+    <a class="header-link" th:href="@{/makes}">
         Makes
     </a>
-    <a th:href="@{/engines}">
+    <a class="header-link" th:href="@{/engines}">
         Engines
     </a>
-    <a th:href="@{/car-types}">
+    <a class="header-link" th:href="@{/car-types}">
         Car types
     </a>
-    <a sec:authorize="hasRole('ADMIN')" th:href="@{/moderator/menu}">
+    <a class="header-link" sec:authorize="hasRole('ADMIN')" th:href="@{/moderator/menu}">
         Moderator-menu
     </a>
-    <a sec:authorize="isAuthenticated()" th:href="@{/profile}">
+    <a class="header-link" sec:authorize="isAuthenticated()" th:href="@{/profile}">
         Profile
     </a>
-
-    <a sec:authorize="!isAuthenticated()" th:href="@{/login}">
+    <a class="header-link" sec:authorize="!isAuthenticated()" th:href="@{/login}">
         Log in
     </a>
 </div>
+
 
 <!--<div th:fragment="to-car">-->
 <!--    <a th:href="@{/cars/{id}(id=${car.id})}" class="header-link">&#8592; To car</a>-->

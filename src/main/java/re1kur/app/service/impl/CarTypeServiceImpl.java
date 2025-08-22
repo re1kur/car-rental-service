@@ -2,11 +2,11 @@ package re1kur.app.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import re1kur.app.core.dto.CarTypeDto;
+import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.exception.CarTypeAlreadyExistsException;
 import re1kur.app.core.exception.CarTypeNotFoundException;
 import re1kur.app.core.payload.CarTypePayload;
@@ -81,8 +81,8 @@ public class CarTypeServiceImpl implements CarTypeService {
     }
 
     @Override
-    public Page<CarTypeDto> readPage(Pageable pageable) {
-        return repo.findAll(pageable).map(mapper::read);
+    public PageDto<CarTypeDto> readPage(Pageable pageable) {
+        return mapper.readPage(repo.findAll(pageable));
     }
 
     @Override

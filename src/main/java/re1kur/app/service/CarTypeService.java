@@ -1,8 +1,8 @@
 package re1kur.app.service;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import re1kur.app.core.dto.CarTypeDto;
+import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.payload.CarTypePayload;
 import re1kur.app.core.payload.CarTypeUpdatePayload;
 import re1kur.app.entity.CarType;
@@ -18,7 +18,7 @@ public interface CarTypeService {
 
     void delete(Integer id);
 
-    Page<CarTypeDto> readPage(Pageable pageable);
+    PageDto<CarTypeDto> readPage(Pageable pageable);
 
     List<CarTypeDto> readAll();
 

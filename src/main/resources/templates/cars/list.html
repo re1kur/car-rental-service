@@ -2,41 +2,45 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cars &ndash; Car Rental Service</title>
+    <title>Cars – Car Rental Service</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-list.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
-<header th:insert="fragments/header.html :: pages">
-</header>
 <body>
-<div>
-    <section>
-        <form th:action="@{/cars}" method="get">
-            <div>
+
+<header th:insert="fragments/header.html :: pages"></header>
+
+<div class="list-container">
+
+    <section class="filter-container">
+        <form th:action="@{/cars}" method="get" class="filter-form">
+            <div class="form-group">
                 <label for="model">Model:</label>
-                <input type="text" name="model" id="model"
-                       th:value="${filter.model}" placeholder="Enter model">
+                <input type="text" name="model" id="model" th:value="${filter.model}" class="form-control"
+                       placeholder="Enter model">
             </div>
 
-            <div>
+            <div class="form-group">
                 <label for="make">Make:</label>
-                <select id="make" name="makeId">
+                <select id="make" name="makeId" class="form-control">
                     <option value="">Select a make</option>
                     <option th:each="make : ${makes}" th:value="${make.id}" th:text="${make.name}"
                             th:selected="${filter.makeId == make.id}"></option>
                 </select>
             </div>
 
-            <div>
+            <div class="form-group">
                 <label for="year">Year:</label>
-                <input type="number" id="year" name="year"
-                       th:value="${filter.year}" placeholder="Enter year">
+                <input type="number" id="year" name="year" th:value="${filter.year}" class="form-control"
+                       placeholder="Enter year">
             </div>
 
             <button type="submit">Find</button>
         </form>
     </section>
-</div>
-<div>
-    <table th:if="${page.content.empty}">
+
+    <table th:if="${page.content.empty}" class="no-items">
         <thead>
         <tr>
             <th>Message</th>
@@ -48,64 +52,55 @@
         </tr>
         </tbody>
     </table>
-    <div th:each="car : ${page.content}">
-        <article>
+
+    <div th:each="car : ${page.content}" class="item-card">
+        <div class="item-info">
             <h2 th:text="${car.make.name} + ' ' + ${car.model}"></h2>
-            <section>
-                <div>
-                    <div>
-                        <p th:text="'Make: ' + (${car.make.name})"></p>
-                        <p th:text="'Type: ' + (${car.carType.name})"></p>
-                        <p th:text="'Engine: ' + (${car.engine.name})"></p>
-                        <p th:text="'Year: ' + ${car.year}"></p>
-                        <p th:text="'License plate: ' + ${car.licensePlate}"></p>
-                    </div>
-                    <div th:if="${car.titleImage != null}">
-                        <img th:src="${car.titleImage.url}" alt="Car Image">
-                    </div>
-                </div>
-            </section>
+            <div class="item-details">
+                <p th:text="'Make: ' + ${car.make.name}"></p>
+                <p th:text="'Type: ' + ${car.carType.name}"></p>
+                <p th:text="'Engine: ' + ${car.engine.name}"></p>
+                <p th:text="'Year: ' + ${car.year}"></p>
+                <p th:text="'License plate: ' + ${car.licensePlate}"></p>
+            </div>
+        </div>
+
+        <div th:if="${car.titleImage != null}" class="image-container">
+            <img th:src="${car.titleImage.url}" alt="Car Image">
+        </div>
+
+        <div class="item-footer">
             <a th:href="@{/cars/{id}(id=${car.id})}">Profile</a>
-        </article>
-        <hr>
+        </div>
     </div>
 </div>
-</body>
+
 <footer th:if="${!page.content.empty}">
-    <nav aria-label="Pagination">
-        <div>
-            <label>
-                <a th:href="${page.prevNumber != null ? '/cars/list?'
-                 + 'page=' + page.prevNumber
-                 + '&model=' + filter.model
-                 + '&makeId=' + (filter.makeId != null ? filter.makeId : '')
-                 + '&year=' + (filter.year != null ? filter.year : '') : '#'}"
-                   class="page-link"
-                   th:text="'Previous'">
-                </a>
-            </label>
+    <nav class="pagination" aria-label="Pagination">
+        <a th:href="${page.prevNumber != null ? '/cars?'
+             + 'page=' + page.prevNumber
+             + '&model=' + filter.model
+             + '&makeId=' + (filter.makeId != null ? filter.makeId : '')
+             + '&year=' + (filter.year != null ? filter.year : '') : '#'}"
+           class="page-link" th:text="'Previous'"></a>
 
-            <label th:each="pageNumber : ${#numbers.sequence(page.firstNumber, page.lastNumber)}">
-                <a th:href="@{/cars(
-                    page=${pageNumber},
-                    model=${filter.model},
-                    makeId=${filter.makeId},
-                    year=${filter.year != null ? filter.year : ''})}"
-                   th:text="${pageNumber + 1}">
-                </a>
-            </label>
+        <span th:each="pageNumber : ${#numbers.sequence(page.firstNumber, page.lastNumber)}">
+            <a th:href="@{/cars(
+                page=${pageNumber},
+                model=${filter.model},
+                makeId=${filter.makeId},
+                year=${filter.year != null ? filter.year : ''})}"
+               class="page-link" th:text="${pageNumber + 1}"></a>
+        </span>
 
-            <label>
-                <a th:href="${page.nextNumber != null ? '/cars?'
-                 + 'page=' + page.nextNumber
-                 + '&model=' + (filter.model != null ? filter.model : '')
-                 + '&makeId=' + (filter.makeId != null ? filter.makeId : '')
-                 + '&year=' + (filter.year != null ? filter.year : '') : '#'}"
-                   class="page-link"
-                   th:text="'Next'">
-                </a>
-            </label>
-        </div>
+        <a th:href="${page.nextNumber != null ? '/cars?'
+             + 'page=' + page.nextNumber
+             + '&model=' + (filter.model != null ? filter.model : '')
+             + '&makeId=' + (filter.makeId != null ? filter.makeId : '')
+             + '&year=' + (filter.year != null ? filter.year : '') : '#'}"
+           class="page-link" th:text="'Next'"></a>
     </nav>
 </footer>
+
+</body>
 </html>

@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit engine — Car Rental Service</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
 </head>
-
-<header th:insert="fragments/header.html :: pages">
-</header>
-
 <body>
-<div>
-    <form method="post" th:action="@{/engines/{id}/update(id=${engine.id})}">
-        <h4>Name:</h4>
-        <label for="name">
-            <input th:field="*{engine.name}" type="text" name="name" id="name"
-                   placeholder="Electric motor" required>
-        </label><br>
-        <button type="submit">Update</button>
+
+<header th:insert="fragments/header.html :: pages"></header>
+
+<div class="container edit-create-wrapper">
+    <form class="edit-form" method="post" th:action="@{/engines/{id}/update(id=${engine.id})}">
+        <h2>Common</h2>
+        <div class="form-group">
+            <label for="name">Model:</label>
+            <input type="text" name="name" id="name"
+                   th:value="${engine.name}" placeholder="Electric motor" required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit">Update</button>
+        </div>
     </form>
 </div>
 </body>

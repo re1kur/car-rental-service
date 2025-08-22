@@ -1,8 +1,8 @@
 package re1kur.app.service;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import re1kur.app.core.dto.EngineDto;
+import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.payload.EnginePayload;
 import re1kur.app.core.payload.EngineUpdatePayload;
 import re1kur.app.entity.Engine;
@@ -18,7 +18,7 @@ public interface EngineService {
 
     void delete(Integer id);
 
-    Page<EngineDto> readPage(Pageable pageable);
+    PageDto<EngineDto> readPage(Pageable pageable);
 
     List<EngineDto> readAll();
 

@@ -1,18 +1,10 @@
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
+.list-container {
+    margin: 20px auto;
     padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
-    line-height: 1.6;
+    width: 80%;
 }
 
-.cars-list {
-    margin: 20px;
-    padding: 0;
-}
-.car-item {
+.item-card {
     background-color: #fff;
     margin: 20px 0;
     padding: 20px;
@@ -20,83 +12,69 @@ body {
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
+    flex-wrap: wrap;
+    transition: box-shadow 0.3s ease;
 }
 
-.car-item:hover {
+.item-card:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.car-info {
+.item-info {
+    flex: 1;
 }
 
-.car-info h2 {
+.item-info h2 {
     color: #e8491d;
     margin-top: 0;
     margin-bottom: 5px;
 }
 
-.car-details img {
+.item-details img {
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: cover;
+    border-radius: 5px;
 }
 
 .image-container {
-    width: 550px;
-    height: 225px;
+    width: 300px;
+    max-height: 200px;
     border: 2px solid #e8491d;
     border-radius: 5px;
     overflow: hidden;
-    margin-left: 100px;
+    margin-left: 20px;
     flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.noCars {
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.no-items {
     width: 50%;
     border-collapse: collapse;
     margin: 20px auto;
     font-family: sans-serif;
 }
 
-.noCars th, .noCars td {
+.no-items th,
+.no-items td {
     padding: 10px;
     border: 1px solid #ccc;
     text-align: center;
 }
 
-.noCars thead tr {
+.no-items thead tr {
     background-color: #f0f0f0;
 }
 
-.noCars td {
-    text-align: center;
-}
-
-.pagination {
-    margin-top: 20px;
-}
-
-.page-item.disabled .page-link {
-    color: #6c757d;
-    pointer-events: none;
-    background-color: #e9ecef;
-    border-color: #dee2e6;
-}
-
-.page-link {
-    color: #e8491d;
-    text-decoration: none;
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    padding: 0.5rem 0.75rem;
-    margin-left: 5px;
-    border-radius: 0.25rem;
-}
-
-.filter {
+.filter-container {
     background-color: #f8f9fa;
     padding: 20px;
     border-radius: 5px;
@@ -110,19 +88,18 @@ body {
 .filter-form {
     display: flex;
     flex-wrap: wrap;
+    gap: 10px;
 }
 
-
 .filter-form .form-group {
-    margin-bottom: 0;
-    margin-right: 10px;
     flex: 1;
+    min-width: 150px;
 }
 
 .filter-form label {
-    margin-bottom: 5px;
     display: block;
-
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
 .filter-form .form-control {
@@ -133,33 +110,41 @@ body {
     box-sizing: border-box;
 }
 
-.filter-form select {
-    width: 100%;
-}
-
-
 .filter-form button {
     background-color: #e8491d;
-    color: white;
+    color: #fff;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    max-height: 40px;
-    align-self: flex-end;
     transition: background-color 0.3s ease;
-    margin-left: 10px;
-    flex: 0 0 auto;
+    align-self: flex-end;
 }
 
 .filter-form button:hover {
     background-color: #c63913;
 }
 
-.page-link:hover {
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+}
+
+.page-link {
     color: #e8491d;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+}
+
+.page-link:hover {
     background-color: #e9ecef;
-    border-color: #dee2e6;
 }
 
 .page-item.active .page-link {
@@ -169,16 +154,14 @@ body {
     font-weight: bold;
 }
 
-.car-details p {
-    margin: 5px 0;
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
 }
 
-
-.car-item:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.car-footer a {
+.item-footer a {
     display: inline-block;
     padding: 10px 15px;
     background-color: #e8491d;
@@ -188,7 +171,7 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.car-footer a:hover {
+.item-footer a:hover {
     background-color: #c73810;
 }
 
@@ -197,4 +180,8 @@ hr {
     height: 1px;
     background: #ccc;
     margin: 20px 0;
+}
+
+.item-details p {
+    margin: 5px 0;
 }

@@ -1,8 +1,10 @@
 package re1kur.app.mapper;
 
+import org.springframework.data.domain.Page;
 import re1kur.app.core.dto.MakeFullDto;
 import re1kur.app.core.dto.MakeDto;
 import re1kur.app.core.dto.MakeShortDto;
+import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.payload.MakeUpdatePayload;
 import re1kur.app.core.payload.MakePayload;
 import re1kur.app.entity.Make;
@@ -18,4 +20,6 @@ public interface MakeMapper {
     MakeDto read(Make make);
 
     MakeShortDto readShort(Make make);
+
+    PageDto<MakeDto> readPage(Page<Make> page);
 }

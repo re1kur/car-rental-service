@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Car Rental Service</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
     <link rel="stylesheet" th:href="@{/css/styles-home.css}">
-    <link rel="stylesheet" th:href="@{/css/main-footer.css}">
 </head>
 <body>
 
@@ -17,15 +17,12 @@
 
 <div class="container">
     <div class="intro">
-            <span class="hello">Looking for the perfect car to
-                make your trip unforgettable? At
-                <span class="name">Car Rental Service</span>,
-                renting a car has never been easier! Choose from our
-                diverse range of vehicles—from sleek compacts to powerful
-                convertibles—and hit the road with confidence. With
-                competitive prices, hassle-free reservations, and 24/7
-                assistance, we’re here to turn every journey into an adventure.
-            </span>
+        <span class="hello">
+            Looking for the perfect car to make your trip unforgettable?
+            At <span class="name">Car Rental Service</span>, renting a car has never been easier!
+            Choose from our diverse range of vehicles—from sleek compacts to powerful convertibles—and hit the road with confidence.
+            With competitive prices, hassle-free reservations, and 24/7 assistance, we’re here to turn every journey into an adventure.
+        </span>
     </div>
 
     <div class="refs">
@@ -55,7 +52,8 @@
         </div>
     </section>
 </div>
-</body>
+
 <footer th:replace="~{/fragments/footer :: main-footer}">
 </footer>
+</body>
 </html>

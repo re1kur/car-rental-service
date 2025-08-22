@@ -25,7 +25,8 @@ spring:
     user: developer
     password: developer
     change-log: db/changelog/db.changelog-master.yml
-
+  devtools:
+    add-properties: true
 minio:
   access-key: developer
   secret-key: developer

@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${engine.name} + ' — Car Rental Service'"></title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
-
-<header th:insert="fragments/header.html :: pages">
-</header>
-
 <body>
-<div>
+
+<header th:insert="fragments/header.html :: pages"></header>
+
+<div class="container">
+
     <h1 th:text="${engine.name}"></h1>
+
 </div>
+
 </body>
 </html>

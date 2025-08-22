@@ -1,45 +1,30 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
-    line-height: 1.6;
-}
-
 header {
     background: #333;
-    color: #fff;
-    padding: 50px 0;
+    color: #333;
     text-align: center;
-    border-bottom: 5px solid #e8491d;
+    border-bottom: 3px solid #e8491d;
+    padding: 40px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 header h1 {
-    margin: 0;
-    font-size: 2.5em;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: white;
 }
 
 header p {
-    margin: 10px 0 0;
-    font-size: 1.2em;
-    color: #e8491d;
+    font-size: 1.2rem;
+    margin: 0;
+    color: #f1f1f1;
 }
 
-.container {
-    width: 80%;
-    margin: 20px auto;
-    overflow: hidden;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.intro .hello {
-    font-size: 1.1em;
-    line-height: 1.8;
-    color: #555;
+.intro {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+    color: #444;
 }
 
 .intro .name {
@@ -47,77 +32,69 @@ header p {
     color: #e8491d;
 }
 
+.hello {
+    display: block;
+    margin: 0 auto;
+    max-width: 800px;
+    line-height: 1.8;
+}
+
 .refs {
     text-align: center;
     margin: 30px 0;
 }
 
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    margin: 0 10px;
-    background-color: #e8491d;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
+.refs .btn {
+    margin: 10px;
+    font-size: 1.1rem;
+    padding: 12px 25px;
+    transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.btn:hover {
-    background-color: #333;
-}
-
-.features {
-    margin: 40px 0;
-}
-
-.features h2 {
-    color: #e8491d;
-    border-bottom: 2px solid #e8491d;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+.refs .btn:hover {
+    transform: translateY(-3px);
 }
 
 .features ul {
-    list-style: none;
-    padding: 0;
+    list-style: disc;
+    padding-left: 20px;
 }
 
 .features li {
-    background: #f4f4f4;
-    margin: 10px 0;
-    padding: 10px;
-    border-left: 5px solid #e8491d;
+    margin: 8px 0;
+    font-size: 1rem;
 }
 
 .testimonials {
-    margin: 40px 0;
-}
-
-.testimonials h2 {
-    color: #e8491d;
-    border-bottom: 2px solid #e8491d;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+    text-align: center;
 }
 
 .testimonial {
-    background: #f4f4f4;
-    padding: 15px;
-    margin: 15px 0;
+    background-color: #f9f9f9;
     border-left: 5px solid #e8491d;
+    margin: 15px auto;
+    padding: 15px 20px;
+    border-radius: 6px;
+    max-width: 600px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .testimonial p {
-    margin: 0;
     font-style: italic;
-    color: #555;
+    margin-bottom: 10px;
+    color: #444;
 }
 
 .testimonial .author {
-    display: block;
-    margin-top: 10px;
     font-weight: bold;
-    color: #333;
+    color: #e8491d;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background: #333;
+    color: #fff;
+    margin-top: 30px;
+    font-size: 0.9rem;
 }

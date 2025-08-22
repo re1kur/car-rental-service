@@ -58,7 +58,9 @@ public class SecurityConfiguration {
                                         "/cars/*",
                                         "/makes/*",
                                         "/engines/*",
-                                        "/car-types/*").permitAll()
+                                        "/car-types/*",
+                                        "/error",
+                                        "/error/*").permitAll()
                                 .anyRequest().authenticated())
                 .oauth2Login(Customizer.withDefaults())
                 .logout(logout -> logout
