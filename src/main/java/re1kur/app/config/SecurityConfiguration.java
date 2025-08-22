@@ -49,6 +49,7 @@ public class SecurityConfiguration {
                                         "/engines",
                                         "/car-types",
                                         "/css/**",
+                                        "favicon.ico",
                                         "/api/v1/auth/**",
                                         "/swagger-ui.html",
                                         "/v3/api-docs",

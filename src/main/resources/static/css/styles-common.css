@@ -80,19 +80,68 @@ button:hover, .btn:hover {
     list-style: none;
     padding: 0;
     margin: 0;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
 }
 
 .image-gallery li {
-    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
 }
 
-.image-gallery img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    border-radius: 6px;
-    margin: 5px 0;
+.title-image {
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    margin: 0 auto 20px auto;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f4f4f4;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
+
+.title-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.image-container {
+    width: 100%;
+    height: 200px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.image-gallery span {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #555;
+}
+
 
 .no-details {
     font-style: italic;

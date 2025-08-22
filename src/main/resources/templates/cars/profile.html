@@ -23,7 +23,7 @@
     <section>
         <h2>Details</h2>
 
-        <div th:if="${car.titleImage}" class="image-gallery">
+        <div th:if="${car.titleImage}" class="title-image">
             <span class="field">Title image:</span>
             <img th:src="${car.titleImage.url}" alt="Title image">
         </div>
@@ -32,7 +32,9 @@
             <h3>Gallery</h3>
             <ul>
                 <li th:each="image : ${car.images}">
-                    <img th:src="${image.url}" alt="Image">
+                    <div class="image-container">
+                        <img th:src="${image.url}" alt="Image">
+                    </div>
                     <span th:text="'Uploaded at: ' + ${image.uploadedAt}"></span>
                 </li>
             </ul>
@@ -77,7 +79,8 @@
             <li th:if="${car.information.seats}" th:text="'Seats: ' + ${car.information.seats}"></li>
             <li th:if="${car.information.mileage}" th:text="'Mileage: ' + ${car.information.mileage}"></li>
             <li th:if="${car.information.fuelType}" th:text="'Fuel type: ' + ${car.information.fuelType}"></li>
-            <li th:if="${car.information.transmission}" th:text="'Transmission: ' + ${car.information.transmission}"></li>
+            <li th:if="${car.information.transmission}"
+                th:text="'Transmission: ' + ${car.information.transmission}"></li>
         </ul>
     </section>
 

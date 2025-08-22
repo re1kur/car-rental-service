@@ -25,19 +25,24 @@ header p {
     margin-bottom: 30px;
     font-size: 1.1rem;
     color: #444;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    word-wrap: break-word;
 }
 
 .intro .name {
     font-weight: bold;
     color: #e8491d;
+    display: inline;
 }
 
 .hello {
-    display: block;
-    margin: 0 auto;
-    max-width: 800px;
+    display: inline;
     line-height: 1.8;
 }
+
 
 .refs {
     text-align: center;
