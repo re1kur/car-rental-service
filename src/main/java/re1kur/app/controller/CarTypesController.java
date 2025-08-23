@@ -3,6 +3,8 @@ package re1kur.app.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +23,12 @@ public class CarTypesController {
     public String getCarTypes(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "5") Integer size,
-            Model model
-    ) {
+            Model model,
+            @AuthenticationPrincipal OidcUser user
+            ) {
         Pageable pageable = PageRequest.of(page <= 0 ? 0 : page - 1, size);
 
-        PageDto<CarTypeDto> pageDto = carTypeService.readPage(pageable);
+        PageDto<CarTypeDto> pageDto = carTypeService.readAllAsPage(pageable, user);
         model.addAttribute("page", pageDto);
 
         return "car-types/list.html";
@@ -39,9 +42,10 @@ public class CarTypesController {
 
     @PostMapping("/create")
     public String createCarType(
-            @ModelAttribute CarTypePayload payload
+            @ModelAttribute CarTypePayload payload,
+            @AuthenticationPrincipal OidcUser user
     ) {
-        Integer id = carTypeService.create(payload);
+        Integer id = carTypeService.create(payload, user);
 
         return "redirect:/car-types/" + id;
     }

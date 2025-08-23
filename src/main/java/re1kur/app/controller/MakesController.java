@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +31,12 @@ public class MakesController {
             Model model,
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(name = "page", required = false, defaultValue = "5") Integer size,
-            @RequestParam(name = "name", required = false) String name
+            @RequestParam(name = "name", required = false) String name,
+            @AuthenticationPrincipal OidcUser user
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        PageDto<MakeDto> makes = service.readAll(name, pageable);
+        PageDto<MakeDto> makes = service.readAllAsPage(name, pageable, user);
+
         model.addAttribute("page", makes);
         model.addAttribute("name", name);
 
@@ -43,7 +47,8 @@ public class MakesController {
     public String getCreateMake(
             Model model
     ) {
-        model.addAttribute("make", null);
+        model.addAttribute("make", MakePayload.builder().build());
+
         return "makes/create.html";
     }
 
@@ -51,9 +56,10 @@ public class MakesController {
     public String createMake(
             @ModelAttribute @Valid MakePayload payload,
             @RequestParam(value = "title", required = false) MultipartFile title,
-            @RequestParam(value = "file", required = false) MultipartFile[] files
+            @RequestParam(value = "file", required = false) MultipartFile[] files,
+            @AuthenticationPrincipal OidcUser user
     ) {
-        service.create(payload, title, files);
-        return "redirect:/moderator/menu";
+        Integer id = service.create(payload, title, files, user);
+        return "redirect:/makes/" + id;
     }
 }

@@ -2,6 +2,8 @@ package re1kur.app.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +28,10 @@ public class CarController {
     @GetMapping
     public String getCar(
             @PathVariable(name = "id") Integer id,
+            @AuthenticationPrincipal OidcUser user,
             Model model
     ) {
-
-        CarFullDto found = service.readFull(id);
+        CarFullDto found = service.readFull(id, user);
         model.addAttribute("car", found);
 
         return "cars/profile.html";
@@ -52,9 +54,10 @@ public class CarController {
     @PostMapping("/update")
     public String updateCar(
             @PathVariable Integer id,
-            @ModelAttribute("car") @Valid CarUpdatePayload payload
-    ) {
-        service.updateCar(payload, id);
+            @ModelAttribute("car") @Valid CarUpdatePayload payload,
+            @AuthenticationPrincipal OidcUser user
+            ) {
+        service.updateCar(payload, id, user);
         return "redirect:/cars/" + id;
     }
 }

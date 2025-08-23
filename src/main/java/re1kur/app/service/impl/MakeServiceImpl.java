@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,7 +44,10 @@ public class MakeServiceImpl implements MakeService {
     private String IMAGES_KEY;
 
     @Override
-    public PageDto<MakeDto> readAll(String name, Pageable pageable) {
+    public PageDto<MakeDto> readAllAsPage(String name, Pageable pageable, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("READ MAKES PAGE REQUEST BY USER [{}]", logUser);
+
         return makeMapper.readPage(repo.findAll(pageable, name));
     }
 
@@ -52,10 +56,11 @@ public class MakeServiceImpl implements MakeService {
         return repo.findAll().stream().map(makeMapper::read).toList();
     }
 
-    @Transactional
     @Override
-    public void create(MakePayload payload, MultipartFile title, MultipartFile[] files) {
-        log.info("CREATE MAKE [{}]", payload);
+    @Transactional
+    public Integer create(MakePayload payload, MultipartFile title, MultipartFile[] files, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("CREATE MAKE [{}] REQUEST BY USER [{}]", payload, logUser);
         String name = payload.name();
 
         if (repo.existsByName(name))
@@ -67,7 +72,9 @@ public class MakeServiceImpl implements MakeService {
 
         saveInformationAndImages(payload, title, files, saved);
 
-        log.info("Make created: {}", mapped);
+        Integer makeId = saved.getId();
+        log.info("CREATED MAKE [{}] REQUEST BY USER [{}]", makeId, logUser);
+        return makeId;
     }
 
     private void saveInformationAndImages(MakePayload payload, MultipartFile titlePayload, MultipartFile[] files, Make saved) {
@@ -112,31 +119,39 @@ public class MakeServiceImpl implements MakeService {
 
     @Override
     @Transactional
-    public MakeFullDto read(Integer id) {
+    public MakeFullDto read(Integer id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("READ MAKE FULL [{}] REQUEST BY USER [{}]", id, logUser);
+
         return repo.findById(id).map(makeMapper::readFull)
                 .orElseThrow(() -> new MakeNotFoundException("Make [%d] was not found.".formatted(id)));
     }
 
     @Override
     @Transactional
-    public void update(MakeUpdatePayload payload, Integer id) {
-        log.info("UPDATE MAKE [{}]", id);
+    public void update(MakeUpdatePayload payload, Integer id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("UPDATE MAKE [{}] REQUEST BY USER [{}]", id, logUser);
         String name = payload.name();
 
         Make found = repo.findById(id).orElseThrow(() ->
                 new MakeNotFoundException("Make [%d] was not found.".formatted(id))
         );
 
-        if (!Objects.equals(found.getName(), name)) {
-            if (repo.existsByName(name))
-                throw new MakeAlreadyExistsException("Make [%s] already exists.".formatted(name));
-        }
+        checkConflicts(found, name);
 
         Make updated = makeMapper.update(found, payload);
 
         repo.save(updated);
 
-        log.info("UPDATED MAKE [{}]", id);
+        log.info("UPDATED MAKE [{}] REQUEST BY USER [{}]", id, logUser);
+    }
+
+    private void checkConflicts(Make found, String name) {
+        if (!Objects.equals(found.getName(), name)) {
+            if (repo.existsByName(name))
+                throw new MakeAlreadyExistsException("Make [%s] already exists.".formatted(name));
+        }
     }
 
     @Override

@@ -33,7 +33,7 @@ public class RentalsController {
             Model model
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        UUID userId = UUID.fromString(user.getUserInfo().getSubject());
+        UUID userId = UUID.fromString(user.getSubject());
 
         PageDto<RentalDto> pageDto = rentalService.readAllByUser(pageable, userId, filter);
 
@@ -49,10 +49,11 @@ public class RentalsController {
             @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
             @ModelAttribute RentalAdminFilter filter,
-            Model model
+            Model model,
+            @AuthenticationPrincipal OidcUser user
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        PageDto<RentalDto> pageDto = rentalService.readAll(pageable, filter);
+        PageDto<RentalDto> pageDto = rentalService.readAll(pageable, filter, user);
 
         model.addAttribute("page", pageDto);
         model.addAttribute("filter", filter);
@@ -72,9 +73,10 @@ public class RentalsController {
     @GetMapping("/{id}")
     public String getProfile(
             @PathVariable(name = "id") UUID rentalId,
-            Model model
+            Model model,
+            @AuthenticationPrincipal OidcUser user
     ) {
-        RentalDto rental = rentalService.readById(rentalId);
+        RentalDto rental = rentalService.readById(rentalId, user);
         model.addAttribute("rental", rental);
 
         return "rentals/profile.html";

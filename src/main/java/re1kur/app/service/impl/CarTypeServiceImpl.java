@@ -3,6 +3,7 @@ package re1kur.app.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import re1kur.app.core.dto.CarTypeDto;
@@ -27,8 +28,9 @@ public class CarTypeServiceImpl implements CarTypeService {
 
     @Override
     @Transactional
-    public Integer create(CarTypePayload payload) {
-        log.info("Create CarType request: {}", payload.toString());
+    public Integer create(CarTypePayload payload, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("CREATE CAR TYPE REQUEST [{}] BY USER [{}]", payload, logUser);
 
         String name = payload.name();
         if (repo.existsByName(name))
@@ -39,12 +41,15 @@ public class CarTypeServiceImpl implements CarTypeService {
         CarType saved = repo.save(mapped);
         Integer typeId = saved.getId();
 
-        log.info("Created car type [{}]", typeId);
+        log.info("CREATE CAR TYPE REQUEST [{}] BY USER [{}]", typeId, logUser);
         return typeId;
     }
 
     @Override
-    public CarTypeDto read(Integer id) {
+    public CarTypeDto read(Integer id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("READ CAR TYPE [{}] REQUEST BY USER [{}]", id, logUser);
+
         CarType carType = repo.findById(id).orElseThrow(() ->
                 new CarTypeNotFoundException("Car type with ID [%d] was not found.".formatted(id)));
 
@@ -52,8 +57,10 @@ public class CarTypeServiceImpl implements CarTypeService {
     }
 
     @Override
-    public void update(CarTypeUpdatePayload payload, Integer id) {
-        log.info("Update CarType request: {}", payload.toString());
+    @Transactional
+    public void update(CarTypeUpdatePayload payload, Integer id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("UPDATE CAR TYPE [{}] REQUEST BY USER [{}]", id, logUser);
 
         CarType carType = repo.findById(id).orElseThrow(() ->
                 new CarTypeNotFoundException("Car type with ID [%d] was not found.".formatted(id)));
@@ -67,23 +74,28 @@ public class CarTypeServiceImpl implements CarTypeService {
 
         repo.save(carType);
 
-        log.info("Updated car type: {}", carType);
+        log.info("UPDATED CAR TYPE [{}] REQUEST BY USER [{}]", id, logUser);
     }
 
     @Override
-    public void delete(Integer id) {
-        log.info("Delete CarType with ID [{}] request.", id);
+    @Transactional
+    public void delete(Integer id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("DELETE CAR TYPE [{}] REQUEST BY USER [{}]", id, logUser);
 
         CarType carType = repo.findById(id).orElseThrow(() ->
                 new CarTypeNotFoundException("Car type with ID [%d] was not found.".formatted(id)));
 
         repo.delete(carType);
 
-        log.info("Deleted car type with ID [{}]", id);
+        log.info("DELETED CAR TYPE [{}] REQUEST BY USER [{}]", id, logUser);
     }
 
     @Override
-    public PageDto<CarTypeDto> readPage(Pageable pageable) {
+    public PageDto<CarTypeDto> readAllAsPage(Pageable pageable, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("READ CAR TYPES PAGE REQUEST BY USER [{}]", logUser)
+        ;
         return mapper.readPage(repo.findAll(pageable));
     }
 

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import re1kur.app.core.dto.PageDto;
@@ -37,7 +38,7 @@ public class RentalServiceImpl implements RentalService {
     @Override
     @Transactional
     public UUID create(RentalPayload payload, UUID userId) {
-        log.info("CREATE RENTAL REQUEST BY USER [{}]", userId);
+        log.info("CREATE RENTAL [{}] REQUEST BY USER [{}]", payload, userId);
         Car car = carService.getById(payload.carId());
         checkConflicts(car, payload);
         Rental rental = rentalMapper.write(payload, car, userId);
@@ -61,7 +62,10 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public RentalDto readById(UUID rentalId) {
+    public RentalDto readById(UUID rentalId, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("READ RENTAL [{}] REQUEST BY USER [{}]", rentalId, logUser);
+
         return rentalRepository.findById(rentalId)
                 .map(rentalMapper::read)
                 .orElseThrow(() -> new RentalNotFoundException("Rental [%s] was not found.".formatted(rentalId)));
@@ -69,14 +73,14 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public PageDto<RentalDto> readAllByUser(Pageable pageable, UUID userId, RentalFilter filter) {
+        log.info("READ USER'S RENTALS REQUEST BY USER [{}]", userId);
         Integer carId = filter.carId();
 
         LocalDate date = filter.date();
 
         Page<Rental> page = date != null ? rentalRepository.findAllByUserIdAndDate(pageable, userId, carId, date) :
                 rentalRepository.findAllByUserId(pageable, userId, carId);
-        return rentalMapper
-                .readPage(page);
+        return rentalMapper.readPage(page);
     }
 
     @Override
@@ -85,7 +89,10 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public PageDto<RentalDto> readAll(Pageable pageable, RentalAdminFilter filter) {
+    public PageDto<RentalDto> readAll(Pageable pageable, RentalAdminFilter filter, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("READ RENTALS PAGE BY FILTER [{}] REQUEST BY USER [{}]", filter, logUser);
+
         UUID userId = filter.userId();
         Integer carId = filter.carId();
 

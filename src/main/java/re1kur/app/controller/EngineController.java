@@ -2,6 +2,8 @@ package re1kur.app.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +20,10 @@ public class EngineController {
     @GetMapping
     public String getCarType(
             Model model,
-            @PathVariable(name = "id") Integer id
+            @PathVariable(name = "id") Integer id,
+            @AuthenticationPrincipal OidcUser user
     ) {
-        EngineDto engineDto = engineService.read(id);
+        EngineDto engineDto = engineService.read(id, user);
         model.addAttribute("engine", engineDto);
 
         return "engines/profile.html";
@@ -29,8 +32,10 @@ public class EngineController {
     @GetMapping("/update")
     public String getEngineUpdatePage(
             Model model,
-            @PathVariable(name = "id") Integer id) {
-        EngineDto engine = engineService.read(id);
+            @PathVariable(name = "id") Integer id,
+            @AuthenticationPrincipal OidcUser user
+    ) {
+        EngineDto engine = engineService.read(id, user);
         model.addAttribute("engine", engine);
 
         return "engines/update.html";
@@ -39,18 +44,21 @@ public class EngineController {
     @PostMapping("/update")
     public String engineUpdate(
             @ModelAttribute @Valid EngineUpdatePayload payload,
-            @PathVariable(name = "id") Integer id) {
-        engineService.update(payload, id);
+            @PathVariable(name = "id") Integer id,
+            @AuthenticationPrincipal OidcUser user
+    ) {
+        engineService.update(payload, id, user);
 
-        return "redirect:/moderator/menu";
+        return "redirect:/engines/" + id;
     }
 
     @DeleteMapping("/delete")
     public String engineDelete(
-            @PathVariable(name = "id") Integer id) {
+            @PathVariable(name = "id") Integer id,
+            @AuthenticationPrincipal OidcUser user
+    ) {
+        engineService.delete(id, user);
 
-        engineService.delete(id);
-
-        return "redirect:/moderator/menu";
+        return "redirect:/engines";
     }
 }

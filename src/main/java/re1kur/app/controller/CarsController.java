@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +38,11 @@ public class CarsController {
     public String getCars(
             Model model,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @ModelAttribute(name = "filter") CarFilter filter
+            @ModelAttribute(name = "filter") CarFilter filter,
+            @AuthenticationPrincipal OidcUser user
     ) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        PageDto<CarDto> pageDto = carService.readAll(filter, pageable);
+        PageDto<CarDto> pageDto = carService.readAll(filter, pageable, user);
 
         model.addAttribute("makes", makeService.readAll());
         model.addAttribute("page", pageDto);
@@ -54,7 +57,9 @@ public class CarsController {
     }
 
     @GetMapping("/create")
-    public String getCreateCar(Model model) {
+    public String getCreateCar(
+            Model model
+    ) {
         model.addAttribute("makes", makeService.readAll());
         model.addAttribute("engines", engineService.readAll());
         model.addAttribute("carTypes", carTypeService.readAll());
@@ -66,9 +71,10 @@ public class CarsController {
     public String createCar(
             @Valid @ModelAttribute CarPayload payload,
             @RequestParam(value = "title", required = false) MultipartFile title,
-            @RequestParam(value = "file", required = false) MultipartFile[] files
+            @RequestParam(value = "file", required = false) MultipartFile[] files,
+            @AuthenticationPrincipal OidcUser user
     ) {
-        Integer id = carService.create(payload, title, files);
-        return "redirect:/cars/%d" .formatted(id);
+        Integer id = carService.create(payload, title, files, user);
+        return "redirect:/cars/%d".formatted(id);
     }
 }

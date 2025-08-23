@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,8 +50,9 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @Transactional
-    public Integer create(CarPayload payload, MultipartFile titlePayload, MultipartFile[] files) {
-        log.info("CREATE CAR [{}]", payload);
+    public Integer create(CarPayload payload, MultipartFile titlePayload, MultipartFile[] files, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("CREATE CAR [{}] REQUEST BY USER [{}]", payload, logUser);
         String licensePlate = payload.licensePlate();
 
         if (repo.existsByLicensePlate(licensePlate))
@@ -66,7 +68,7 @@ public class CarServiceImpl implements CarService {
 
         saveImagesAndInformation(payload, titlePayload, files, saved);
 
-        log.info("CREATED CAR [{}]", saved.getId());
+        log.info("CREATED CAR [{}] BY USER [{}]", saved.getId(), logUser);
         return saved.getId();
     }
 
@@ -100,11 +102,12 @@ public class CarServiceImpl implements CarService {
     public CarUpdateDto readUpdateById(Integer id) {
         return repo.findById(id)
                 .map(carMapper::readUpdate)
-                .orElse(null);
+                .orElseThrow(() -> new CarNotFoundException("Car [%s] was not found.".formatted(id)));
     }
 
     @Override
-    public PageDto<CarDto> readAll(CarFilter filter, Pageable pageable) {
+    public PageDto<CarDto> readAll(CarFilter filter, Pageable pageable, OidcUser user) {
+        log.info("READ ALL BY FILTER [{}] BY USER [{}]", filter, user == null ? "Anonymous" : user.getSubject());
         String model = filter.getModel();
         Integer makeId = filter.getMakeId();
         Integer year = filter.getYear();
@@ -122,24 +125,23 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @Transactional
-    public CarFullDto readFull(Integer id) {
+    public CarFullDto readFull(Integer id, OidcUser user) {
+        log.info("READ CAR FULL [{}] REQUEST BY [{}]", id, user == null ? "Anonymous" : user.getSubject());
         return repo.findById(id).map(
-                carMapper::readFull).orElse(null);
+                carMapper::readFull).orElseThrow(() -> new CarNotFoundException("Car [%s] was not found.".formatted(id)));
     }
 
     @Override
     @Transactional
-    public void updateCar(CarUpdatePayload payload, Integer id) {
-        log.info("UPDATE CAR [{}] REQUEST", id);
+    public void updateCar(CarUpdatePayload payload, Integer id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("UPDATE CAR [{}] REQUEST BY USER [{}]", id, logUser);
 
         Car found = repo.findById(id)
                 .orElseThrow(() -> new CarNotFoundException("Car [%d] was not found.".formatted(id)));
 
         String licensePlate = payload.licensePlate();
-        if (!Objects.equals(licensePlate, found.getLicensePlate())) {
-            if (repo.existsByLicensePlate(licensePlate))
-                throw new CarAlreadyExistsException("Car [%s] already exists.".formatted(licensePlate));
-        }
+        checkConflicts(licensePlate, found);
 
         Make make = makeService.get(payload.makeId());
         CarType type = carTypeService.get(payload.carTypeId());
@@ -149,7 +151,14 @@ public class CarServiceImpl implements CarService {
 
         repo.save(updated);
 
-        log.info("UPDATED CAR [{}]", id);
+        log.info("UPDATED CAR [{}] BY USER [{}]", id, logUser);
+    }
+
+    private void checkConflicts(String licensePlate, Car found) {
+        if (!Objects.equals(licensePlate, found.getLicensePlate())) {
+            if (repo.existsByLicensePlate(licensePlate))
+                throw new CarAlreadyExistsException("Car [%s] already exists.".formatted(licensePlate));
+        }
     }
 
     private Map<String, Object> uploadFiles(MultipartFile titlePayload, MultipartFile[] imagePayloads) {
@@ -166,5 +175,4 @@ public class CarServiceImpl implements CarService {
         map.put(IMAGES_KEY, images);
         return map;
     }
-
 }

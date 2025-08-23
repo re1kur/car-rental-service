@@ -3,6 +3,7 @@ package re1kur.app.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import re1kur.app.core.dto.EngineDto;
@@ -27,8 +28,9 @@ public class EngineServiceImpl implements EngineService {
 
     @Override
     @Transactional
-    public Integer create(EnginePayload payload) {
-        log.info("Create engine request: {}", payload.toString());
+    public Integer create(EnginePayload payload, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("CREATE ENGINE REQUEST [{}] BY USER [{}]", payload, logUser);
         String name = payload.name();
 
         if (repo.existsByName(name))
@@ -39,20 +41,24 @@ public class EngineServiceImpl implements EngineService {
         Engine saved = repo.save(mapped);
         Integer engineId = saved.getId();
 
-        log.info("Created engine : {}", engineId);
+        log.info("CREATED ENGINE REQUEST [{}] BY USER [{}]", engineId, logUser);
         return engineId;
     }
 
     @Override
-    public EngineDto read(Integer id) {
+    public EngineDto read(Integer id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("READ ENGINE [{}] REQUEST BY USER [{}]", id, logUser);
+
         return repo.findById(id).map(mapper::read).orElseThrow(() ->
                 new EngineNotFoundException("Engine [%d] was not found.".formatted(id)));
     }
 
     @Override
     @Transactional
-    public void update(EngineUpdatePayload payload, Integer id) {
-        log.info("Update engine request: {}", payload.toString());
+    public void update(EngineUpdatePayload payload, Integer id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("UPDATE ENGINE [{}] REQUEST BY USER [{}]", id, logUser);
 
         Engine engine = repo.findById(id)
                 .orElseThrow(() -> new EngineNotFoundException("Engine [%d] was not found.".formatted(id)));
@@ -67,24 +73,28 @@ public class EngineServiceImpl implements EngineService {
 
         repo.save(mapped);
 
-        log.info("Engine has been updated: {}", payload);
+        log.info("UPDATED ENGINE [{}] REQUEST BY USER [{}]", id, logUser);
     }
 
     @Override
     @Transactional
-    public void delete(Integer id) {
-        log.info("Delete engine with ID [{}] request.", id);
+    public void delete(Integer id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("DELETE ENGINE [{}] REQUEST BY USER [{}]", id, logUser);
 
         Engine engine = repo.findById(id)
                 .orElseThrow(() -> new EngineNotFoundException("Engine [%d] was not found.".formatted(id)));
 
         repo.delete(engine);
 
-        log.info("Engine [{}] has been deleted.", id);
+        log.info("DELETED ENGINE [{}] REQUEST BY USER [{}]", id, logUser);
     }
 
     @Override
-    public PageDto<EngineDto> readPage(Pageable pageable) {
+    public PageDto<EngineDto> readAllAsPage(Pageable pageable, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("READ ENGINES PAGE REQUEST BY USER [{}]", logUser);
+
         return mapper.readPage(repo.findAll(pageable));
     }
 

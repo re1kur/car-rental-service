@@ -3,7 +3,9 @@ package re1kur.app.core.payload;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 
+@Builder
 public record EnginePayload(
         @NotBlank(message = "Name cannot be empty or contain backspaces.")
         @NotNull(message = "Name is required.")
