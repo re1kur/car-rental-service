@@ -15,6 +15,7 @@ public record CarUpdateDto(
         String licensePlate,
         CarInformationDto information,
         FileDto titleImage,
-        List<FileDto> images
+        List<FileDto> images,
+        Boolean available
 ) {
 }

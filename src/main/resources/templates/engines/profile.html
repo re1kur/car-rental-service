@@ -8,7 +8,10 @@
 </head>
 <body>
 
-<header th:insert="fragments/header.html :: pages"></header>
+<header>
+    <div th:insert="fragments/header.html :: pages"></div>
+    <div th:insert="fragments/header.html :: updateEngine"></div>
+</header>
 
 <div class="container">
 

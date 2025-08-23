@@ -10,7 +10,10 @@
 
 <body>
 
-<header th:insert="fragments/header.html :: pages"></header>
+<header>
+    <div th:insert="fragments/header.html :: pages"></div>
+    <div th:insert="fragments/header.html :: createEngine"></div>
+</header>
 
 <div class="list-container">
 

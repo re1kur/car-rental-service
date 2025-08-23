@@ -2,10 +2,7 @@ package re1kur.app.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Collection;
 
@@ -13,7 +10,8 @@ import java.util.Collection;
 @Entity
 @Table(name = "cars")
 @Builder
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Car {
@@ -55,4 +53,17 @@ public class Car {
 
     @Column(insertable = false, columnDefinition = "DEFAULT FALSE")
     private boolean isAvailable;
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        if (!(object instanceof Car car)) return false;
+        if (id == null || car.id == null) return false;
+        return id.equals(car.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return (id != null ? id.hashCode() : System.identityHashCode(this));
+    }
 }

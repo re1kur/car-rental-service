@@ -9,7 +9,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "makes")
-@Data
+@Setter
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,4 +37,17 @@ public class Make {
 
     @OneToMany(mappedBy = "make", fetch = FetchType.LAZY)
     private Collection<Car> cars;
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        if (!(object instanceof Make make)) return false;
+        if (id == null || make.id == null) return false;
+        return id.equals(make.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return (id != null ? id.hashCode() : System.identityHashCode(this));
+    }
 }

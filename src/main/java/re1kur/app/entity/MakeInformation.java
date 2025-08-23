@@ -7,7 +7,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "make_information")
-@Data
+@Setter
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,4 +31,17 @@ public class MakeInformation {
     private String founder;
 
     private String owner;
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        if (!(object instanceof MakeInformation makeInfo)) return false;
+        if (makeId == null || makeInfo.makeId == null) return false;
+        return makeId.equals(makeInfo.makeId);
+    }
+
+    @Override
+    public int hashCode() {
+        return (makeId != null ? makeId.hashCode() : System.identityHashCode(this));
+    }
 }

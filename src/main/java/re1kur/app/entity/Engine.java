@@ -2,17 +2,15 @@ package re1kur.app.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Collection;
 
 @Entity
 @Table(name = "engines")
 @Builder
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Engine {
@@ -24,4 +22,17 @@ public class Engine {
 
     @OneToMany(mappedBy = "engine", fetch = FetchType.LAZY)
     private Collection<Car> cars;
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        if (!(object instanceof Engine engine)) return false;
+        if (id == null || engine.id == null) return false;
+        return id.equals(engine.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return (id != null ? id.hashCode() : System.identityHashCode(this));
+    }
 }

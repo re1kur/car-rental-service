@@ -34,6 +34,9 @@ minio:
   endpoint-override: http://localhost:9000
   default-bucket: developer
 
+custom:
+  profile-url: http://localhost:9090/realms/rental-service-realm/account
+
 logging:
   level:
     org:

@@ -16,6 +16,19 @@
         <h2>Common</h2>
         <section>
             <div class="form-group">
+                <label for="available">Is available:</label>
+                <select id="available" name="available" required>
+                    <option th:value="true"
+                            th:text="Yes"
+                            th:selected="${car.available == true}">
+                    </option>
+                    <option th:value="false"
+                            th:text="No"
+                            th:selected="${car.available == false}"></option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="makeId">Make:</label>
                 <select id="makeId" name="makeId" required>
                     <option value="" disabled selected>Choose the make</option>
@@ -94,7 +107,7 @@
 
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea name="description" id="description" rows="4" cols="80"
+                <textarea name="description" id="description" rows="4" cols="80" style="resize: none"
                           placeholder="Did not beaten." th:text="${car.information.description}"></textarea>
             </div>
 
@@ -117,12 +130,18 @@
                 <label for="fuelType">Fuel type:</label>
                 <select id="fuelType" name="fuelType">
                     <option th:value="''" th:selected="${car.information.fuelType == null}">Nothing chosen</option>
-                    <option th:value="'Gasoline'" th:text="'Gasoline'" th:selected="${car.information.fuelType == 'Gasoline'}"></option>
-                    <option th:value="'Diesel'" th:text="'Diesel'" th:selected="${car.information.fuelType == 'Diesel'}"></option>
-                    <option th:value="'Ethanol'" th:text="'Ethanol'" th:selected="${car.information.fuelType == 'Ethanol'}"></option>
-                    <option th:value="'Electric'" th:text="'Electric'" th:selected="${car.information.fuelType == 'Electric'}"></option>
-                    <option th:value="'Hybrid electric'" th:text="'Hybrid electric'" th:selected="${car.information.fuelType == 'Hybrid electric'}"></option>
-                    <option th:value="'Natural gas'" th:text="'Natural gas'" th:selected="${car.information.fuelType == 'Natural gas'}"></option>
+                    <option th:value="'Gasoline'" th:text="'Gasoline'"
+                            th:selected="${car.information.fuelType == 'Gasoline'}"></option>
+                    <option th:value="'Diesel'" th:text="'Diesel'"
+                            th:selected="${car.information.fuelType == 'Diesel'}"></option>
+                    <option th:value="'Ethanol'" th:text="'Ethanol'"
+                            th:selected="${car.information.fuelType == 'Ethanol'}"></option>
+                    <option th:value="'Electric'" th:text="'Electric'"
+                            th:selected="${car.information.fuelType == 'Electric'}"></option>
+                    <option th:value="'Hybrid electric'" th:text="'Hybrid electric'"
+                            th:selected="${car.information.fuelType == 'Hybrid electric'}"></option>
+                    <option th:value="'Natural gas'" th:text="'Natural gas'"
+                            th:selected="${car.information.fuelType == 'Natural gas'}"></option>
                 </select>
             </div>
 
@@ -130,9 +149,17 @@
                 <label for="transmission">Transmission:</label>
                 <select id="transmission" name="transmission">
                     <option th:value="''" th:selected="${car.information.transmission == null}">Nothing chosen</option>
-                    <option th:value="'Automatic transmission'" th:selected="${car.information.transmission == 'Automatic transmission'}">Automatic transmission</option>
-                    <option th:value="'Manual transmission'" th:selected="${car.information.transmission == 'Manual transmission'}">Manual transmission</option>
-                    <option th:value="'Semi-automatic transmission'" th:selected="${car.information.transmission == 'Semi-automatic transmission'}">Semi-automatic transmission</option>
+                    <option th:value="'Automatic transmission'"
+                            th:selected="${car.information.transmission == 'Automatic transmission'}">Automatic
+                        transmission
+                    </option>
+                    <option th:value="'Manual transmission'"
+                            th:selected="${car.information.transmission == 'Manual transmission'}">Manual transmission
+                    </option>
+                    <option th:value="'Semi-automatic transmission'"
+                            th:selected="${car.information.transmission == 'Semi-automatic transmission'}">
+                        Semi-automatic transmission
+                    </option>
                 </select>
             </div>
         </section>

@@ -9,7 +9,10 @@
 </head>
 <body>
 
-<header th:insert="fragments/header.html :: pages"></header>
+<header>
+    <div th:insert="fragments/header.html :: pages"></div>
+    <div th:insert="fragments/header.html :: updateMake"></div>
+</header>
 
 <div class="container">
     <h1 th:text="${make.name}"></h1>

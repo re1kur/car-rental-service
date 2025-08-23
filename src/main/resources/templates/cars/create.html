@@ -81,7 +81,7 @@
 
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea id="description" name="description" rows="4"
+                <textarea id="description" name="description" rows="4" cols="80" style="resize: none"
                           placeholder="Experience smooth driving with the Toyota Corolla 2022 – perfect for city trips and long drives. Known for its excellent fuel economy, comfort, and safety features. Ideal for small families or business travel."
                           th:text="${payload != null ? payload.description : ''}"></textarea>
             </div>

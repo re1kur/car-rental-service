@@ -9,6 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -22,7 +24,11 @@ import java.util.stream.Stream;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, ClientRegistrationRepository repo) throws Exception {
+        OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
+                new OidcClientInitiatedLogoutSuccessHandler(repo);
+        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("http://localhost:8080/");
+
         http
                 .csrf(Customizer.withDefaults())
                 .cors(AbstractHttpConfigurer::disable)
@@ -64,12 +70,7 @@ public class SecurityConfiguration {
                                         "/error/*").permitAll()
                                 .anyRequest().authenticated())
                 .oauth2Login(Customizer.withDefaults())
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                        .deleteCookies("JSESSIONID"));
-        //todo: logout, http-status-exception-handlers
+                .logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler));
         return http.build();
     }
 

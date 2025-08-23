@@ -104,6 +104,7 @@ public class CarMapperImpl implements CarMapper {
                 .information(infoMapper.read(car.getInformation()))
                 .titleImage(imageMapper.read(titleImage))
                 .images(images != null ? images.stream().map(imageMapper::read).toList() : List.of())
+                .available(car.isAvailable())
                 .build();
     }
 
@@ -118,6 +119,7 @@ public class CarMapperImpl implements CarMapper {
         found.setLicensePlate(payload.licensePlate());
         found.setModel(payload.model());
         found.setInformation(infoMapper.update(payload, found));
+        found.setAvailable(payload.available());
 
         if ((titleImage == null && titleImageId != null)
                 || (titleImage != null && !Objects.equals(titleImage.getId(), titleImageId))) {
