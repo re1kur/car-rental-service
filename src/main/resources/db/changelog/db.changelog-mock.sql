@@ -29,11 +29,11 @@ VALUES
   ('Hybrid');
 
 --changeset re1kur:5
-INSERT INTO cars (make_id, car_type_id, engine_id, model, year, license_plate, is_available)
+INSERT INTO cars (make_id, car_type_id, engine_id, model, year, license_plate, is_available, cost)
 VALUES
-  ((SELECT id FROM makes WHERE name = 'TOYOTA'), (SELECT id FROM car_types WHERE name = 'SEDAN'), (SELECT id FROM engines WHERE name = 'V6'), 'Camry', 2020, 'A123BC', true),
-  ((SELECT id FROM makes WHERE name = 'TESLA'), (SELECT id FROM car_types WHERE name = 'SUV'), (SELECT id FROM engines WHERE name = 'Electric'), 'Model X', 2022, 'B456CD', true),
-  ((SELECT id FROM makes WHERE name = 'BMW'), (SELECT id FROM car_types WHERE name = 'COUPE'), (SELECT id FROM engines WHERE name = 'Hybrid'), 'M4', 2021, 'C789EF', false);
+  ((SELECT id FROM makes WHERE name = 'TOYOTA'), (SELECT id FROM car_types WHERE name = 'SEDAN'), (SELECT id FROM engines WHERE name = 'V6'), 'Camry', 2020, 'A123BC', true, 10),
+  ((SELECT id FROM makes WHERE name = 'TESLA'), (SELECT id FROM car_types WHERE name = 'SUV'), (SELECT id FROM engines WHERE name = 'Electric'), 'Model X', 2022, 'B456CD', true, 30),
+  ((SELECT id FROM makes WHERE name = 'BMW'), (SELECT id FROM car_types WHERE name = 'COUPE'), (SELECT id FROM engines WHERE name = 'Hybrid'), 'M4', 2021, 'C789EF', false, 17);
 
 --changeset re1kur:6
 INSERT INTO car_information (car_id, description, color, seats, mileage, fuel_type, transmission)

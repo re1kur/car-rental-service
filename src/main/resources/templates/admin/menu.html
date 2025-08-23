@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Moderator menu</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+</head>
+
+<header th:insert="fragments/header.html :: pages">
+</header>
+
+<body>
+<div>
+    <ul>
+        <li>
+            <a th:href="@{/car-types/create}">New car type</a>
+        </li>
+        <li>
+            <a th:href="@{/car-types/delete}">Delete car type</a>
+        </li>
+        <li>
+            <a th:href="@{/engines/create}">New engine</a>
+        </li>
+        <li>
+            <a th:href="@{/engines/delete}">Delete engine</a>
+        </li>
+        <li>
+            <a th:href="@{/makes/create}">New make</a>
+        </li>
+        <li>
+            <a th:href="@{/makes/delete}">Delete make</a>
+        </li>
+        <li>
+            <a th:href="@{/cars/create}">New car</a>
+        </li>
+        <li>
+            <a th:href="@{/cars/delete}">Delete car</a>
+        </li>
+        <li>
+            <a th:href="@{/admin/keycloak}">Keycloak</a>
+        </li>
+        <li>
+            <a th:href="@{/admin/rentals}">User's rentals</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

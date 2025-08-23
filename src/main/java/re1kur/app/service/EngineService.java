@@ -10,7 +10,7 @@ import re1kur.app.entity.Engine;
 import java.util.List;
 
 public interface EngineService {
-    void create(EnginePayload payload);
+    Integer create(EnginePayload payload);
 
     EngineDto read(Integer id);
 

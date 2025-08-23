@@ -16,6 +16,7 @@ public record CarFullDto(
         EngineDto engine,
         FileDto titleImage,
         List<FileDto> images,
-        CarInformationDto information
+        CarInformationDto information,
+        Integer cost
 ) {
 }

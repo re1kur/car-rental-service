@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title th:text="${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service'"></title>
     <link rel="stylesheet" th:href="@{/css/styles-common.css}">
     <link rel="stylesheet" th:href="@{/css/styles-header.css}">
+    <link rel="stylesheet" sec:authorize="isAuthenticated()" th:href="@{/css/styles-form.css}">
 </head>
 <body>
 
@@ -87,6 +88,33 @@
         </ul>
     </section>
 
+    <section sec:authorize="isAuthenticated()">
+        <label class="field">
+            <span>Cost per day:</span>
+            <span th:text="${car.cost}"></span>
+        </label>
+
+        <form method="post" th:action="@{/rentals/create}" class="edit-form">
+            <div class="form-group">
+                <label for="carId" hidden="hidden"></label>
+                <input type="text" th:value="${car.id}" name="carId" id="carId" hidden="hidden">
+
+                <label for="startDate">Start date:</label>
+                <input type="date" name="startDate" id="startDate"
+                       th:value="${payload != null ? payload.startDate : ''}" required>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="endDate">End date:</label>
+                <input type="date" name="endDate" id="endDate"
+                       th:value="${payload != null ? payload.endDate : ''}" required>
+            </div>
+            <br>
+            <div class="form-actions">
+                <button type="submit">Rent</button>
+            </div>
+        </form>
+    </section>
 </div>
 
 </body>

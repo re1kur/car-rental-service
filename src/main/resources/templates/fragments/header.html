@@ -54,6 +54,12 @@
     </a>
 </div>
 
+<div sec:authorize="hasRole('ADMIN')" th:fragment="usersRentals">
+    <a class="header-link" sec:authorize="hasRole('ADMIN')" th:href="@{/rentals/users}">
+        User's rentals
+    </a>
+</div>
+
 <div th:fragment="pages">
     <a class="header-link" th:href="@{/}">
         Home
@@ -70,12 +76,13 @@
     <a class="header-link" th:href="@{/car-types}">
         Car types
     </a>
-<!--    <a class="header-link" sec:authorize="hasRole('ADMIN')" th:href="@{/moderator/menu}">-->
-<!--        Moderator-menu-->
-<!--    </a>-->
+    <a class="header-link" sec:authorize="isAuthenticated()" th:href="@{/rentals}">
+        Rentals
+    </a>
     <a class="header-link" sec:authorize="isAuthenticated()" th:href="@{/oauth2/account}">
         Profile
     </a>
+
     <a class="header-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">
         Log out
     </a>

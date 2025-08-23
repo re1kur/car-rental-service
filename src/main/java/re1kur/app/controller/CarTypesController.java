@@ -41,10 +41,8 @@ public class CarTypesController {
     public String createCarType(
             @ModelAttribute CarTypePayload payload
     ) {
-        carTypeService.create(payload);
+        Integer id = carTypeService.create(payload);
 
-        return "redirect:/moderator/menu";
-
-        //TODO: maybe the better idea is redirect to new cartype profile page
+        return "redirect:/car-types/" + id;
     }
 }

@@ -9,6 +9,7 @@ import re1kur.app.core.dto.CarFullDto;
 import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.payload.CarPayload;
 import re1kur.app.core.other.CarFilter;
+import re1kur.app.entity.Car;
 
 public interface CarService {
 
@@ -21,4 +22,6 @@ public interface CarService {
     void updateCar(CarUpdatePayload car, Integer id);
 
     PageDto<CarDto> readAll(CarFilter filter, Pageable pageable);
+
+    Car getById(Integer carId);
 }

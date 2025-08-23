@@ -27,7 +27,7 @@ public class CarTypeServiceImpl implements CarTypeService {
 
     @Override
     @Transactional
-    public void create(CarTypePayload payload) {
+    public Integer create(CarTypePayload payload) {
         log.info("Create CarType request: {}", payload.toString());
 
         String name = payload.name();
@@ -36,9 +36,11 @@ public class CarTypeServiceImpl implements CarTypeService {
 
         CarType mapped = mapper.create(payload);
 
-        repo.save(mapped);
+        CarType saved = repo.save(mapped);
+        Integer typeId = saved.getId();
 
-        log.info("Created car type: {}", payload);
+        log.info("Created car type [{}]", typeId);
+        return typeId;
     }
 
     @Override

@@ -33,6 +33,7 @@ public class CarMapperImpl implements CarMapper {
                 .model(payload.model())
                 .year(payload.year())
                 .licensePlate(payload.licensePlate())
+                .cost(payload.cost())
                 .build();
     }
 
@@ -68,6 +69,7 @@ public class CarMapperImpl implements CarMapper {
                 .information(infoMapper.read(car.getInformation()))
                 .titleImage(imageMapper.read(titleImage))
                 .images(images != null ? images.stream().map(imageMapper::read).toList() : List.of())
+                .cost(car.getCost())
                 .build();
     }
 
@@ -120,6 +122,7 @@ public class CarMapperImpl implements CarMapper {
         found.setModel(payload.model());
         found.setInformation(infoMapper.update(payload, found));
         found.setAvailable(payload.available());
+        found.setCost(payload.cost());
 
         if ((titleImage == null && titleImageId != null)
                 || (titleImage != null && !Objects.equals(titleImage.getId(), titleImageId))) {

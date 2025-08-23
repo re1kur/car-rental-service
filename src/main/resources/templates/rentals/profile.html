@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Rental [' + ${rental.id} + '] — Car Rental Service'"></title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
+</head>
+<body>
+
+<header th:insert="fragments/header.html :: pages"></header>
+
+
+<div class="container">
+    <h1 th:text="'Rental ' + ${rental.id}"></h1>
+
+    <section>
+        <label class="field">
+            <a th:href="@{/cars/{id}(id=${rental.carId})}" th:text="'Car profile'"></a>
+        </label>
+
+
+        <label class="field">
+            <span>User id:</span>
+            <span th:text="${rental.userId}"></span>
+        </label>
+
+        <label class="field">
+            <span>Start date:</span>
+            <span th:text="${rental.startDate}"></span>
+        </label>
+
+        <label class="field">
+            <span>End date:</span>
+            <span th:text="${rental.endDate}"></span>
+        </label>
+
+        <label class="field">
+            <span>Total cost:</span>
+            <span th:text="${rental.totalCost}"></span>
+        </label>
+    </section>
+</div>
+</body>
+</html>

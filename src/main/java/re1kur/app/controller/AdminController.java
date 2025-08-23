@@ -1,23 +1,21 @@
 package re1kur.app.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @Controller
-@RequestMapping("/moderator")
+@RequestMapping("/admin")
 @RequiredArgsConstructor
-public class ModeratorController {
+public class AdminController {
 
     @GetMapping("/")
     public String getMenuRedirect() {
-        return "redirect:/moderator/menu";
+        return "redirect:/admin/menu";
     }
 
     @GetMapping("/menu")
     public String getMenuResponsibilities() {
-        return "moderator/menu.html";
+        return "admin/menu.html";
     }
 }

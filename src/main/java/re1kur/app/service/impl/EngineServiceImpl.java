@@ -27,7 +27,7 @@ public class EngineServiceImpl implements EngineService {
 
     @Override
     @Transactional
-    public void create(EnginePayload payload) {
+    public Integer create(EnginePayload payload) {
         log.info("Create engine request: {}", payload.toString());
         String name = payload.name();
 
@@ -36,9 +36,11 @@ public class EngineServiceImpl implements EngineService {
 
         Engine mapped = mapper.write(payload);
 
-        repo.save(mapped);
+        Engine saved = repo.save(mapped);
+        Integer engineId = saved.getId();
 
-        log.info("Created engine : {}", payload);
+        log.info("Created engine : {}", engineId);
+        return engineId;
     }
 
     @Override

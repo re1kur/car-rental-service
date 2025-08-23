@@ -115,6 +115,12 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public Car getById(Integer carId) {
+        return repo.findById(carId)
+                .orElseThrow(() -> new CarNotFoundException("Car [%d] was not found.".formatted(carId)));
+    }
+
+    @Override
     @Transactional
     public CarFullDto readFull(Integer id) {
         return repo.findById(id).map(

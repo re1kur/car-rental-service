@@ -46,8 +46,7 @@ public class EnginesController {
     public String createEngine(
             @ModelAttribute EnginePayload payload
     ) {
-        engineService.create(payload);
-        return "redirect:/moderator/menu";
-        //TODO: maybe the better redirect on the new engine profile page
+        Integer id = engineService.create(payload);
+        return "redirect:/engines/" + id;
     }
 }

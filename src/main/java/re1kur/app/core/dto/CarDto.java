@@ -11,6 +11,5 @@ public record CarDto(
         MakeShortDto make,
         CarTypeDto carType,
         EngineDto engine,
-        FileDto titleImage
-        ) {
+        FileDto titleImage) {
 }

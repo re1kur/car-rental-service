@@ -48,5 +48,9 @@ public record CarUpdatePayload (
 
         String titleImageId,
 
-        Boolean available
+        @NotNull
+        Boolean available,
+
+        @Positive(message = "Cost have to be positive.")
+        Integer cost
 ) {}

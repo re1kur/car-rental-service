@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Rentals – Car Rental Service</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-list.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
+</head>
+<body>
+
+<header>
+    <div th:insert="fragments/header.html :: pages"></div>
+</header>
+
+<div class="list-container">
+
+    <section class="filter-container">
+        <form th:action="@{/rentals/users}" method="get" class="filter-form">
+            <div class="form-group">
+                <label for="userId">User ID:</label>
+                <input type="text" id="userId" name="userId" th:value="${filter.userId}" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="carId">Car ID:</label>
+                <input type="text" id="carId" name="carId" th:value="${filter.carId}" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="date">Year:</label>
+                <input type="date" id="date" name="date" th:value="${filter.date}" class="form-control">
+            </div>
+
+            <button type="submit">Find</button>
+        </form>
+    </section>
+
+    <table th:if="${page.content.empty}" class="no-items">
+        <thead>
+        <tr>
+            <th>Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Rentals not found.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:each="rental : ${page.content}" class="item-card">
+        <div class="item-info">
+            <h2 th:text="${rental.id}"></h2>
+            <div class="item-details">
+                <p th:text="'User: ' + ${rental.userId}"></p>
+                <p th:text="'Start date: ' + ${rental.startDate}"></p>
+                <p th:text="'End date: ' + ${rental.endDate}"></p>
+                <p th:text="'Cost: ' + ${rental.totalCost}"></p>
+            </div>
+        </div>
+
+        <div class="item-footer">
+            <a th:href="@{/cars/{id}(id=${rental.carId})}">
+                <p th:text="'Car: ' + ${rental.carId}"></p>
+            </a>
+        </div>
+    </div>
+</div>
+
+<footer th:if="${!page.content.empty}">
+    <nav class="pagination" aria-label="Pagination">
+        <a th:href="${page.prevNumber != null ? '/rentals/users?'
+             + 'page=' + page.prevNumber
+             + '&carId=' + (filter.carId != null ? filter.carId : '')
+             + '&userId=' + (filter.userId != null ? filter.userId : '')
+             + '&date=' + (filter.date != null ? filter.date : '') : '#'}"
+           class="page-link" th:text="'Previous'"></a>
+
+        <span th:each="pageNumber : ${#numbers.sequence(page.firstNumber, page.lastNumber)}">
+            <a th:href="@{/rentals/users(
+                page=${pageNumber},
+                carId=${filter.carId},
+                userId=${filter.userId},
+                date=${filter.date})}"
+               class="page-link" th:text="${pageNumber + 1}"></a>
+        </span>
+
+        <a th:href="${page.nextNumber != null ? '/rentals/users?'
+             + 'page=' + page.nextNumber
+             + '&carId=' + (filter.carId != null ? filter.carId : '')
+             + '&userId=' + (filter.userId != null ? filter.userId : '')
+             + '&date=' + (filter.date != null ? filter.date : '') : '#'}"
+           class="page-link" th:text="'Next'"></a>
+    </nav>
+</footer>
+
+</body>
+</html>

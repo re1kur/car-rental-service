@@ -10,7 +10,7 @@ import re1kur.app.entity.CarType;
 import java.util.List;
 
 public interface CarTypeService {
-    void create(CarTypePayload payload);
+    Integer create(CarTypePayload payload);
 
     CarTypeDto read(Integer id);
 

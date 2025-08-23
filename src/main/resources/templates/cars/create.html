@@ -73,6 +73,15 @@
                        th:value="${payload != null ? payload.licensePlate : ''}"
                        placeholder="AAA111" required>
             </div>
+
+            <div class="form-group">
+                <label for="cost">Seats:</label>
+                <input type="text"
+                       name="cost"
+                       id="cost"
+                       placeholder="10"
+                       th:value="${payload != null ? payload.cost : ''}">
+            </div>
         </section>
 
 

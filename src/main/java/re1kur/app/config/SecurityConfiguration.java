@@ -31,7 +31,6 @@ public class SecurityConfiguration {
 
         http
                 .csrf(Customizer.withDefaults())
-                .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(
                                         "/cars/create",
@@ -46,8 +45,9 @@ public class SecurityConfiguration {
                                         "/car-types/*/delete",
                                         "/engines/*/delete",
                                         "/makes/*/delete",
-                                        "/moderator/**",
-                                        "/moderator").hasRole("ADMIN")
+                                        "/admin/**",
+                                        "/admin",
+                                        "/rentals/users").hasRole("ADMIN")
                                 .requestMatchers(
                                         "/",
                                         "/cars",
@@ -55,13 +55,7 @@ public class SecurityConfiguration {
                                         "/engines",
                                         "/car-types",
                                         "/css/**",
-                                        "favicon.ico",
-                                        "/api/v1/auth/**",
-                                        "/swagger-ui.html",
-                                        "/v3/api-docs",
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui.html",
+                                        "/favicon.ico",
                                         "/cars/*",
                                         "/makes/*",
                                         "/engines/*",

@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS cars
     year           SMALLINT    NOT NULL,
     license_plate  CHAR(6)     NOT NULL UNIQUE,
     is_available   BOOLEAN     NOT NULL DEFAULT FALSE,
+    cost           SMALLINT    NOT NULL CHECK (cost > 0),
     title_image_id varchar(64),
     FOREIGN KEY (make_id) REFERENCES makes (id) ON DELETE SET DEFAULT,
     FOREIGN KEY (car_type_id) REFERENCES car_types (id) ON DELETE SET DEFAULT,
@@ -96,16 +97,14 @@ CREATE TABLE IF NOT EXISTS car_images
     FOREIGN KEY (image_id) REFERENCES files (id) ON DELETE CASCADE
 );
 
--- --changeset re1kur:1
--- CREATE TABLE IF NOT EXISTS rentals
--- (
---     id          SERIAL PRIMARY KEY,
---     user_id     uuid           NOT NULL,
---     car_id      INTEGER        NOT NULL,
---     start_date  DATE           NOT NULL,
---     end_date    DATE           NOT NULL,
---     total_cost  DECIMAL(10, 2) NOT NULL,
---     description text default 'No description...',
---     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
---     FOREIGN KEY (car_id) REFERENCES cars (id) ON DELETE CASCADE
--- );
+ --changeset re1kur:10
+ CREATE TABLE IF NOT EXISTS rentals
+ (
+     id          uuid PRIMARY KEY,
+     user_id     uuid           NOT NULL,
+     car_id      INTEGER        NOT NULL,
+     start_date  DATE           NOT NULL,
+     end_date    DATE           NOT NULL,
+     total_cost  SMALLINT       NOT NULL CHECK(total_cost > 0),
+     FOREIGN KEY (car_id) REFERENCES cars (id) ON DELETE CASCADE
+ );

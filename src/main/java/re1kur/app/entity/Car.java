@@ -54,6 +54,8 @@ public class Car {
     @Column(insertable = false, columnDefinition = "DEFAULT FALSE")
     private boolean isAvailable;
 
+    private Integer cost;
+
     @Override
     public boolean equals(Object object) {
         if (object == this) return true;

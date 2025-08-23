@@ -44,6 +44,9 @@ public record CarPayload(
         String fuelType,
 
         @EmptyOrSize(message = "Transmission have to be between 3 and 30 characters long.", min = 3, max = 30)
-        String transmission
+        String transmission,
+
+        @Positive(message = "Cost have to be positive.")
+        Integer cost
 ) {
 }

@@ -52,7 +52,7 @@ public class CarController {
     @PostMapping("/update")
     public String updateCar(
             @PathVariable Integer id,
-            @Valid @ModelAttribute("car") CarUpdatePayload payload
+            @ModelAttribute("car") @Valid CarUpdatePayload payload
     ) {
         service.updateCar(payload, id);
         return "redirect:/cars/" + id;
