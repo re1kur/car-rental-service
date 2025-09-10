@@ -159,4 +159,18 @@ public class MakeServiceImpl implements MakeService {
         return repo.findById(id).orElseThrow(() ->
                 new MakeNotFoundException("Make [%d] was not found.".formatted(id)));
     }
+
+    @Override
+    @Transactional
+    public void delete(Integer id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("DELETE MAKE [{}] REQUEST BY USER [{}]", id, logUser);
+
+        if (!repo.existsById(id))
+            throw new MakeNotFoundException("Make [%s] was not found.".formatted(id));
+
+        repo.deleteById(id);
+
+        log.info("DELETED MAKE [{}] REQUEST BY USER [{}]", id, logUser);
+    }
 }

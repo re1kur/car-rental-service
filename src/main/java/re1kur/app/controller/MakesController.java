@@ -30,7 +30,7 @@ public class MakesController {
     public String getMakes(
             Model model,
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "page", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
             @RequestParam(name = "name", required = false) String name,
             @AuthenticationPrincipal OidcUser user
     ) {

@@ -22,14 +22,14 @@ public class MakeController {
             Model model,
             @PathVariable(name = "id") Integer id,
             @AuthenticationPrincipal OidcUser user
-            ) {
+    ) {
         MakeFullDto make = service.read(id, user);
         model.addAttribute("make", make);
         return "makes/profile.html";
     }
 
     @GetMapping("/update")
-    public String getEditMake(
+    public String getUpdateMake(
             @PathVariable("id") Integer makeId,
             Model model,
             @AuthenticationPrincipal OidcUser user
@@ -40,12 +40,22 @@ public class MakeController {
     }
 
     @PostMapping("/update")
-    public String editMake(
-            @Valid @ModelAttribute("update") MakeUpdatePayload payload,
+    public String updateMake(
+            @ModelAttribute("update") @Valid MakeUpdatePayload makePayload,
             @PathVariable Integer id,
             @AuthenticationPrincipal OidcUser user
     ) {
-        service.update(payload, id, user);
+        service.update(makePayload, id, user);
         return "redirect:/makes/" + id;
+    }
+
+    @DeleteMapping
+    public String deleteMake(
+            @PathVariable(name = "id") Integer id,
+            @AuthenticationPrincipal OidcUser user
+    ) {
+        service.delete(id, user);
+
+        return "redirect:/makes";
     }
 }

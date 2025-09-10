@@ -125,6 +125,20 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @Transactional
+    public void delete(Integer id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("DELETE CAR [{}] REQUEST BY USER [{}]", id, logUser);
+
+        if (!repo.existsById(id))
+            throw new CarNotFoundException("Car [%s] was not found.".formatted(id));
+
+        repo.deleteById(id);
+
+        log.info("DELETED CAR [{}] REQUEST BY USER [{}]", id, logUser);
+    }
+
+    @Override
+    @Transactional
     public CarFullDto readFull(Integer id, OidcUser user) {
         log.info("READ CAR FULL [{}] REQUEST BY [{}]", id, user == null ? "Anonymous" : user.getSubject());
         return repo.findById(id).map(

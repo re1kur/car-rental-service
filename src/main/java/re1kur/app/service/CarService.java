@@ -25,4 +25,6 @@ public interface CarService {
     PageDto<CarDto> readAll(CarFilter filter, Pageable pageable, OidcUser user);
 
     Car getById(Integer carId);
+
+    void delete(Integer id, OidcUser user);
 }

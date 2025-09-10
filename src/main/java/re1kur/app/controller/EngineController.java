@@ -18,7 +18,7 @@ public class EngineController {
     private final EngineService engineService;
 
     @GetMapping
-    public String getCarType(
+    public String getProfile(
             Model model,
             @PathVariable(name = "id") Integer id,
             @AuthenticationPrincipal OidcUser user
@@ -30,7 +30,7 @@ public class EngineController {
     }
 
     @GetMapping("/update")
-    public String getEngineUpdatePage(
+    public String getUpdateEnginePage(
             Model model,
             @PathVariable(name = "id") Integer id,
             @AuthenticationPrincipal OidcUser user
@@ -42,7 +42,7 @@ public class EngineController {
     }
 
     @PostMapping("/update")
-    public String engineUpdate(
+    public String updateEngine(
             @ModelAttribute @Valid EngineUpdatePayload payload,
             @PathVariable(name = "id") Integer id,
             @AuthenticationPrincipal OidcUser user
@@ -53,7 +53,7 @@ public class EngineController {
     }
 
     @DeleteMapping("/delete")
-    public String engineDelete(
+    public String deleteEngine(
             @PathVariable(name = "id") Integer id,
             @AuthenticationPrincipal OidcUser user
     ) {

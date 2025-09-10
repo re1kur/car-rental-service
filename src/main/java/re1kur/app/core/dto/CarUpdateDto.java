@@ -16,6 +16,7 @@ public record CarUpdateDto(
         CarInformationDto information,
         FileDto titleImage,
         List<FileDto> images,
-        Boolean available
+        Boolean available,
+        Integer cost
 ) {
 }

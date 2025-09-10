@@ -60,4 +60,14 @@ public class CarController {
         service.updateCar(payload, id, user);
         return "redirect:/cars/" + id;
     }
+
+    @DeleteMapping
+    public String deleteCar(
+            @PathVariable(name = "id") Integer id,
+            @AuthenticationPrincipal OidcUser user
+    ) {
+        service.delete(id, user);
+
+        return "redirect:/cars";
+    }
 }

@@ -37,7 +37,8 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     @Transactional
-    public UUID create(RentalPayload payload, UUID userId) {
+    public UUID create(RentalPayload payload, OidcUser user) {
+        UUID userId = UUID.fromString(user.getUserInfo().getSubject());
         log.info("CREATE RENTAL [{}] REQUEST BY USER [{}]", payload, userId);
         Car car = carService.getById(payload.carId());
         checkConflicts(car, payload);
@@ -103,5 +104,19 @@ public class RentalServiceImpl implements RentalService {
                 rentalRepository.findAllByUserIdAndCarId(pageable, userId, carId);
         return rentalMapper
                 .readPage(page);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(UUID id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("DELETE RENTAL [{}] REQUEST BY USER [{}]", id, logUser);
+
+        if (!rentalRepository.existsById(id))
+            throw new RentalNotFoundException("Rental [%s] was not found.".formatted(id));
+
+        rentalRepository.deleteById(id);
+
+        log.info("DELETED RENTAL [{}] REQUEST BY USER [{}]", id, logUser);
     }
 }

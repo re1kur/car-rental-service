@@ -107,6 +107,7 @@ public class CarMapperImpl implements CarMapper {
                 .titleImage(imageMapper.read(titleImage))
                 .images(images != null ? images.stream().map(imageMapper::read).toList() : List.of())
                 .available(car.isAvailable())
+                .cost(car.getCost())
                 .build();
     }
 

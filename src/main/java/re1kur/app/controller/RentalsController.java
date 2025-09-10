@@ -65,20 +65,30 @@ public class RentalsController {
     public String createRental(
             @ModelAttribute @Valid RentalPayload payload,
             @AuthenticationPrincipal OidcUser user
-            ) {
-        UUID id = rentalService.create(payload, UUID.fromString(user.getUserInfo().getSubject()));
+    ) {
+        UUID id = rentalService.create(payload, user);
         return "redirect:/rentals/" + id;
     }
 
     @GetMapping("/{id}")
     public String getProfile(
             @PathVariable(name = "id") UUID rentalId,
-            Model model,
-            @AuthenticationPrincipal OidcUser user
+            @AuthenticationPrincipal OidcUser user,
+            Model model
     ) {
         RentalDto rental = rentalService.readById(rentalId, user);
         model.addAttribute("rental", rental);
 
         return "rentals/profile.html";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteRental(
+            @PathVariable(name = "id") UUID id,
+            @AuthenticationPrincipal OidcUser user
+    ) {
+        rentalService.deleteById(id, user);
+
+        return "redirect:/rentals";
     }
 }

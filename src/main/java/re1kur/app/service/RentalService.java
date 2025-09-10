@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RentalService {
-    UUID create(RentalPayload payload, UUID userId);
+    UUID create(RentalPayload payload, OidcUser userId);
 
     RentalDto readById(UUID rentalId, OidcUser user);
 
@@ -21,4 +21,6 @@ public interface RentalService {
     List<Integer> readCarIdsByUser(UUID userId);
 
     PageDto<RentalDto> readAll(Pageable pageable, RentalAdminFilter filter, OidcUser user);
+
+    void deleteById(UUID id, OidcUser user);
 }

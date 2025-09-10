@@ -51,9 +51,13 @@ public class SecurityConfiguration {
                                 .requestMatchers(
                                         "/",
                                         "/cars",
+                                        "/cars/",
                                         "/makes",
+                                        "/makes/",
                                         "/engines",
+                                        "/engines/",
                                         "/car-types",
+                                        "/car-types/",
                                         "/css/**",
                                         "/favicon.ico",
                                         "/cars/*",

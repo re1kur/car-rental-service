@@ -21,29 +21,29 @@
 
         <div class="form-group">
             <label for="country">Country:</label>
-            <input type="text" name="country" id="country" placeholder="Japan" th:value="${make.information.country}">
+            <input type="text" name="country" id="country" placeholder="Japan" th:value="${make.information == null ? '' : make.information.country}">
         </div>
 
         <div class="form-group">
             <label for="description">Description:</label>
             <textarea id="description" name="description" rows="4" cols="80"
                       placeholder="Japanese multinational automotive manufacturer"
-                      th:text="${make.information.description}"></textarea>
+                      th:value="${make.information == null ? '' : make.information.description}"></textarea>
         </div>
 
         <div class="form-group">
             <label for="founder">Founder:</label>
-            <input type="text" name="founder" id="founder" placeholder="Mads Mikkelsen" th:value="${make.information.founder}">
+            <input type="text" name="founder" id="founder" placeholder="Mads Mikkelsen" th:value="${make.information == null ? '' : make.information.founder}">
         </div>
 
         <div class="form-group">
             <label for="foundedAt">Date of foundation:</label>
-            <input type="date" name="foundedAt" id="foundedAt" th:value="${make.information.foundedAt}">
+            <input type="date" name="foundedAt" id="foundedAt" th:value="${make.information == null ? '' : make.information.foundedAt}">
         </div>
 
         <div class="form-group">
             <label for="owner">Owner:</label>
-            <input type="text" name="owner" id="owner" placeholder="BMW Group" th:value="${make.information.owner}">
+            <input type="text" name="owner" id="owner" placeholder="BMW Group" th:value="${make.information == null ? '' : make.information.owner}">
         </div>
 
         <section th:if="${make.titleImage}">

@@ -25,4 +25,6 @@ public interface MakeService {
     void update(MakeUpdatePayload update, Integer id, OidcUser user);
 
     Make get(Integer id);
+
+    void delete(Integer id, OidcUser user);
 }
