@@ -1,18 +1,13 @@
 spring:
   application:
-    name: Rental Service
-
+    name: car-rental-service
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
-    liquibase-schema: liquibase
-    default-schema: ${custom.datasource.schema}
-
   datasource:
-    url: jdbc:postgresql://localhost:5432/rentalservice2?currentSchema=${custom.datasource.schema}
+    url: jdbc:postgresql://localhost:5432/car-rental-service
     username: postgres
-    password: 123456778
+    password: postgres
     driver-class-name: org.postgresql.Driver
-
   jpa:
     generate-ddl: false
     open-in-view: false
@@ -20,7 +15,6 @@ spring:
 custom:
   pagination:
     size: 5
-
   buckets:
     car-image: cars
     make-image: makes
