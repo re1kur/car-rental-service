@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import re1kur.app.entity.Make;
+import re1kur.app.model.entity.Make;
 
 @Repository
 public interface MakeRepository extends JpaRepository<Make, Integer> {

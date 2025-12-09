@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import re1kur.app.entity.Rental;
+import re1kur.app.model.entity.Rental;
 
 import java.sql.Date;
 import java.time.LocalDate;

@@ -3,14 +3,14 @@ package re1kur.app.service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.multipart.MultipartFile;
-import re1kur.app.core.dto.CarDto;
-import re1kur.app.core.dto.CarUpdateDto;
-import re1kur.app.core.payload.CarUpdatePayload;
-import re1kur.app.core.dto.CarFullDto;
-import re1kur.app.core.dto.PageDto;
-import re1kur.app.core.payload.CarPayload;
-import re1kur.app.core.other.CarFilter;
-import re1kur.app.entity.Car;
+import re1kur.app.model.dto.CarDto;
+import re1kur.app.model.dto.CarUpdateDto;
+import re1kur.app.model.payload.CarUpdatePayload;
+import re1kur.app.model.dto.CarFullDto;
+import re1kur.app.model.dto.PageDto;
+import re1kur.app.model.payload.CarPayload;
+import re1kur.app.core.filter.CarFilter;
+import re1kur.app.model.entity.Car;
 
 public interface CarService {
 

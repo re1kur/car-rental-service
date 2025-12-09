@@ -7,8 +7,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import re1kur.app.core.dto.MakeFullDto;
-import re1kur.app.core.payload.MakeUpdatePayload;
+import re1kur.app.model.dto.MakeFullDto;
+import re1kur.app.model.payload.MakeUpdatePayload;
 import re1kur.app.service.MakeService;
 
 import java.util.UUID;

@@ -1,0 +1,128 @@
+package re1kur.app.mapper.car;
+
+import lombok.RequiredArgsConstructor;
+import re1kur.app.core.annotations.Mapper;
+import re1kur.app.model.dto.CarInformationDto;
+import re1kur.app.model.payload.CarPayload;
+import re1kur.app.model.payload.CarUpdatePayload;
+import re1kur.app.model.entity.Car;
+import re1kur.app.model.entity.CarInformation;
+
+@Mapper
+@RequiredArgsConstructor
+public class CarInformationMapperImpl implements CarInformationMapper {
+    @Override
+    public CarInformation create(CarPayload payload, Car car) {
+        CarInformation information = CarInformation.builder().car(car).build();
+
+        boolean hasInfo = false;
+
+        if (isNotEmpty(payload.description())) {
+            information.setDescription(payload.description());
+            hasInfo = true;
+        }
+        if (isNotEmpty(payload.color())) {
+            information.setColor(payload.color());
+            hasInfo = true;
+        }
+        if (payload.mileage() != null) {
+            information.setMileage(payload.mileage());
+            hasInfo = true;
+        }
+        if (payload.seats() != null) {
+            information.setSeats(payload.seats());
+            hasInfo = true;
+        }
+        if (isNotEmpty(payload.transmission())) {
+            information.setTransmission(payload.transmission());
+            hasInfo = true;
+        }
+        if (isNotEmpty(payload.fuelType())) {
+            information.setFuelType(payload.fuelType());
+            hasInfo = true;
+        }
+
+        if (hasInfo) {
+            return information;
+        }
+
+        return null;
+    }
+
+    @Override
+    public CarInformationDto read(CarInformation information) {
+        if (information == null)
+            return null;
+
+        return CarInformationDto.builder()
+                .color(information.getColor())
+                .seats(information.getSeats())
+                .description(information.getDescription())
+                .transmission(information.getTransmission())
+                .mileage(information.getMileage())
+                .fuelType(information.getFuelType())
+                .build();
+    }
+
+    @Override
+    public CarInformation update(CarUpdatePayload payload, Car car) {
+        CarInformation information = car.getInformation();
+
+        if (information == null)
+            information = CarInformation.builder().car(car).build();
+
+        boolean hasInfo = false;
+
+        if (isNotEmpty(payload.description())) {
+            information.setDescription(payload.description());
+            hasInfo = true;
+        } else {
+            information.setDescription(null);
+        }
+
+        if (isNotEmpty(payload.color())) {
+            information.setColor(payload.color());
+            hasInfo = true;
+        } else {
+            information.setColor(null);
+        }
+
+        if (payload.mileage() != null) {
+            information.setMileage(payload.mileage());
+            hasInfo = true;
+        } else {
+            information.setMileage(null);
+        }
+
+        if (payload.seats() != null) {
+            information.setSeats(payload.seats());
+            hasInfo = true;
+        } else {
+            information.setSeats(null);
+        }
+
+        if (isNotEmpty(payload.transmission())) {
+            information.setTransmission(payload.transmission());
+            hasInfo = true;
+        } else {
+            information.setTransmission(null);
+        }
+
+        if (isNotEmpty(payload.fuelType())) {
+            information.setFuelType(payload.fuelType());
+            hasInfo = true;
+        } else {
+            information.setFuelType(null);
+        }
+
+        if (hasInfo) {
+            return information;
+        }
+
+        return null;
+    }
+
+    private static boolean isNotEmpty(String str) {
+        return str != null && !str.trim().isEmpty();
+    }
+}

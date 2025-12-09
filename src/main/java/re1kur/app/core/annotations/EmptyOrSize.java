@@ -2,7 +2,7 @@ package re1kur.app.core.annotations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import re1kur.app.core.other.EmptyOrSizeValidator;
+import re1kur.app.util.validator.EmptyOrSizeValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <version>0.0.1-SNAPSHOT</version>
-    <name>rental-service</name>
+    <name>car-rental-service</name>
     <description>car rental service.
         my study project, but now it's not legacy and includes
         new technologies.
@@ -18,7 +18,7 @@
         <java.version>24</java.version>
     </properties>
     <groupId>re1kur</groupId>
-    <artifactId>app</artifactId>
+    <artifactId>car-rental-service</artifactId>
 
     <dependencies>
 

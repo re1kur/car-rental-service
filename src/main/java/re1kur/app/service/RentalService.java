@@ -2,11 +2,11 @@ package re1kur.app.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import re1kur.app.core.dto.PageDto;
-import re1kur.app.core.dto.RentalDto;
-import re1kur.app.core.other.RentalAdminFilter;
-import re1kur.app.core.other.RentalFilter;
-import re1kur.app.core.payload.RentalPayload;
+import re1kur.app.model.dto.PageDto;
+import re1kur.app.model.dto.RentalDto;
+import re1kur.app.core.filter.RentalAdminFilter;
+import re1kur.app.core.filter.RentalFilter;
+import re1kur.app.model.payload.RentalPayload;
 
 import java.util.List;
 import java.util.UUID;

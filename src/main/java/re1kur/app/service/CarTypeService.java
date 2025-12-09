@@ -2,11 +2,11 @@ package re1kur.app.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import re1kur.app.core.dto.CarTypeDto;
-import re1kur.app.core.dto.PageDto;
-import re1kur.app.core.payload.CarTypePayload;
-import re1kur.app.core.payload.CarTypeUpdatePayload;
-import re1kur.app.entity.CarType;
+import re1kur.app.model.dto.CarTypeDto;
+import re1kur.app.model.dto.PageDto;
+import re1kur.app.model.payload.CarTypePayload;
+import re1kur.app.model.payload.CarTypeUpdatePayload;
+import re1kur.app.model.entity.CarType;
 
 import java.util.List;
 

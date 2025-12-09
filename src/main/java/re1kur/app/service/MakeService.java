@@ -3,12 +3,12 @@ package re1kur.app.service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.multipart.MultipartFile;
-import re1kur.app.core.dto.MakeFullDto;
-import re1kur.app.core.dto.MakeDto;
-import re1kur.app.core.dto.PageDto;
-import re1kur.app.core.payload.MakeUpdatePayload;
-import re1kur.app.core.payload.MakePayload;
-import re1kur.app.entity.Make;
+import re1kur.app.model.dto.MakeFullDto;
+import re1kur.app.model.dto.MakeDto;
+import re1kur.app.model.dto.PageDto;
+import re1kur.app.model.payload.MakeUpdatePayload;
+import re1kur.app.model.payload.MakePayload;
+import re1kur.app.model.entity.Make;
 
 import java.util.List;
 
