@@ -1,43 +1,27 @@
 package re1kur.rentalservice.mapper.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import re1kur.rentalservice.annotations.Mapper;
-import re1kur.rentalservice.dto.car.CarReadDto;
-import re1kur.rentalservice.dto.car.CarUpdateDto;
-import re1kur.rentalservice.dto.car.CarWriteDto;
+import lombok.RequiredArgsConstructor;
+import re1kur.rentalservice.core.annotation.Mapper;
+import re1kur.rentalservice.core.dto.car.CarReadDto;
+import re1kur.rentalservice.core.dto.car.CarUpdateDto;
+import re1kur.rentalservice.core.dto.car.CarWriteDto;
 import re1kur.rentalservice.entity.Car;
 import re1kur.rentalservice.entity.CarDetails;
-import re1kur.rentalservice.entity.CarImage;
 import re1kur.rentalservice.mapper.CarDetailsMapper;
-import re1kur.rentalservice.mapper.CarImagesMapper;
 import re1kur.rentalservice.mapper.CarMapper;
 import re1kur.rentalservice.mapper.MakeMapper;
-import re1kur.rentalservice.repository.CarImageRepository;
 import re1kur.rentalservice.repository.MakeRepository;
 
 
 @Mapper
+@RequiredArgsConstructor
 public class DefaultCarMapper implements CarMapper {
-    MakeRepository makeRepo;
-    CarImageRepository imageRepo;
-    CarDetailsMapper detailsMapper;
-    CarImagesMapper imagesMapper;
-    MakeMapper makeMapper;
+    private final MakeRepository makeRepo;
+    //    CarImageRepository imageRepo;
+    private final CarDetailsMapper detailsMapper;
+    //    CarImagesMapper imagesMapper;
+    private final MakeMapper makeMapper;
 
-    @Autowired
-    public DefaultCarMapper(
-            CarDetailsMapper detailsMapper,
-            CarImagesMapper imagesMapper,
-            MakeRepository makeRepo,
-            MakeMapper makeMapper,
-            CarImageRepository imageRepo
-    ) {
-        this.detailsMapper = detailsMapper;
-        this.imagesMapper = imagesMapper;
-        this.makeRepo = makeRepo;
-        this.makeMapper = makeMapper;
-        this.imageRepo = imageRepo;
-    }
 
     @Override
     public Car write(CarWriteDto car) {
@@ -55,15 +39,15 @@ public class DefaultCarMapper implements CarMapper {
             details.setCar(build);
         }
 
-        if (car.getTitleImage() != null) {
-            CarImage title = imagesMapper.write(car.getTitleImage());
-            build.addImage(title);
-            build.setTitleImage(title);
-        }
-        if (car.getImage() != null) {
-            CarImage image = imagesMapper.write(car.getImage());
-            build.addImage(image);
-        }
+//        if (car.getTitleImage() != null) {
+//            CarImage title = imagesMapper.write(car.getTitleImage());
+//            build.addImage(title);
+//            build.setTitleImage(title);
+//        }
+//        if (car.getImage() != null) {
+//            CarImage image = imagesMapper.write(car.getImage());
+//            build.addImage(image);
+//        }
         return build;
     }
 
@@ -74,7 +58,7 @@ public class DefaultCarMapper implements CarMapper {
                 .make(makeMapper.read(car.getMake()))
                 .model(car.getModel())
                 .year(car.getYear())
-                .titleImage(imagesMapper.read(car.getTitleImage()))
+//                .titleImage(imagesMapper.read(car.getTitleImage()))
                 .isAvailable(car.isAvailable())
                 .licensePlate(car.getLicensePlate())
                 .build();
@@ -90,8 +74,8 @@ public class DefaultCarMapper implements CarMapper {
                 .isAvailable(car.isAvailable())
                 .licensePlate(car.getLicensePlate())
                 .details(detailsMapper.read(car.getDetails()))
-                .titleImage(imagesMapper.read(car.getTitleImage()))
-                .images(imagesMapper.readImages(car.getImages()))
+//                .titleImage(imagesMapper.read(car.getTitleImage()))
+//                .images(imagesMapper.readImages(car.getImages()))
                 .build();
     }
 
@@ -101,9 +85,9 @@ public class DefaultCarMapper implements CarMapper {
                 .makeId(car.getMake().getId())
                 .model(car.getModel())
                 .year(car.getYear())
-                .titleImageId(car.getTitleImage() != null ? car.getTitleImage().getId() : null)
+//                .titleImageId(car.getTitleImage() != null ? car.getTitleImage().getId() : null)
                 .licensePlate(car.getLicensePlate())
-                .images(imagesMapper.readUpdateImages(car.getImages()))
+//                .images(imagesMapper.readUpdateImages(car.getImages()))
                 .details(detailsMapper.readUpdate(car.getDetails()))
                 .build();
     }
@@ -114,8 +98,8 @@ public class DefaultCarMapper implements CarMapper {
                 .id(id)
                 .make(makeRepo.getReferenceById(car.getMakeId()))
                 .model(car.getModel())
-                .titleImage(imageRepo.getReferenceById(car.getTitleImageId()))
-                .images(imageRepo.findAllByCarId(id))
+//                .titleImage(imageRepo.getReferenceById(car.getTitleImageId()))
+//                .images(imageRepo.findAllByCarId(id))
                 .licensePlate(car.getLicensePlate())
                 .year(car.getYear())
                 .details(detailsMapper.update(car.getDetails(), id))

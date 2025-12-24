@@ -23,11 +23,4 @@ public class Role {
     private Integer id;
 
     private String name;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Collection<User> users;
-
 }

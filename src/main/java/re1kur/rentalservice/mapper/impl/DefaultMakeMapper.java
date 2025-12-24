@@ -1,9 +1,9 @@
 package re1kur.rentalservice.mapper.impl;
 
-import re1kur.rentalservice.annotations.Mapper;
-import re1kur.rentalservice.dto.make.MakeReadDto;
-import re1kur.rentalservice.dto.make.MakeUpdateDto;
-import re1kur.rentalservice.dto.make.MakeWriteDto;
+import re1kur.rentalservice.core.annotation.Mapper;
+import re1kur.rentalservice.core.dto.make.MakeReadDto;
+import re1kur.rentalservice.core.dto.make.MakeUpdateDto;
+import re1kur.rentalservice.core.dto.make.MakeWriteDto;
 import re1kur.rentalservice.entity.Make;
 import re1kur.rentalservice.mapper.MakeMapper;
 

@@ -11,11 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import re1kur.rentalservice.dto.car.CarReadDto;
-import re1kur.rentalservice.dto.car.CarWriteDto;
-import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
-import re1kur.rentalservice.dto.car.filter.CarFilter;
-import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
+import re1kur.rentalservice.core.annotation.RequiresRole;
+import re1kur.rentalservice.core.dto.car.CarReadDto;
+import re1kur.rentalservice.core.dto.car.CarWriteDto;
+import re1kur.rentalservice.core.dto.car.details.CarDetailsWriteDto;
+import re1kur.rentalservice.core.dto.car.filter.CarFilter;
+import re1kur.rentalservice.core.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.service.CarService;
 import re1kur.rentalservice.service.MakeService;
 
@@ -35,6 +36,7 @@ public class CarsController {
         this.makeService = makeService;
     }
 
+    @RequiresRole("USER")
     @GetMapping("list")
     public String listCars(
             Model model,
@@ -58,6 +60,7 @@ public class CarsController {
         return "cars/cars-list.html";
     }
 
+    @RequiresRole("ADMIN")
     @GetMapping("/create")
     public String getCreateCar(Model model) {
         model.addAttribute("makes", makeService.readAll());
@@ -66,17 +69,17 @@ public class CarsController {
         return "cars/car-create.html";
     }
 
-    @Transactional
+    @RequiresRole("ADMIN")
     @PostMapping("/create")
     public String createCar(
             @Validated @ModelAttribute("write") CarWriteDto car,
-            @Validated @ModelAttribute("carDetails") CarDetailsWriteDto carDetails,
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("title") MultipartFile title
+            @Validated @ModelAttribute("carDetails") CarDetailsWriteDto carDetails
+//            @RequestParam("file") MultipartFile file,
+//            @RequestParam("title") MultipartFile title
     ) throws IOException {
         car.setDetails(carDetails);
-        car.setTitleImage(CarImageWriteDto.builder().image(title).build());
-        car.setImage(CarImageWriteDto.builder().image(file).build());
+//        car.setTitleImage(CarImageWriteDto.builder().image(title).build());
+//        car.setImage(CarImageWriteDto.builder().image(file).build());
         Integer id = service.writeCar(car);
         return "redirect:/cars/" + id;
     }

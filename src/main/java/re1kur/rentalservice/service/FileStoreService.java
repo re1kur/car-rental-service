@@ -1,7 +1,7 @@
 package re1kur.rentalservice.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
+import re1kur.rentalservice.core.dto.car.images.CarImageWriteDto;
 
 import java.io.IOException;
 

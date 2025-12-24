@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import re1kur.rentalservice.dto.car.CarReadDto;
-import re1kur.rentalservice.dto.car.CarUpdateDto;
-import re1kur.rentalservice.dto.car.CarWriteDto;
-import re1kur.rentalservice.dto.car.filter.CarFilter;
-import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
+import re1kur.rentalservice.core.dto.car.CarReadDto;
+import re1kur.rentalservice.core.dto.car.CarUpdateDto;
+import re1kur.rentalservice.core.dto.car.CarWriteDto;
+import re1kur.rentalservice.core.dto.car.filter.CarFilter;
+import re1kur.rentalservice.core.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.entity.Car;
 import re1kur.rentalservice.mapper.CarMapper;
 import re1kur.rentalservice.repository.CarRepository;
@@ -61,18 +61,18 @@ public class DefaultCarService implements CarService {
 
     @Override
     public Integer writeCar(CarWriteDto car) throws IOException {
-        if (!car.getTitleImage().getImage().getOriginalFilename().equals("")) {
-            CarImageWriteDto upload = fileService.uploadCarImage(car.getTitleImage());
-            car.setTitleImage(upload);
-        } else {
-            car.setTitleImage(null);
-        }
-        if (!car.getImage().getImage().getOriginalFilename().equals("")) {
-            CarImageWriteDto upload = fileService.uploadCarImage(car.getImage());
-            car.setImage(upload);
-        } else {
-            car.setImage(null);
-        }
+//        if (!car.getTitleImage().getImage().getOriginalFilename().equals("")) {
+//            CarImageWriteDto upload = fileService.uploadCarImage(car.getTitleImage());
+//            car.setTitleImage(upload);
+//        } else {
+//            car.setTitleImage(null);
+//        }
+//        if (!car.getImage().getImage().getOriginalFilename().equals("")) {
+//            CarImageWriteDto upload = fileService.uploadCarImage(car.getImage());
+//            car.setImage(upload);
+//        } else {
+//            car.setImage(null);
+//        }
         Car mapped = mapper.write(car);
         Car saved = repo.save(mapped);
         return saved.getId();

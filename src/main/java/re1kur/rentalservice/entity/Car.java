@@ -31,9 +31,9 @@ public class Car {
 
     private String licensePlate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "title_image_id")
-    private CarImage titleImage;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "title_image_id")
+//    private CarImage titleImage;
 
     @Column(insertable = false)
     private boolean isAvailable;
@@ -41,17 +41,14 @@ public class Car {
     @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private CarDetails details;
 
-    @OneToMany(mappedBy = "car", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Collection<CarImage> images;
+//    @OneToMany(mappedBy = "car", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Collection<CarImage> images;
 
-    public void addImage(CarImage image) {
-        if (images == null) {
-            images = new ArrayList<>();
-        }
-        images.add(image);
-        image.setCar(this);
-    }
-
+//    public void addImage(CarImage image) {
+//        if (images == null) {
+//            images = new ArrayList<>();
+//        }
+//        images.add(image);
+//        image.setCar(this);
+//    }
 }
-
-

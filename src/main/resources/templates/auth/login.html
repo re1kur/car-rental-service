@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/styles-login.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.2.1/jsencrypt.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('loginForm');
+            const publicKeyPem = document.getElementById('publicKey').value;
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Получаем значения из формы
+                const email = document.getElementById('emailInput').value;
+                const password = document.getElementById('passwordInput').value;
+
+                // Проверяем заполнение полей
+                if (!email || !password) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+
+                // Показываем индикатор шифрования
+                document.getElementById('encryptionStatus').style.display = 'block';
+
+                // Шифруем данные
+                const encrypt = new JSEncrypt();
+                encrypt.setPublicKey(publicKeyPem);
+
+                const encryptedEmail = encrypt.encrypt(email);
+                const encryptedPassword = encrypt.encrypt(password);
+
+                if (!encryptedEmail || !encryptedPassword) {
+                    alert('Encryption failed. Please try again.');
+                    document.getElementById('encryptionStatus').style.display = 'none';
+                    return;
+                }
+
+                // Устанавливаем зашифрованные значения в скрытые поля
+                document.getElementById('encryptedEmail').value = encryptedEmail;
+                document.getElementById('encryptedPassword').value = encryptedPassword;
+
+                // Очищаем поля ввода
+                document.getElementById('emailInput').value = '';
+                document.getElementById('passwordInput').value = '';
+
+                // Отправляем форму
+                setTimeout(() => {
+                    form.submit();
+                }, 500);
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>Login</h1>
+
+    <!-- Скрытые поля -->
+    <input type="hidden" id="publicKey" th:value="${publicKey}">
+
+    <!-- Сообщения об ошибках/успехе -->
+    <div th:if="${param.error}" class="error-message">
+        Invalid email or password.
+    </div>
+    <div th:if="${param.logout}" class="logout-message">
+        You have been logged out successfully.
+    </div>
+    <div th:if="${param.registered}" class="register-message">
+        Registration successful! Please log in.
+    </div>
+    <div th:if="${error}" class="error-message" th:text="${error}">
+        Error message here
+    </div>
+
+    <!-- Форма логина -->
+    <form id="loginForm" th:action="@{/auth/login}" method="post" class="login-form">
+        <!-- Скрытые поля для зашифрованных данных -->
+        <input type="hidden" id="encryptedEmail" name="encryptedEmail">
+        <input type="hidden" id="encryptedPassword" name="encryptedPassword">
+
+        <!-- Поля для ввода -->
+        <div class="form-group">
+            <label for="emailInput">Email</label>
+            <input type="email" id="emailInput" placeholder="Enter your email" required
+                   autocomplete="email" autofocus />
+        </div>
+        <div class="form-group">
+            <label for="passwordInput">Password</label>
+            <input type="password" id="passwordInput" placeholder="Enter your password" required
+                   autocomplete="current-password" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </form>
+
+    <!-- Ссылка на регистрацию -->
+    <div class="register-link">
+        <p>Don't have an account? <a th:href="@{/auth/register}">Register here</a></p>
+    </div>
+
+    <!-- Индикатор шифрования -->
+    <div id="encryptionStatus" style="display:none; margin-top: 20px; text-align: center;">
+        <div class="spinner"></div>
+        <p>Securing your login information...</p>
+    </div>
+</div>
+
+<style>
+    .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 10px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+</body>
+</html>

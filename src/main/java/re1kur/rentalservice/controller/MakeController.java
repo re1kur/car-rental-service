@@ -6,8 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import re1kur.rentalservice.dto.make.MakeReadDto;
-import re1kur.rentalservice.dto.make.MakeUpdateDto;
+import re1kur.rentalservice.core.annotation.RequiresRole;
+import re1kur.rentalservice.core.dto.make.MakeReadDto;
+import re1kur.rentalservice.core.dto.make.MakeUpdateDto;
 import re1kur.rentalservice.service.MakeService;
 
 @Controller
@@ -30,12 +31,14 @@ public class MakeController {
         return "/makes/make.html";
     }
 
+    @RequiresRole("ADMIN")
     @GetMapping("edit")
     public String getEditMake(@PathVariable int id, Model model) {
         model.addAttribute("update", service.readUpdateById(id));
         return "/makes/make-edit.html";
     }
 
+    @RequiresRole("ADMIN")
     @PostMapping("edit")
     public String editMake(
             @Validated @ModelAttribute("update") MakeUpdateDto update,

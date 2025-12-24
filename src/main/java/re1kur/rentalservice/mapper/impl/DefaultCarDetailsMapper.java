@@ -1,10 +1,10 @@
 package re1kur.rentalservice.mapper.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import re1kur.rentalservice.annotations.Mapper;
-import re1kur.rentalservice.dto.car.details.CarDetailsReadDto;
-import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
-import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
+import re1kur.rentalservice.core.annotation.Mapper;
+import re1kur.rentalservice.core.dto.car.details.CarDetailsReadDto;
+import re1kur.rentalservice.core.dto.car.details.CarDetailsUpdateDto;
+import re1kur.rentalservice.core.dto.car.details.CarDetailsWriteDto;
 import re1kur.rentalservice.entity.Car;
 import re1kur.rentalservice.entity.CarDetails;
 import re1kur.rentalservice.mapper.CarDetailsMapper;

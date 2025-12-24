@@ -1,9 +1,8 @@
 package re1kur.rentalservice.mapper;
 
-import re1kur.rentalservice.dto.car.details.CarDetailsReadDto;
-import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
-import re1kur.rentalservice.dto.car.details.CarDetailsWriteDto;
-import re1kur.rentalservice.entity.Car;
+import re1kur.rentalservice.core.dto.car.details.CarDetailsReadDto;
+import re1kur.rentalservice.core.dto.car.details.CarDetailsUpdateDto;
+import re1kur.rentalservice.core.dto.car.details.CarDetailsWriteDto;
 import re1kur.rentalservice.entity.CarDetails;
 
 public interface CarDetailsMapper {

@@ -11,7 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import re1kur.rentalservice.dto.car.images.CarImageWriteDto;
+import re1kur.rentalservice.core.dto.car.images.CarImageWriteDto;
 import re1kur.rentalservice.service.FileStoreService;
 
 import java.io.*;

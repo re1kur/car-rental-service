@@ -6,15 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import re1kur.rentalservice.dto.car.CarReadDto;
-import re1kur.rentalservice.dto.car.CarUpdateDto;
-import re1kur.rentalservice.dto.car.details.CarDetailsUpdateDto;
-import re1kur.rentalservice.dto.car.images.CarImageUpdateDto;
+import re1kur.rentalservice.core.annotation.RequiresRole;
+import re1kur.rentalservice.core.dto.car.CarReadDto;
+import re1kur.rentalservice.core.dto.car.CarUpdateDto;
+import re1kur.rentalservice.core.dto.car.details.CarDetailsUpdateDto;
 import re1kur.rentalservice.service.CarService;
 import re1kur.rentalservice.service.MakeService;
-
-import java.util.List;
 
 
 @Controller
@@ -40,6 +37,7 @@ public class CarController {
         return "/cars/car.html";
     }
 
+    @RequiresRole("ADMIN")
     @GetMapping("edit")
     public String editCar(
             @PathVariable int id,
@@ -53,8 +51,8 @@ public class CarController {
         return "/cars/car-edit.html";
     }
 
+    @RequiresRole("ADMIN")
     @PostMapping("edit")
-    @Transactional
     public String updateCar(
             @PathVariable int id,
             @Validated @ModelAttribute("update") CarUpdateDto car,
