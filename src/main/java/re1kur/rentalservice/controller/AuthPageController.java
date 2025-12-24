@@ -12,11 +12,15 @@ import org.springframework.web.bind.annotation.*;
 import re1kur.rentalservice.core.dto.user.RegistrationRequest;
 import re1kur.rentalservice.core.dto.user.LoginRequest;
 import re1kur.rentalservice.service.AuthService;
+import re1kur.rentalservice.service.TokenBlacklistService;
 import re1kur.rentalservice.util.CryptoUtil;
+import re1kur.rentalservice.util.DeviceFingerprintUtil;
+import re1kur.rentalservice.util.JwtUtil;
 import re1kur.rentalservice.util.RsaKeyUtil;
 
 import java.security.PublicKey;
 import java.util.Base64;
+import java.util.Date;
 
 @Slf4j
 @Controller
@@ -26,11 +30,13 @@ public class AuthPageController {
     private final AuthService authService;
     private final CryptoUtil cryptoUtil;
     private final RsaKeyUtil rsaKeyUtil;
+    private final DeviceFingerprintUtil fingerprintUtil;
+    private final JwtUtil jwtUtil;
+    private final TokenBlacklistService tokenBlacklistService;
 
 
     @GetMapping("/login")
     public String showLoginPage(Model model, HttpServletRequest request) {
-        // Генерируем и сохраняем ключ для сессии
         HttpSession session = request.getSession();
         String sessionId = session.getId();
 
@@ -53,15 +59,14 @@ public class AuthPageController {
         try {
             String sessionId = request.getSession().getId();
 
-            // Расшифровываем данные
             String email = cryptoUtil.decryptRsa(encryptedEmail, sessionId);
             String password = cryptoUtil.decryptRsa(encryptedPassword, sessionId);
 
-            // Аутентифицируем пользователя
-            String token = authService.authenticate(email, password);
+            String token = authService.authenticate(email, password, fingerprintUtil.generateFingerprint(request));
+            String refreshToken = authService.getRefresh(email);
 
-            // Устанавливаем токен в HttpOnly cookie
             Cookie cookie = new Cookie("auth_token", token);
+            cookie.setAttribute("refresh_token", refreshToken);
             cookie.setHttpOnly(true);
             cookie.setPath("/");
             cookie.setMaxAge(3600); // 1 час
@@ -73,7 +78,6 @@ public class AuthPageController {
             log.error("Login error", e);
             model.addAttribute("error", "Invalid email or password");
 
-            // Регенерируем ключ для повторной попытки
             HttpSession session = request.getSession();
             String sessionId = session.getId();
             PublicKey publicKey = rsaKeyUtil.generateAndStoreKeyPair(sessionId);
@@ -86,7 +90,6 @@ public class AuthPageController {
 
     @GetMapping("/register")
     public String showRegisterPage(Model model, HttpServletRequest request) {
-        // Генерируем и сохраняем ключ для сессии
         HttpSession session = request.getSession();
         String sessionId = session.getId();
 
@@ -108,17 +111,14 @@ public class AuthPageController {
         try {
             String sessionId = request.getSession().getId();
 
-            // Расшифровываем данные
             String email = cryptoUtil.decryptRsa(encryptedEmail, sessionId);
             String password = cryptoUtil.decryptRsa(encryptedPassword, sessionId);
 
-            // Создаем RegistrationRequest
             RegistrationRequest registrationRequest = RegistrationRequest.builder()
                     .email(email)
                     .password(password)
                     .build();
 
-            // Регистрируем пользователя
             authService.registerUser(registrationRequest);
 
             return "redirect:/auth/login?registered";
@@ -127,7 +127,6 @@ public class AuthPageController {
             log.error("Registration error", e);
             model.addAttribute("error", "Registration failed: " + e.getMessage());
 
-            // Регенерируем ключ
             HttpSession session = request.getSession();
             String sessionId = session.getId();
             PublicKey publicKey = rsaKeyUtil.generateAndStoreKeyPair(sessionId);
@@ -140,7 +139,17 @@ public class AuthPageController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
-        // Удаляем куки с токеном
+        String token = extractTokenFromCookie(request);
+        if (token != null && jwtUtil.validateToken(token)) {
+            String jti = jwtUtil.extractJti(token);
+            Date expiresAt = jwtUtil.extractExpiration(token);
+            tokenBlacklistService.revokeToken(jti, expiresAt, "user_logout");
+            log.info("Token revoked for logout: {}", jti);
+        }
+
+        String sessionId = request.getSession().getId();
+        cryptoUtil.removePrivateKey(sessionId);
+
         Cookie cookie = new Cookie("auth_token", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(request.isSecure());
@@ -148,9 +157,19 @@ public class AuthPageController {
         cookie.setMaxAge(0);
         response.addCookie(cookie);
 
-        // Очищаем сессию
         request.getSession().invalidate();
-
         return "redirect:/auth/login?logout";
+    }
+
+    private String extractTokenFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("auth_token".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }

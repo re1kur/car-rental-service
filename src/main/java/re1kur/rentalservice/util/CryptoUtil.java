@@ -45,4 +45,8 @@ public class CryptoUtil {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.schedule(() -> privateKeys.remove(sessionId), 10, TimeUnit.MINUTES);
     }
+
+    public void removePrivateKey(String sessionId) {
+        privateKeys.remove(sessionId);
+    }
 }

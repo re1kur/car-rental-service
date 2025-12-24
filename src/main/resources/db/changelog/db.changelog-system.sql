@@ -86,3 +86,14 @@ CREATE TABLE IF NOT EXISTS rentals
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (car_id) REFERENCES cars (id) ON DELETE CASCADE
 );
+
+--changeset re1kur:9
+CREATE TABLE revoked_tokens
+(
+    jti        VARCHAR(36) PRIMARY KEY,
+    expires_at TIMESTAMP NOT NULL,
+    revoked_at TIMESTAMP NOT NULL,
+    reason     VARCHAR(100)
+);
+
+CREATE INDEX idx_revoked_tokens_expires_at ON revoked_tokens (expires_at);

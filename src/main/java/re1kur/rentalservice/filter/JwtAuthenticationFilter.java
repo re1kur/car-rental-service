@@ -11,10 +11,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Component;
+import re1kur.rentalservice.service.TokenBlacklistService;
+import re1kur.rentalservice.util.DeviceFingerprintUtil;
 import re1kur.rentalservice.util.JwtUtil;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,12 @@ import java.util.stream.Collectors;
 public class JwtAuthenticationFilter implements Filter {
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private TokenBlacklistService blacklistService;
+
+    @Autowired
+    private DeviceFingerprintUtil fingerprintUtil;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -33,13 +42,28 @@ public class JwtAuthenticationFilter implements Filter {
         String token = extractToken(httpRequest);
 
         if (token != null && jwtUtil.validateToken(token)) {
-            String username = jwtUtil.extractEmail(token);
-            Set<String> roles = jwtUtil.extractRoles(token);
+            // Проверяем, не отозван ли токен
+            String jti = jwtUtil.extractJti(token);
+            if (blacklistService.isTokenRevoked(jti)) {
+                httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token revoked");
+                return;
+            }
 
-            UserAuthentication authentication = new UserAuthentication(username, roles);
+            // Проверяем fingerprint устройства
+            String fingerprint = jwtUtil.extractFingerprint(token);
+            if (!fingerprintUtil.validateFingerprint(fingerprint, httpRequest)) {
+                // Подозрительный доступ - отзываем токен
+                Date expiresAt = jwtUtil.extractExpiration(token);
+                blacklistService.revokeToken(jti, expiresAt, "suspicious_device");
+                httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Suspicious device detected");
+                return;
+            }
+
+            // Устанавливаем аутентификацию
+            String email = jwtUtil.extractEmail(token);
+            Set<String> roles = jwtUtil.extractRoles(token);
+            UserAuthentication authentication = new UserAuthentication(email, roles);
             SecurityContextHolder.setContext(new SecurityContextImpl(authentication));
-        } else {
-            SecurityContextHolder.clearContext();
         }
 
         chain.doFilter(request, response);

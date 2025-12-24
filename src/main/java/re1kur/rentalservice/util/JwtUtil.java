@@ -28,13 +28,17 @@ public class JwtUtil {
     /**
      * Генерация access token
      */
-    public String generateToken(String email, Set<String> roles) {
+    public String generateToken(String email, Set<String> roles, String fingerprint) {
+        String jti = UUID.randomUUID().toString();
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", email);
         claims.put("roles", new ArrayList<>(roles));
         claims.put("type", "access");
+        claims.put("fingerprint", fingerprint);
+        claims.put("jti", jti);
 
         return Jwts.builder()
+                .setId(jti)
                 .setClaims(claims)
                 .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -82,8 +86,8 @@ public class JwtUtil {
     /**
      * Извлечение username из токена
      */
-    public String extractUsername(String token) {
-        return extractAllClaims(token).get("username", String.class);
+    public String extractJti(String token) {
+        return extractAllClaims(token).get("jti", String.class);
     }
 
     /**
@@ -123,5 +127,13 @@ public class JwtUtil {
         } catch (ExpiredJwtException e) {
             return true;
         }
+    }
+
+    public String extractFingerprint(String token) {
+        return extractAllClaims(token).get("fingerprint", String.class);
+    }
+
+    public Date extractExpiration(String token) {
+        return extractAllClaims(token).get("exp", Date.class);
     }
 }

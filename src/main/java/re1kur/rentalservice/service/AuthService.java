@@ -30,7 +30,7 @@ public class AuthService {
     /**
      * Аутентификация пользователя
      */
-    public String authenticate(String email, String password) {
+    public String authenticate(String email, String password, String fingerprint) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new AuthenticationException("User not found"));
 
@@ -44,7 +44,7 @@ public class AuthService {
                 .collect(Collectors.toSet());
 
         // Генерируем JWT токен
-        return jwtUtil.generateToken(user.getEmail(), roleNames);
+        return jwtUtil.generateToken(user.getEmail(), roleNames, fingerprint);
     }
 
     /**
@@ -131,5 +131,9 @@ public class AuthService {
                 .orElseThrow(() -> new AuthenticationException("User not found"));
 
         return true;
+    }
+
+    public String getRefresh(String email) {
+        return jwtUtil.generateRefreshToken(email);
     }
 }
