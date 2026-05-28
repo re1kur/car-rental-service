@@ -47,6 +47,7 @@ services:
     volumes:
       - ./docker/keycloak/init/realms:/tmp/realms
       - ./docker/keycloak/init/scripts/commands.sh:/tmp/scripts/commands.sh
+      - ./docker/keycloak/themes:/opt/keycloak/themes
     entrypoint: [ "sh", "/tmp/scripts/commands.sh" ]
     depends_on:
       - kc-postgres

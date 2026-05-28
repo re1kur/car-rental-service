@@ -65,6 +65,43 @@ header {
     background-color: #c63913;
 }
 
+.nav-auth .cart-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    padding: 8px 10px;
+}
+
+.nav-auth .cart-link:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.cart-link svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+.cart-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    transform: translate(40%, -40%);
+    min-width: 17px;
+    height: 17px;
+    line-height: 14px;
+    text-align: center;
+    background: #e8491d;
+    color: #fff;
+    border: 2px solid #1f2937;
+    border-radius: 999px;
+    font-size: 0.66rem;
+    font-weight: 700;
+    padding: 0 4px;
+    box-sizing: border-box;
+}
+
 @media (max-width: 768px) {
     .navbar {
         padding: 10px 14px;
