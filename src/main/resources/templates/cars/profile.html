@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${car.make.name} + ' ' + ${car.model} + ' — Car Rental Service'"></title>
+    <title th:text="${car.make.name} + ' ' + ${car.model} + ' — RentCar'"></title>
     <link rel="stylesheet" th:href="@{/css/styles-common.css}">
     <link rel="stylesheet" th:href="@{/css/styles-header.css}">
     <link rel="stylesheet" sec:authorize="isAuthenticated()" th:href="@{/css/styles-form.css}">
@@ -10,112 +10,100 @@
 <body>
 
 <header>
-    <div th:insert="fragments/header.html :: pages"></div>
-    <div th:insert="fragments/header.html :: updateCar"></div>
+    <div th:replace="~{fragments/header :: pages}"></div>
 </header>
 
 <div class="container">
 
-    <h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>
-
-    <section>
-        <label class="field">
-            <span th:text="${'Available: ' + (car.available ? 'Yes' : 'No')}"></span>
-        </label>
-    </section>
-
-    <section>
-        <h2>Details</h2>
-
-        <div th:if="${car.titleImage}" class="title-image">
-            <span class="field">Title image:</span>
-            <img th:src="${car.titleImage.url}" alt="Title image">
+    <div class="section-head">
+        <div>
+            <h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>
+            <span th:if="${car.available}" class="badge ok">Available</span>
+            <span th:unless="${car.available}" class="badge no">Not available</span>
         </div>
+        <a sec:authorize="hasRole('ADMIN')" class="btn btn-outline"
+           th:href="@{/cars/{id}/update(id=${car.id})}">Edit car</a>
+    </div>
 
-        <div th:if="${car.images != null and !#lists.isEmpty(car.images)}" class="image-gallery">
-            <h3>Gallery</h3>
-            <ul>
+    <div class="product-layout">
+
+        <div>
+            <div class="main-image">
+                <img th:src="${car.titleImage != null} ? ${car.titleImage.url} : @{/img/car-placeholder.svg}"
+                     th:alt="${car.make.name} + ' ' + ${car.model}">
+            </div>
+
+            <ul class="thumbs" th:if="${car.images != null and !#lists.isEmpty(car.images)}">
                 <li th:each="image : ${car.images}">
                     <div class="image-container">
                         <img th:src="${image.url}" alt="Image">
                     </div>
-                    <span th:text="'Uploaded at: ' + ${image.uploadedAt}"></span>
                 </li>
             </ul>
         </div>
 
-        <label class="field">
-            <span>Make:</span>
-            <span th:text="${car.make.name}"></span>
-        </label>
+        <div class="product-panel">
+            <div class="price-box">
+                <span class="amount" th:text="'$' + ${car.cost}"></span>
+                <span class="per">/ day</span>
+            </div>
 
-        <label class="field">
-            <span>Model:</span>
-            <span th:text="${car.model}"></span>
-        </label>
+            <ul class="spec-list">
+                <li><span class="k">Make</span><span class="v" th:text="${car.make.name}"></span></li>
+                <li><span class="k">Model</span><span class="v" th:text="${car.model}"></span></li>
+                <li><span class="k">Type</span><span class="v" th:text="${car.carType.label}"></span></li>
+                <li><span class="k">Engine</span><span class="v" th:text="${car.engine.label}"></span></li>
+                <li><span class="k">Year</span><span class="v" th:text="${car.year}"></span></li>
+                <li><span class="k">License plate</span><span class="v" th:text="${car.licensePlate}"></span></li>
+            </ul>
 
-        <label class="field">
-            <span>Type:</span>
-            <span th:text="${car.carType.name}"></span>
-        </label>
-
-        <label class="field">
-            <span>Engine:</span>
-            <span th:text="${car.engine.name}"></span>
-        </label>
-
-        <label class="field">
-            <span>Year:</span>
-            <span th:text="${car.year}"></span>
-        </label>
-
-        <label class="field">
-            <span>License plate:</span>
-            <span th:text="${car.licensePlate}"></span>
-        </label>
-    </section>
+            <div th:if="${car.available}">
+                <form sec:authorize="isAuthenticated()" method="post" th:action="@{/rentals/create}" class="edit-form">
+                    <input type="hidden" th:value="${car.id}" name="carId">
+                    <div class="form-group">
+                        <label for="startDate">Start date</label>
+                        <input type="date" name="startDate" id="startDate"
+                               th:value="${payload != null ? payload.startDate : ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">End date</label>
+                        <input type="date" name="endDate" id="endDate"
+                               th:value="${payload != null ? payload.endDate : ''}" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Rent now</button>
+                    </div>
+                </form>
+                <p sec:authorize="!isAuthenticated()" class="card-meta" style="margin-top:14px;">
+                    <a th:href="@{/oauth2/authorization/keycloak}">Log in</a>&nbsp;to rent this car.
+                </p>
+            </div>
+            <p th:unless="${car.available}" class="badge no" style="margin-top:8px;">
+                Currently not available for rent
+            </p>
+        </div>
+    </div>
 
     <section th:if="${car.information}">
-        <h2>Additional Information</h2>
-        <ul>
-            <li th:if="${car.information.description}" th:text="'Description: ' + ${car.information.description}"></li>
-            <li th:if="${car.information.color}" th:text="'Color: ' + ${car.information.color}"></li>
-            <li th:if="${car.information.seats}" th:text="'Seats: ' + ${car.information.seats}"></li>
-            <li th:if="${car.information.mileage}" th:text="'Mileage: ' + ${car.information.mileage}"></li>
-            <li th:if="${car.information.fuelType}" th:text="'Fuel type: ' + ${car.information.fuelType}"></li>
-            <li th:if="${car.information.transmission}"
-                th:text="'Transmission: ' + ${car.information.transmission}"></li>
+        <h2>Additional information</h2>
+        <ul class="spec-list">
+            <li th:if="${car.information.description}">
+                <span class="k">Description</span><span class="v" th:text="${car.information.description}"></span></li>
+            <li th:if="${car.information.color}">
+                <span class="k">Color</span><span class="v" th:text="${car.information.color}"></span></li>
+            <li th:if="${car.information.seats}">
+                <span class="k">Seats</span><span class="v" th:text="${car.information.seats}"></span></li>
+            <li th:if="${car.information.mileage}">
+                <span class="k">Mileage</span><span class="v" th:text="${car.information.mileage}"></span></li>
+            <li th:if="${car.information.fuelType}">
+                <span class="k">Fuel type</span><span class="v" th:text="${car.information.fuelType}"></span></li>
+            <li th:if="${car.information.transmission}">
+                <span class="k">Transmission</span><span class="v" th:text="${car.information.transmission}"></span></li>
         </ul>
     </section>
 
-    <section sec:authorize="isAuthenticated()">
-        <label class="field">
-            <span>Cost per day:</span>
-            <span th:text="${car.cost}"></span>
-        </label>
-
-        <form method="post" th:action="@{/rentals/create}" class="edit-form">
-            <div class="form-group">
-                <label for="carId" hidden="hidden"></label>
-                <input type="text" th:value="${car.id}" name="carId" id="carId" hidden="hidden">
-
-                <label for="startDate">Start date:</label>
-                <input type="date" name="startDate" id="startDate"
-                       th:value="${payload != null ? payload.startDate : ''}" required>
-            </div>
-            <br>
-            <div class="form-group">
-                <label for="endDate">End date:</label>
-                <input type="date" name="endDate" id="endDate"
-                       th:value="${payload != null ? payload.endDate : ''}" required>
-            </div>
-            <br>
-            <div class="form-actions">
-                <button type="submit">Rent</button>
-            </div>
-        </form>
-    </section>
 </div>
 
+<footer th:replace="~{fragments/footer :: main-footer}"></footer>
 </body>
 </html>

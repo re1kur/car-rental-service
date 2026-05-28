@@ -1,9 +1,9 @@
 package re1kur.app.mapper.impl;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import re1kur.app.core.dto.FileDto;
-import re1kur.app.core.other.PresignedUrl;
 import re1kur.app.entity.File;
 import re1kur.app.mapper.FileMapper;
 
@@ -13,13 +13,18 @@ import java.time.ZoneId;
 
 @Component
 public class FileMapperImpl implements FileMapper {
+
+    @Value("${minio.public-url}")
+    private String publicUrl;
+
+    @Value("${minio.default-bucket}")
+    private String bucket;
+
     @Override
-    public File upload(MultipartFile payload, String id, PresignedUrl resp) {
+    public File upload(MultipartFile payload, String id) {
         return File.builder()
                 .id(id)
-                .url(resp.url())
                 .uploadedAt(Instant.now())
-                .urlExpiresAt(resp.expiration())
                 .mediaType(payload.getContentType())
                 .build();
     }
@@ -28,12 +33,12 @@ public class FileMapperImpl implements FileMapper {
     public FileDto read(File file) {
         if (file == null)
             return null;
+        Instant uploadedAt = file.getUploadedAt();
         return FileDto.builder()
                 .id(file.getId())
                 .mediaType(file.getMediaType())
-                .url(file.getUrl())
-                .uploadedAt(LocalDateTime.ofInstant(file.getUploadedAt(), ZoneId.systemDefault()))
-                .urlExpiresAt(LocalDateTime.ofInstant(file.getUrlExpiresAt(), ZoneId.systemDefault()))
+                .url("%s/%s/%s".formatted(publicUrl, bucket, file.getId()))
+                .uploadedAt(uploadedAt != null ? LocalDateTime.ofInstant(uploadedAt, ZoneId.systemDefault()) : null)
                 .build();
     }
 }

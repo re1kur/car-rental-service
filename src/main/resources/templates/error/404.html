@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>404 — Not Found</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-home.css}">
+</head>
+<body>
+
+<header>
+    <div th:replace="~{fragments/header :: pages}"></div>
+</header>
+
+<div class="container">
+    <section class="hero">
+        <h1>404</h1>
+        <p>The page or resource you are looking for does not exist or has been moved.</p>
+        <div class="hero-actions">
+            <a th:href="@{/}" class="btn">Home</a>
+            <a th:href="@{/cars}" class="btn btn-outline">Browse cars</a>
+        </div>
+    </section>
+</div>
+
+<footer th:replace="~{fragments/footer :: main-footer}"></footer>
+</body>
+</html>

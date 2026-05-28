@@ -1,6 +1,8 @@
 package re1kur.app.core.dto;
 
 import lombok.Builder;
+import re1kur.app.entity.CarType;
+import re1kur.app.entity.Engine;
 
 import java.util.List;
 
@@ -8,8 +10,8 @@ import java.util.List;
 public record CarUpdateDto(
         Integer id,
         MakeShortDto make,
-        Integer carTypeId,
-        Integer engineId,
+        CarType carType,
+        Engine engine,
         String model,
         Integer year,
         String licensePlate,

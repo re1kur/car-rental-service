@@ -1,59 +1,84 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Car Rental Service</title>
+    <title>RentCar — Car Rental Service</title>
     <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
     <link rel="stylesheet" th:href="@{/css/styles-home.css}">
 </head>
 <body>
 
 <header>
-    <div class="header-content">
-        <h1>Welcome to Car Rental Service</h1>
-        <p>Your journey begins here</p>
-    </div>
+    <div th:replace="~{fragments/header :: pages}"></div>
 </header>
 
 <div class="container">
-    <div class="intro">
-        <span class="hello">
-            Looking for the perfect car to make your trip unforgettable?
-            At <span class="name">Car Rental Service</span>, renting a car has never been easier!
-            Choose from our diverse range of vehicles—from sleek compacts to powerful convertibles—and hit the road with confidence.
-            With competitive prices, hassle-free reservations, and 24/7 assistance, we’re here to turn every journey into an adventure.
-        </span>
-    </div>
 
-    <div class="refs">
-        <a th:href="@{/cars}" class="btn">OUR CARS</a>
-        <a th:href="@{/makes}" class="btn">OUR MAKES</a>
-    </div>
-
-    <section class="features">
-        <h2>Why Choose Us?</h2>
-        <ul>
-            <li>Wide selection of vehicles</li>
-            <li>Affordable prices</li>
-            <li>24/7 customer support</li>
-            <li>Easy online booking</li>
-        </ul>
-    </section>
-
-    <section class="testimonials">
-        <h2>What Our Customers Say</h2>
-        <div class="testimonial">
-            <p>"Amazing service! The car was clean and ready on time. Highly recommend!"</p>
-            <span class="author">— John Doe</span>
-        </div>
-        <div class="testimonial">
-            <p>"Best car rental experience ever. Will definitely use again!"</p>
-            <span class="author">— Jane Smith</span>
+    <section class="hero">
+        <h1>Find your perfect ride</h1>
+        <p>Premium cars at competitive prices. Hassle-free reservations, 24/7 support —
+            your journey begins here.</p>
+        <div class="hero-actions">
+            <a th:href="@{/cars}" class="btn">Browse cars</a>
+            <a th:href="@{/makes}" class="btn btn-outline">Our makes</a>
         </div>
     </section>
+
+    <section class="categories">
+        <div class="section-head">
+            <div>
+                <h2>Browse by category</h2>
+                <p>Pick a body type that fits your trip.</p>
+            </div>
+        </div>
+        <div class="category-grid">
+            <a th:each="t : ${carTypes}"
+               th:href="@{/cars(carType=${t.name()})}"
+               th:text="${t.label}"
+               class="category-card"></a>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-head">
+            <div>
+                <h2>Featured cars</h2>
+                <p>A few rides ready to go.</p>
+            </div>
+            <a th:href="@{/cars}" class="btn btn-outline">View all</a>
+        </div>
+
+        <p th:if="${#lists.isEmpty(featured)}" class="empty">No cars yet.</p>
+
+        <div class="card-grid">
+            <div class="card" th:each="car : ${featured}">
+                <div class="card-media">
+                    <img th:src="${car.titleImage != null} ? ${car.titleImage.url} : @{/img/car-placeholder.svg}"
+                         th:alt="${car.make.name} + ' ' + ${car.model}">
+                    <span class="card-price" th:if="${car.cost != null}"
+                          th:text="'$' + ${car.cost} + '/day'"></span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <a th:href="@{/cars/{id}(id=${car.id})}"
+                           th:text="${car.make.name} + ' ' + ${car.model}"></a>
+                    </h3>
+                    <div class="card-meta">
+                        <span class="tag" th:text="${car.carType.label}"></span>
+                        <span class="tag" th:text="${car.year}"></span>
+                        <span class="tag" th:text="${car.engine.label}"></span>
+                    </div>
+                    <div class="card-actions">
+                        <a class="btn" th:href="@{/cars/{id}(id=${car.id})}">View details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </div>
 
-<footer th:replace="~{/fragments/footer :: main-footer}">
-</footer>
+<footer th:replace="~{fragments/footer :: main-footer}"></footer>
 </body>
 </html>

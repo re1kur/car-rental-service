@@ -1,48 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Moderator menu</title>
+    <title>Admin — RentCar</title>
     <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-home.css}">
 </head>
+<body>
 
-<header th:insert="fragments/header.html :: pages">
+<header>
+    <div th:replace="~{fragments/header :: pages}"></div>
 </header>
 
-<body>
-<div>
-    <ul>
-        <li>
-            <a th:href="@{/car-types/create}">New car type</a>
-        </li>
-        <li>
-            <a th:href="@{/car-types/delete}">Delete car type</a>
-        </li>
-        <li>
-            <a th:href="@{/engines/create}">New engine</a>
-        </li>
-        <li>
-            <a th:href="@{/engines/delete}">Delete engine</a>
-        </li>
-        <li>
-            <a th:href="@{/makes/create}">New make</a>
-        </li>
-        <li>
-            <a th:href="@{/makes/delete}">Delete make</a>
-        </li>
-        <li>
-            <a th:href="@{/cars/create}">New car</a>
-        </li>
-        <li>
-            <a th:href="@{/cars/delete}">Delete car</a>
-        </li>
-        <li>
-            <a th:href="@{/admin/keycloak}">Keycloak</a>
-        </li>
-        <li>
-            <a th:href="@{/admin/rentals}">User's rentals</a>
-        </li>
-    </ul>
+<div class="container">
+    <div class="section-head">
+        <div>
+            <h1>Admin</h1>
+            <p>Management shortcuts.</p>
+        </div>
+    </div>
+
+    <div class="category-grid">
+        <a class="category-card" th:href="@{/cars/create}">New car</a>
+        <a class="category-card" th:href="@{/makes/create}">New make</a>
+        <a class="category-card" th:href="@{/cars}">All cars</a>
+        <a class="category-card" th:href="@{/makes}">All makes</a>
+        <a class="category-card" th:href="@{/rentals/users}">Users' rentals</a>
+    </div>
 </div>
+
+<footer th:replace="~{fragments/footer :: main-footer}"></footer>
 </body>
 </html>

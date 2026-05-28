@@ -3,6 +3,8 @@ package re1kur.app.core.payload;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import re1kur.app.core.annotations.EmptyOrSize;
+import re1kur.app.entity.CarType;
+import re1kur.app.entity.Engine;
 
 @Builder
 public record CarPayload(
@@ -11,12 +13,10 @@ public record CarPayload(
         Integer makeId,
 
         @NotNull(message = "The car type must be defined.")
-        @Positive(message = "The car type ID cannot be negative or zero.")
-        Integer carTypeId,
+        CarType carType,
 
         @NotNull(message = "The engine must be defined.")
-        @Positive(message = "The engine ID cannot be negative or zero.")
-        Integer engineId,
+        Engine engine,
 
         @NotBlank(message = "The model cannot be empty or contain backspace characters.")
         @Size(min = 2, max = 64, message = "The model must be between 2 and 64 characters long.")

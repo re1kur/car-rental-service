@@ -20,7 +20,7 @@ custom:
     title_image_key: "title"
     images_key: "images"
   pagination:
-    size: 5
+    size: 6
   buckets:
     car-image: cars
     make-image: makes

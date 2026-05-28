@@ -27,12 +27,12 @@ public class Car {
     @JoinColumn(name = "make_id")
     private Make make;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "car_type_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "car_type")
     private CarType carType;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "engine_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "engine")
     private Engine engine;
 
     private String model;

@@ -2,7 +2,6 @@ package re1kur.app.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -34,18 +33,9 @@ public class CarServiceImpl implements CarService {
     private final CarRepository repo;
     private final CarMapper carMapper;
     private final MinioService fileService;
-    private final CarTypeService carTypeService;
     private final MakeService makeService;
-    private final EngineService engineService;
     private final CarInformationMapper infoMapper;
     private final CarInformationRepository infoRepo;
-
-
-    @Value("${custom.map.title_image_key}")
-    private String TITLE_IMAGE_KEY;
-
-    @Value("${custom.map.images_key}")
-    private String IMAGES_KEY;
 
 
     @Override
@@ -59,10 +49,8 @@ public class CarServiceImpl implements CarService {
             throw new CarAlreadyExistsException("Car [%s] already exists.".formatted(licensePlate));
 
         Make make = makeService.get(payload.makeId());
-        CarType type = carTypeService.get(payload.carTypeId());
-        Engine engine = engineService.get(payload.engineId());
 
-        Car mapped = carMapper.write(payload, make, type, engine);
+        Car mapped = carMapper.write(payload, make);
 
         Car saved = repo.save(mapped);
 
@@ -80,8 +68,8 @@ public class CarServiceImpl implements CarService {
         }
 
         Map<String, Object> result = uploadFiles(titlePayload, files);
-        File title = (File) result.get(TITLE_IMAGE_KEY);
-        List<File> images = (List<File>) result.get(IMAGES_KEY);
+        File title = (File) result.get("title");
+        List<File> images = (List<File>) result.get("images");
 
         boolean hasImages = false;
         if (images != null && !images.isEmpty()) {
@@ -108,11 +96,10 @@ public class CarServiceImpl implements CarService {
     @Override
     public PageDto<CarDto> readAll(CarFilter filter, Pageable pageable, OidcUser user) {
         log.info("READ ALL BY FILTER [{}] BY USER [{}]", filter, user == null ? "Anonymous" : user.getSubject());
-        String model = filter.getModel();
-        Integer makeId = filter.getMakeId();
-        Integer year = filter.getYear();
 
-        Page<Car> found = repo.findAll(model, makeId, year, pageable);
+        Page<Car> found = repo.findAll(
+                filter.getModel(), filter.getMakeId(), filter.getYear(),
+                filter.getCarType(), filter.getEngine(), pageable);
 
         return carMapper.readPage(found);
     }
@@ -158,10 +145,8 @@ public class CarServiceImpl implements CarService {
         checkConflicts(licensePlate, found);
 
         Make make = makeService.get(payload.makeId());
-        CarType type = carTypeService.get(payload.carTypeId());
-        Engine engine = engineService.get(payload.engineId());
 
-        Car updated = carMapper.update(found, payload, make, type, engine);
+        Car updated = carMapper.update(found, payload, make);
 
         repo.save(updated);
 
@@ -180,13 +165,13 @@ public class CarServiceImpl implements CarService {
         List<File> images = new ArrayList<>();
 
         File titleImage = fileService.upload(titlePayload);
-        map.put(TITLE_IMAGE_KEY, titleImage);
+        map.put("title", titleImage);
         if (titleImage != null) images.add(titleImage);
 
         List<File> uploadedFiles = fileService.uploadAll(imagePayloads);
         images.addAll(uploadedFiles);
 
-        map.put(IMAGES_KEY, images);
+        map.put("images", images);
         return map;
     }
 }

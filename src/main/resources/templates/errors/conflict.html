@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking failed — RentCar</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
+</head>
+<body>
+
+<header>
+    <div th:replace="~{fragments/header :: pages}"></div>
+</header>
+
+<div class="container">
+    <section>
+        <h1>Can't book this car</h1>
+        <p th:text="${message}">Reason</p>
+        <div style="margin-top:16px; display:flex; gap:10px;">
+            <a th:href="${referer != null ? referer : '/cars'}" class="btn">Back</a>
+            <a th:href="@{/cars}" class="btn btn-outline">Browse other cars</a>
+        </div>
+    </section>
+</div>
+
+<footer th:replace="~{fragments/footer :: main-footer}"></footer>
+</body>
+</html>

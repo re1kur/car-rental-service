@@ -1,12 +1,15 @@
 package re1kur.app.mapper.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import re1kur.app.core.annotations.Mapper;
+import re1kur.app.core.dto.FileDto;
 import re1kur.app.core.dto.PageDto;
 import re1kur.app.core.dto.RentalDto;
 import re1kur.app.core.payload.RentalPayload;
 import re1kur.app.entity.Car;
 import re1kur.app.entity.Rental;
+import re1kur.app.mapper.FileMapper;
 import re1kur.app.mapper.RentalMapper;
 
 import java.time.LocalDate;
@@ -14,7 +17,10 @@ import java.time.Period;
 import java.util.UUID;
 
 @Mapper
+@RequiredArgsConstructor
 public class RentalMapperImpl implements RentalMapper {
+    private final FileMapper fileMapper;
+
     @Override
     public Rental write(RentalPayload payload, Car car, UUID userId) {
         LocalDate endDate = payload.endDate();
@@ -31,10 +37,15 @@ public class RentalMapperImpl implements RentalMapper {
 
     @Override
     public RentalDto read(Rental rental) {
+        Car car = rental.getCar();
+        FileDto image = fileMapper.read(car.getTitleImage());
         return RentalDto.builder()
                 .id(rental.getId())
                 .userId(rental.getUserId())
-                .carId(rental.getCar().getId())
+                .carId(car.getId())
+                .carMake(car.getMake().getName())
+                .carModel(car.getModel())
+                .carImageUrl(image != null ? image.url() : null)
                 .startDate(rental.getStartDate())
                 .endDate(rental.getEndDate())
                 .totalCost(rental.getTotalCost())

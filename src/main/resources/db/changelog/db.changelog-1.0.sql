@@ -3,11 +3,9 @@
 --changeset re1kur:1
 CREATE TABLE IF NOT EXISTS files
 (
-    id             VARCHAR(64) PRIMARY KEY,
-    media_type      VARCHAR(64)              NOT NULL,
-    url            VARCHAR(2048)            NOT NULL,
-    uploaded_at    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-    url_expires_at TIMESTAMP WITH TIME ZONE NOT NULL
+    id          VARCHAR(64) PRIMARY KEY,
+    media_type  VARCHAR(64)              NOT NULL,
+    uploaded_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
 
 --changeset re1kur:2
@@ -41,27 +39,13 @@ CREATE TABLE IF NOT EXISTS make_images
     FOREIGN KEY (image_id) REFERENCES files (id) ON DELETE CASCADE
 );
 
---changeset re1kur:5
-CREATE TABLE IF NOT EXISTS car_types
-(
-    id   SMALLSERIAL PRIMARY KEY,
-    name VARCHAR(16) NOT NULL UNIQUE
-);
-
---changeset re1kur:6
-CREATE TABLE IF NOT EXISTS engines
-(
-    id   SMALLSERIAL PRIMARY KEY,
-    name VARCHAR(32) NOT NULL UNIQUE
-);
-
 --changeset re1kur:7
 CREATE TABLE IF NOT EXISTS cars
 (
     id             SERIAL UNIQUE PRIMARY KEY,
     make_id        SMALLINT    NOT NULL DEFAULT 0,
-    car_type_id    SMALLINT    NOT NULL DEFAULT 0,
-    engine_id      SMALLINT    NOT NULL DEFAULT 0,
+    car_type       VARCHAR(16) NOT NULL,
+    engine         VARCHAR(16) NOT NULL,
     model          VARCHAR(64) NOT NULL,
     year           SMALLINT    NOT NULL,
     license_plate  CHAR(6)     NOT NULL UNIQUE,
@@ -69,8 +53,6 @@ CREATE TABLE IF NOT EXISTS cars
     cost           SMALLINT    NOT NULL CHECK (cost > 0),
     title_image_id varchar(64),
     FOREIGN KEY (make_id) REFERENCES makes (id) ON DELETE SET DEFAULT,
-    FOREIGN KEY (car_type_id) REFERENCES car_types (id) ON DELETE SET DEFAULT,
-    FOREIGN KEY (engine_id) REFERENCES engines (id) ON DELETE SET DEFAULT,
     FOREIGN KEY (title_image_id) REFERENCES files (id) ON DELETE CASCADE
 );
 

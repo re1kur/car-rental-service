@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import re1kur.app.core.dto.CarDto;
 import re1kur.app.core.dto.PageDto;
-import re1kur.app.core.payload.CarPayload;
 import re1kur.app.core.other.CarFilter;
+import re1kur.app.core.payload.CarPayload;
+import re1kur.app.entity.CarType;
+import re1kur.app.entity.Engine;
 import re1kur.app.service.CarService;
-import re1kur.app.service.CarTypeService;
-import re1kur.app.service.EngineService;
 import re1kur.app.service.MakeService;
 
 @Slf4j
@@ -28,8 +28,6 @@ import re1kur.app.service.MakeService;
 public class CarsController {
     private final CarService carService;
     private final MakeService makeService;
-    private final CarTypeService carTypeService;
-    private final EngineService engineService;
 
     @Value("${custom.pagination.size}")
     private Integer pageSize;
@@ -45,6 +43,8 @@ public class CarsController {
         PageDto<CarDto> pageDto = carService.readAll(filter, pageable, user);
 
         model.addAttribute("makes", makeService.readAll());
+        model.addAttribute("carTypes", CarType.values());
+        model.addAttribute("engines", Engine.values());
         model.addAttribute("page", pageDto);
         model.addAttribute("filter", filter);
 
@@ -57,12 +57,10 @@ public class CarsController {
     }
 
     @GetMapping("/create")
-    public String getCreateCar(
-            Model model
-    ) {
+    public String getCreateCar(Model model) {
         model.addAttribute("makes", makeService.readAll());
-        model.addAttribute("engines", engineService.readAll());
-        model.addAttribute("carTypes", carTypeService.readAll());
+        model.addAttribute("carTypes", CarType.values());
+        model.addAttribute("engines", Engine.values());
         model.addAttribute("payload", CarPayload.builder().build());
         return "cars/create.html";
     }

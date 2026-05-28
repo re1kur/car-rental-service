@@ -1,45 +1,48 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Rental [' + ${rental.id} + '] — Car Rental Service'"></title>
+    <title th:text="${rental.carMake} + ' ' + ${rental.carModel} + ' — Rental'"></title>
     <link rel="stylesheet" th:href="@{/css/styles-common.css}">
     <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
 <body>
 
-<header th:insert="fragments/header.html :: pages"></header>
-
+<header>
+    <div th:replace="~{fragments/header :: pages}"></div>
+</header>
 
 <div class="container">
-    <h1 th:text="'Rental ' + ${rental.id}"></h1>
 
-    <section>
-        <label class="field">
-            <a th:href="@{/cars/{id}(id=${rental.carId})}" th:text="'Car profile'"></a>
-        </label>
+    <div class="section-head">
+        <div>
+            <h1 th:text="${rental.carMake} + ' ' + ${rental.carModel}"></h1>
+            <p>Rental details</p>
+        </div>
+        <a class="btn btn-outline" th:href="@{/cars/{id}(id=${rental.carId})}">Open car</a>
+    </div>
 
+    <div class="product-layout">
+        <div class="main-image">
+            <img th:src="${rental.carImageUrl != null} ? ${rental.carImageUrl} : @{/img/car-placeholder.svg}"
+                 th:alt="${rental.carModel}">
+        </div>
 
-        <label class="field">
-            <span>User id:</span>
-            <span th:text="${rental.userId}"></span>
-        </label>
+        <div class="product-panel">
+            <div class="price-box">
+                <span class="amount" th:text="'$' + ${rental.totalCost}"></span>
+                <span class="per">total</span>
+            </div>
+            <ul class="spec-list">
+                <li><span class="k">Start date</span><span class="v" th:text="${rental.startDate}"></span></li>
+                <li><span class="k">End date</span><span class="v" th:text="${rental.endDate}"></span></li>
+                <li><span class="k">Rental ID</span><span class="v" th:text="${rental.id}"></span></li>
+            </ul>
+        </div>
+    </div>
 
-        <label class="field">
-            <span>Start date:</span>
-            <span th:text="${rental.startDate}"></span>
-        </label>
-
-        <label class="field">
-            <span>End date:</span>
-            <span th:text="${rental.endDate}"></span>
-        </label>
-
-        <label class="field">
-            <span>Total cost:</span>
-            <span th:text="${rental.totalCost}"></span>
-        </label>
-    </section>
 </div>
+
+<footer th:replace="~{fragments/footer :: main-footer}"></footer>
 </body>
 </html>

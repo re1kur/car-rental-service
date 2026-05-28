@@ -1,38 +1,18 @@
 package re1kur.app.entity;
 
+public enum Engine {
+    ELECTRIC("Electric"),
+    V6("V6"),
+    HYBRID("Hybrid"),
+    INLINE_4("Inline-4");
 
-import jakarta.persistence.*;
-import lombok.*;
+    private final String label;
 
-import java.util.Collection;
-
-@Entity
-@Table(name = "engines")
-@Builder
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Engine {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    private String name;
-
-    @OneToMany(mappedBy = "engine", fetch = FetchType.LAZY)
-    private Collection<Car> cars;
-
-    @Override
-    public boolean equals(Object object) {
-        if (object == this) return true;
-        if (!(object instanceof Engine engine)) return false;
-        if (id == null || engine.id == null) return false;
-        return id.equals(engine.id);
+    Engine(String label) {
+        this.label = label;
     }
 
-    @Override
-    public int hashCode() {
-        return (id != null ? id.hashCode() : System.identityHashCode(this));
+    public String getLabel() {
+        return label;
     }
 }

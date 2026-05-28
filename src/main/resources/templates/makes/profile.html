@@ -1,67 +1,78 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${make.name} + ' — Car Rental Service'"></title>
+    <title th:text="${make.name} + ' — RentCar'"></title>
     <link rel="stylesheet" th:href="@{/css/styles-common.css}">
     <link rel="stylesheet" th:href="@{/css/styles-header.css}">
 </head>
 <body>
 
 <header>
-    <div th:insert="fragments/header.html :: pages"></div>
-    <div th:insert="fragments/header.html :: updateMake"></div>
+    <div th:replace="~{fragments/header :: pages}"></div>
 </header>
 
 <div class="container">
-    <h1 th:text="${make.name}"></h1>
 
-    <section>
-        <h2>Details</h2>
+    <div class="section-head">
+        <div><h1 th:text="${make.name}"></h1></div>
+        <a sec:authorize="hasRole('ADMIN')" class="btn btn-outline"
+           th:href="@{/makes/{id}/update(id=${make.id})}">Edit make</a>
+    </div>
 
-        <div th:if="${make.titleImage}" class="image-gallery">
-            <span class="field">Title image:</span>
-            <img th:src="${make.titleImage.url}" alt="Title image">
+    <div class="product-layout">
+        <div class="main-image contain" style="background:#fff;">
+            <img th:src="${make.titleImage != null} ? ${make.titleImage.url} : @{/img/make-placeholder.svg}"
+                 th:alt="${make.name}" style="object-fit:contain;padding:24px;">
         </div>
 
-        <div th:if="${make.images != null and !#lists.isEmpty(make.images)}" class="image-gallery">
-            <h3>Gallery</h3>
-            <ul>
-                <li th:each="image : ${make.images}">
-                    <img th:src="${image.url}" alt="Image">
-                    <span th:text="'Uploaded at: ' + ${image.uploadedAt}"></span>
-                </li>
+        <div class="product-panel">
+            <ul class="spec-list" th:if="${make.information}">
+                <li th:if="${make.information.country}">
+                    <span class="k">Country</span><span class="v" th:text="${make.information.country}"></span></li>
+                <li th:if="${make.information.founder}">
+                    <span class="k">Founder</span><span class="v" th:text="${make.information.founder}"></span></li>
+                <li th:if="${make.information.foundedAt}">
+                    <span class="k">Founded</span><span class="v" th:text="${make.information.foundedAt}"></span></li>
+                <li th:if="${make.information.owner}">
+                    <span class="k">Owner</span><span class="v" th:text="${make.information.owner}"></span></li>
+                <li th:if="${make.information.description}">
+                    <span class="k">About</span><span class="v" th:text="${make.information.description}"></span></li>
             </ul>
+            <a class="btn" th:href="@{/cars(makeId=${make.id})}" style="margin-top:8px;">View all cars by this make</a>
         </div>
+    </div>
 
-        <section th:if="${make.information}">
-            <label class="field" th:if="${make.information.country}">
-                <span>Country: </span>
-                <span th:text="${make.information.country}"></span><br>
-            </label>
-
-            <label class="field" th:if="${make.information.description}">
-                <span>Description: </span>
-                <span th:text="${make.information.description}"></span><br>
-            </label>
-
-            <label class="field" th:if="${make.information.foundedAt}">
-                <span>Founded at: </span>
-                <span th:text="${make.information.foundedAt}"></span><br>
-            </label>
-
-            <label class="field" th:if="${make.information.founder}">
-                <span>Founder: </span>
-                <span th:text="${make.information.founder}"></span><br>
-            </label>
-
-            <label class="field" th:if="${make.information.owner}">
-                <span>Owner: </span>
-                <span th:text="${make.information.owner}"></span><br>
-            </label>
-        </section>
+    <section th:unless="${#lists.isEmpty(cars)}" style="background:transparent;border:none;box-shadow:none;padding:0;">
+        <div class="section-head">
+            <div><h2 th:text="'Cars by ' + ${make.name}"></h2></div>
+            <a class="btn btn-outline" th:href="@{/cars(makeId=${make.id})}">View all</a>
+        </div>
+        <div class="card-grid">
+            <div class="card" th:each="car : ${cars}">
+                <div class="card-media">
+                    <img th:src="${car.titleImage != null} ? ${car.titleImage.url} : @{/img/car-placeholder.svg}"
+                         th:alt="${car.make.name} + ' ' + ${car.model}">
+                    <span class="card-price" th:if="${car.cost != null}"
+                          th:text="'$' + ${car.cost} + '/day'"></span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <a th:href="@{/cars/{id}(id=${car.id})}"
+                           th:text="${car.make.name} + ' ' + ${car.model}"></a>
+                    </h3>
+                    <div class="card-meta">
+                        <span class="tag" th:text="${car.carType.label}"></span>
+                        <span class="tag" th:text="${car.year}"></span>
+                        <span class="tag" th:text="${car.engine.label}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
+
 </div>
+
+<footer th:replace="~{fragments/footer :: main-footer}"></footer>
 </body>
 </html>
