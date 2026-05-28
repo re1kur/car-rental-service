@@ -18,12 +18,8 @@ public class File {
 
     private String mediaType;
 
-    private String url;
-
     @Column(insertable = false, updatable = false)
     private Instant uploadedAt;
-
-    private Instant urlExpiresAt;
 
     @Override
     public boolean equals(Object object) {

@@ -185,3 +185,18 @@ hr {
 .item-details p {
     margin: 5px 0;
 }
+
+.item-info h2 a {
+    color: #e8491d;
+    text-decoration: none;
+}
+
+.item-info h2 a:hover {
+    text-decoration: underline;
+}
+
+.item-details p.price {
+    font-weight: bold;
+    color: #e8491d;
+    font-size: 1.1rem;
+}

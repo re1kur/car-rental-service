@@ -2,6 +2,7 @@ package re1kur.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -31,42 +32,25 @@ public class SecurityConfiguration {
 
         http
                 .csrf(Customizer.withDefaults())
-                .authorizeHttpRequests(req ->
-                        req.requestMatchers(
-                                        "/cars/create",
-                                        "/makes/create",
-                                        "/car-types/create",
-                                        "/engines/create",
-                                        "/cars/*/update",
-                                        "/makes/*/update",
-                                        "/car-types/*/update",
-                                        "/engines/*/update",
-                                        "/cars/*/delete",
-                                        "/car-types/*/delete",
-                                        "/engines/*/delete",
-                                        "/makes/*/delete",
-                                        "/admin/**",
-                                        "/admin",
-                                        "/rentals/users").hasRole("ADMIN")
-                                .requestMatchers(
-                                        "/",
-                                        "/cars",
-                                        "/cars/",
-                                        "/makes",
-                                        "/makes/",
-                                        "/engines",
-                                        "/engines/",
-                                        "/car-types",
-                                        "/car-types/",
-                                        "/css/**",
-                                        "/favicon.ico",
-                                        "/cars/*",
-                                        "/makes/*",
-                                        "/engines/*",
-                                        "/car-types/*",
-                                        "/error",
-                                        "/error/*").permitAll()
-                                .anyRequest().authenticated())
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers("/css/**", "/favicon.ico", "/error", "/error/**").permitAll()
+                        .requestMatchers(
+                                "/cars/create",
+                                "/makes/create",
+                                "/cars/*/update",
+                                "/makes/*/update").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/cars/*", "/makes/*").hasRole("ADMIN")
+                        .requestMatchers("/admin", "/admin/**", "/rentals/users").hasRole("ADMIN")
+                        .requestMatchers("/rentals/**", "/oauth2/account").authenticated()
+                        .requestMatchers(HttpMethod.GET,
+                                "/",
+                                "/cars", "/cars/**",
+                                "/makes", "/makes/", "/makes/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/**").authenticated()
+                        .anyRequest().permitAll())
                 .oauth2Login(Customizer.withDefaults())
                 .logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler));
         return http.build();

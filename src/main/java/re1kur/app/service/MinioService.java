@@ -8,7 +8,5 @@ import java.util.List;
 public interface MinioService {
     File upload(MultipartFile payload);
 
-    String getUrl(String id);
-
     List<File> uploadAll(MultipartFile[] payloads);
 }

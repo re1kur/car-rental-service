@@ -31,7 +31,7 @@ minio:
   access-key: developer
   secret-key: developer
   endpoint: http://localhost:9000
-  endpoint-override: http://localhost:9000
+  public-url: http://localhost:9000
   default-bucket: developer
 
 custom:

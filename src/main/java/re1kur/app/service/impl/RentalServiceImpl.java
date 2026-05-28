@@ -63,6 +63,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public RentalDto readById(UUID rentalId, OidcUser user) {
         String logUser = user == null ? "Anonymous" : user.getSubject();
         log.info("READ RENTAL [{}] REQUEST BY USER [{}]", rentalId, logUser);
@@ -73,6 +74,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PageDto<RentalDto> readAllByUser(Pageable pageable, UUID userId, RentalFilter filter) {
         log.info("READ USER'S RENTALS REQUEST BY USER [{}]", userId);
         Integer carId = filter.carId();
@@ -90,6 +92,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PageDto<RentalDto> readAll(Pageable pageable, RentalAdminFilter filter, OidcUser user) {
         String logUser = user == null ? "Anonymous" : user.getSubject();
         log.info("READ RENTALS PAGE BY FILTER [{}] REQUEST BY USER [{}]", filter, logUser);

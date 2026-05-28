@@ -1,114 +1,68 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Makes - Car Rental Service</title>
+    <title>Makes — RentCar</title>
     <link rel="stylesheet" th:href="@{/css/styles-common.css}">
-    <link rel="stylesheet" th:href="@{/css/styles-list.css}">
     <link rel="stylesheet" th:href="@{/css/styles-header.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-list.css}">
 </head>
 <body>
 
 <header>
-    <div th:insert="fragments/header.html :: pages"></div>
-    <div th:insert="fragments/header.html :: createMake"></div>
+    <div th:replace="~{fragments/header :: pages}"></div>
 </header>
 
-<div class="list-container">
+<div class="container">
+
+    <div class="section-head">
+        <div>
+            <h1>Makes</h1>
+            <p>Browse car brands.</p>
+        </div>
+        <a sec:authorize="hasRole('ADMIN')" class="btn" th:href="@{/makes/create}">+ New make</a>
+    </div>
 
     <section class="filter-container">
         <form th:action="@{/makes}" method="get" class="filter-form">
             <div class="form-group">
-                <label for="name">Name:</label>
+                <label for="name">Name</label>
                 <input type="text" name="name" id="name" th:value="${name}" class="form-control"
                        placeholder="Enter name">
             </div>
-
             <button type="submit">Find</button>
         </form>
     </section>
 
-    <table th:if="${page.content.empty}" class="no-items">
-        <thead>
-        <tr>
-            <th>Message</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Makes are not found.</td>
-        </tr>
-        </tbody>
-    </table>
+    <p th:if="${page.content.empty}" class="empty">No makes found.</p>
 
-    <div th:each="make : ${page.content}" class="item-card">
-        <div class="item-info">
-            <h2 th:text="${make.name}"></h2>
-
-            <div th:if="${make.titleImage != null}" class="image-container">
-                <img th:src="${make.titleImage.url}" alt="Make Image">
+    <div class="card-grid" th:unless="${page.content.empty}">
+        <div class="card" th:each="make : ${page.content}">
+            <div class="card-media contain">
+                <img th:src="${make.titleImage != null} ? ${make.titleImage.url} : @{/img/make-placeholder.svg}"
+                     th:alt="${make.name}">
             </div>
-            <div>
-                <a th:href="@{/cars(makeId=${make.id})}" class="make-link">
-                    <span th:text="'Cars by ' + ${make.name}"></span>
-                </a>
+            <div class="card-body">
+                <h3 class="card-title">
+                    <a th:href="@{/makes/{id}(id=${make.id})}" th:text="${make.name}"></a>
+                </h3>
+                <div class="card-actions" style="display:flex; gap:8px;">
+                    <a class="btn btn-outline" th:href="@{/makes/{id}(id=${make.id})}">Profile</a>
+                    <a class="btn" th:href="@{/cars(makeId=${make.id})}">Cars</a>
+                </div>
             </div>
-        </div>
-
-
-        <div class="item-footer">
-            <a th:href="@{/makes/{id}(id=${make.id})}">Profile</a>
         </div>
     </div>
+
+    <nav class="pagination" th:if="${page.totalCount > 1}" aria-label="Pagination">
+        <a th:each="i : ${#numbers.sequence(0, page.totalCount - 1)}"
+           th:href="@{/makes(page=${i}, name=${name})}"
+           class="page-link" th:classappend="${i == page.number} ? 'active' : ''"
+           th:text="${i + 1}"></a>
+    </nav>
+
 </div>
 
-<footer th:if="${not #lists.isEmpty(page.content)}">
-    <nav class="pagination" aria-label="Pagination">
-        <a th:href="${page.prevNumber != null
-                      ? '/makes?page=' + page.prevNumber + '&name=' + (name != null ? name : '')
-                      : '#'}"
-           class="page-link"
-           th:text="'Previous'">
-        </a>
-
-        <span th:each="pageNumber : ${#numbers.sequence(page.firstNumber, page.lastNumber)}">
-            <a th:href="@{/makes(page=${pageNumber}, name=${name != null ? name : ''})}"
-               class="page-link"
-               th:text="${pageNumber + 1}">
-            </a>
-        </span>
-
-        <a th:href="${page.nextNumber != null
-                      ? '/makes?page=' + page.nextNumber + '&name=' + (name != null ? name : '')
-                      : '#'}"
-           class="page-link"
-           th:text="'Next'">
-        </a>
-    </nav>
-</footer>
-
-
+<footer th:replace="~{fragments/footer :: main-footer}"></footer>
 </body>
 </html>
-
-<style>
-.make-link {
-        display: inline-block;
-        padding: 4px 6px;
-        color: #333;
-        text-decoration: none;
-        border: 1px solid #333;
-        border-radius: 6px;
-        font-weight: 500;
-        transition: all 0.3s;
-}
-.make-link:hover {
-    border-color: #e8491d;
-    color: #e8491d;
-    transform: translateY(-2px);
-}
-
-.make-link span {
-    display: inline-block;
-}
-</style>

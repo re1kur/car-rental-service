@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import re1kur.app.core.dto.CarUpdateDto;
 import re1kur.app.core.payload.CarUpdatePayload;
 import re1kur.app.core.dto.CarFullDto;
+import re1kur.app.entity.CarType;
+import re1kur.app.entity.Engine;
 import re1kur.app.service.CarService;
-import re1kur.app.service.CarTypeService;
-import re1kur.app.service.EngineService;
 import re1kur.app.service.MakeService;
 
 
@@ -22,8 +22,6 @@ import re1kur.app.service.MakeService;
 public class CarController {
     private final CarService service;
     private final MakeService makeService;
-    private final EngineService engineService;
-    private final CarTypeService carTypeService;
 
     @GetMapping
     public String getCar(
@@ -44,8 +42,8 @@ public class CarController {
     ) {
         CarUpdateDto car = service.readUpdateById(id);
         model.addAttribute("makes", makeService.readAll());
-        model.addAttribute("engines", engineService.readAll());
-        model.addAttribute("carTypes", carTypeService.readAll());
+        model.addAttribute("carTypes", CarType.values());
+        model.addAttribute("engines", Engine.values());
         model.addAttribute("car", car);
 
         return "cars/update.html";
@@ -56,7 +54,7 @@ public class CarController {
             @PathVariable Integer id,
             @ModelAttribute("car") @Valid CarUpdatePayload payload,
             @AuthenticationPrincipal OidcUser user
-            ) {
+    ) {
         service.updateCar(payload, id, user);
         return "redirect:/cars/" + id;
     }

@@ -1,6 +1,8 @@
 package re1kur.app.core.dto;
 
 import lombok.Builder;
+import re1kur.app.entity.CarType;
+import re1kur.app.entity.Engine;
 
 @Builder
 public record CarDto(
@@ -8,8 +10,9 @@ public record CarDto(
         String model,
         Integer year,
         String licensePlate,
+        Integer cost,
         MakeShortDto make,
-        CarTypeDto carType,
-        EngineDto engine,
+        CarType carType,
+        Engine engine,
         FileDto titleImage) {
 }

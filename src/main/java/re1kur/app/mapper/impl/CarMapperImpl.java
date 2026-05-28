@@ -20,16 +20,14 @@ import java.util.Objects;
 public class CarMapperImpl implements CarMapper {
     private final CarInformationMapper infoMapper;
     private final MakeMapper makeMapper;
-    private final CarTypeMapper carTypeMapper;
-    private final EngineMapper engineMapper;
     private final FileMapper imageMapper;
 
     @Override
-    public Car write(CarPayload payload, Make make, CarType type, Engine engine) {
+    public Car write(CarPayload payload, Make make) {
         return Car.builder()
                 .make(make)
-                .carType(type)
-                .engine(engine)
+                .carType(payload.carType())
+                .engine(payload.engine())
                 .model(payload.model())
                 .year(payload.year())
                 .licensePlate(payload.licensePlate())
@@ -45,9 +43,10 @@ public class CarMapperImpl implements CarMapper {
                 .model(car.getModel())
                 .year(car.getYear())
                 .licensePlate(car.getLicensePlate())
+                .cost(car.getCost())
                 .make(makeMapper.readShort(car.getMake()))
-                .carType(carTypeMapper.read(car.getCarType()))
-                .engine(engineMapper.read(car.getEngine()))
+                .carType(car.getCarType())
+                .engine(car.getEngine())
                 .titleImage(imageMapper.read(titleImage))
                 .build();
     }
@@ -64,8 +63,8 @@ public class CarMapperImpl implements CarMapper {
                 .year(car.getYear())
                 .licensePlate(car.getLicensePlate())
                 .make(makeMapper.readShort(car.getMake()))
-                .carType(carTypeMapper.read(car.getCarType()))
-                .engine(engineMapper.read(car.getEngine()))
+                .carType(car.getCarType())
+                .engine(car.getEngine())
                 .information(infoMapper.read(car.getInformation()))
                 .titleImage(imageMapper.read(titleImage))
                 .images(images != null ? images.stream().map(imageMapper::read).toList() : List.of())
@@ -101,8 +100,8 @@ public class CarMapperImpl implements CarMapper {
                 .year(car.getYear())
                 .licensePlate(car.getLicensePlate())
                 .make(makeMapper.readShort(car.getMake()))
-                .carTypeId(car.getCarType().getId())
-                .engineId(car.getEngine().getId())
+                .carType(car.getCarType())
+                .engine(car.getEngine())
                 .information(infoMapper.read(car.getInformation()))
                 .titleImage(imageMapper.read(titleImage))
                 .images(images != null ? images.stream().map(imageMapper::read).toList() : List.of())
@@ -112,13 +111,13 @@ public class CarMapperImpl implements CarMapper {
     }
 
     @Override
-    public Car update(Car found, CarUpdatePayload payload, Make make, CarType type, Engine engine) {
+    public Car update(Car found, CarUpdatePayload payload, Make make) {
         String titleImageId = payload.titleImageId();
         File titleImage = found.getTitleImage();
 
         found.setMake(make);
-        found.setCarType(type);
-        found.setEngine(engine);
+        found.setCarType(payload.carType());
+        found.setEngine(payload.engine());
         found.setLicensePlate(payload.licensePlate());
         found.setModel(payload.model());
         found.setInformation(infoMapper.update(payload, found));

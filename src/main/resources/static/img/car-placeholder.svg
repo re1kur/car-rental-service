@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" width="400" height="260" role="img" aria-label="No car image">
+  <rect width="400" height="260" fill="#f3f4f6"/>
+  <g fill="none" stroke="#cbd1d8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M70 170 l24 -52 a18 18 0 0 1 16 -10 h180 a18 18 0 0 1 16 10 l24 52"/>
+    <path d="M58 170 h284 a10 10 0 0 1 10 10 v26 a8 8 0 0 1 -8 8 h-24"/>
+    <path d="M104 214 h192"/>
+    <path d="M58 170 a10 10 0 0 0 -10 10 v26 a8 8 0 0 0 8 8 h24"/>
+  </g>
+  <g fill="#e8491d">
+    <circle cx="120" cy="214" r="20"/>
+    <circle cx="280" cy="214" r="20"/>
+  </g>
+  <g fill="#f3f4f6">
+    <circle cx="120" cy="214" r="8"/>
+    <circle cx="280" cy="214" r="8"/>
+  </g>
+  <text x="200" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#9aa3ad">No image</text>
+</svg>

@@ -10,6 +10,9 @@ public record RentalDto(
         UUID id,
         UUID userId,
         Integer carId,
+        String carMake,
+        String carModel,
+        String carImageUrl,
         LocalDate startDate,
         LocalDate endDate,
         Integer totalCost

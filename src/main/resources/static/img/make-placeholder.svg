@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="No make logo">
+  <rect width="240" height="240" rx="20" fill="#f3f4f6"/>
+  <circle cx="120" cy="110" r="62" fill="none" stroke="#cbd1d8" stroke-width="8"/>
+  <path d="M120 58 l46 80 h-92 z" fill="#e8491d" opacity="0.85"/>
+  <text x="120" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#9aa3ad">No logo</text>
+</svg>
