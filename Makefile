@@ -1,52 +1,59 @@
-PROFILE   ?= local
-BUCKET    := developer
+PROFILE    ?= local
+BUCKET     := developer
 MINIO_USER := developer
 MINIO_PASS := developer
-SEED_DIR  := docker/minio/seed
-MC_IMAGE  := minio/mc:latest
+SEED_DIR   := docker/minio/seed
+MC_IMAGE   := minio/mc:latest
 
-.PHONY: help env up down reset wait-keycloak wait-minio seed-images run start
+.DEFAULT_GOAL := help
+.PHONY: help start up up-infra down reset clean logs ps seed-images run-local env wait-minio
 
 help:
-	@echo "make start        - одной командой: инфра + картинки + приложение"
-	@echo "make up            - поднять инфру (postgres, keycloak, minio)"
-	@echo "make seed-images  - залить дефолт-картинки в MinIO"
-	@echo "make run          - запустить приложение (профиль $(PROFILE))"
-	@echo "make reset        - down + заново поднять инфру (свежая БД)"
-	@echo "make down         - погасить стек"
+	@echo "RentCar — команды (make <команда>):"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
+		| awk 'BEGIN {FS = ":.*?## "}; {printf "  %-12s %s\n", $$1, $$2}'
 
-env:
-	@test -f .env || (cp .env.example .env && echo ".env создан из .env.example")
+start: up seed-images ## Запустить ВЕСЬ стек в Docker (приложение + инфра + картинки)
+	@echo ""
+	@echo "Готово. http://localhost:8080"
 
-up: env
-	docker compose up -d
+up: env ## Собрать и поднять весь стек, включая приложение (compose up --build)
+	docker compose up -d --build
 
-down:
-	docker compose down
+up-infra: env ## Поднять только инфраструктуру (Postgres, Keycloak, MinIO), без приложения
+	docker compose up -d postgres kc-postgres keycloak minio
 
-wait-keycloak:
-	@echo "Ждём Keycloak..."
-	@until curl -sf http://localhost:9090/realms/rental-service-realm/.well-known/openid-configuration >/dev/null 2>&1; do sleep 3; done
-	@echo "Keycloak готов."
+run-local: env ## Запустить приложение ЛОКАЛЬНО через Maven (нужна поднятая инфра: make up-infra)
+	./mvnw spring-boot:run -Dspring-boot.run.profiles=$(PROFILE)
 
-wait-minio:
-	@echo "Ждём MinIO..."
-	@until curl -sf http://localhost:9000/minio/health/ready >/dev/null 2>&1; do sleep 2; done
-	@echo "MinIO готов."
-
-seed-images: wait-minio
-	@echo "Заливаю картинки из $(SEED_DIR) в бакет '$(BUCKET)'..."
+seed-images: wait-minio ## Залить дефолтные картинки (docker/minio/seed) в MinIO
+	@echo "Заливаю картинки в бакет '$(BUCKET)'..."
 	docker run --rm --network host -v "$(PWD)/$(SEED_DIR)":/seed:ro --entrypoint sh $(MC_IMAGE) -c '\
 	  mc alias set local http://localhost:9000 $(MINIO_USER) $(MINIO_PASS) && \
 	  mc mb --ignore-existing local/$(BUCKET) && \
 	  mc anonymous set download local/$(BUCKET) && \
-	  ( ls /seed/*.png >/dev/null 2>&1 && mc cp /seed/*.png local/$(BUCKET)/ || echo "Картинок (*.png) в $(SEED_DIR) пока нет" )'
-	@echo "Готово."
+	  ( ls /seed/*.png >/dev/null 2>&1 && mc cp /seed/*.png local/$(BUCKET)/ || echo "Нет картинок (*.png) в $(SEED_DIR)" )'
 
-run:
-	./mvnw spring-boot:run -Dspring-boot.run.profiles=$(PROFILE)
+logs: ## Смотреть логи приложения (Ctrl+C — выйти)
+	docker compose logs -f app
 
-start: up wait-keycloak seed-images run
+ps: ## Показать статус контейнеров
+	docker compose ps
 
-reset: down up wait-keycloak seed-images
-	@echo "Инфра пересоздана (БД свежая). Запусти 'make run'."
+down: ## Остановить и удалить все контейнеры
+	docker compose down
+
+reset: down up seed-images ## Пересоздать стек с нуля (свежая БД)
+	@echo "Стек пересоздан с чистой базой."
+
+clean: ## Полная очистка: контейнеры, тома, сеть, собранный образ и target/
+	docker compose down -v --rmi local --remove-orphans
+	rm -rf target
+	@echo "Очищено: контейнеры, тома, сеть, образ приложения и target/."
+
+env:
+	@test -f .env || (cp .env.example .env && echo ".env создан из .env.example")
+
+wait-minio:
+	@echo "Жду готовности MinIO..."
+	@until curl -sf http://localhost:9000/minio/health/ready >/dev/null 2>&1; do sleep 2; done
