@@ -14,6 +14,8 @@ import java.util.UUID;
 public interface RentalService {
     UUID create(RentalPayload payload, OidcUser userId);
 
+    void createAll(List<RentalPayload> payloads, OidcUser user);
+
     RentalDto readById(UUID rentalId, OidcUser user);
 
     PageDto<RentalDto> readAllByUser(Pageable pageable, UUID userId, RentalFilter filter);

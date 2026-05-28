@@ -1,6 +1,10 @@
 {
   "id": "13f6205b-ef82-4851-a1af-4996059fb4b8",
   "realm": "rental-service-realm",
+  "displayName": "RentCar",
+  "displayNameHtml": "<b>RentCar</b>",
+  "loginTheme": "rentcar",
+  "accountTheme": "rentcar",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,

@@ -41,7 +41,7 @@ public class SecurityConfiguration {
                                 "/makes/*/update").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/cars/*", "/makes/*").hasRole("ADMIN")
                         .requestMatchers("/admin", "/admin/**", "/rentals/users").hasRole("ADMIN")
-                        .requestMatchers("/rentals/**", "/oauth2/account").authenticated()
+                        .requestMatchers("/rentals/**", "/cart/**", "/oauth2/account").authenticated()
                         .requestMatchers(HttpMethod.GET,
                                 "/",
                                 "/cars", "/cars/**",

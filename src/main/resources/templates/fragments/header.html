@@ -43,6 +43,15 @@
     <a class="header-link" sec:authorize="isAuthenticated()" th:href="@{/rentals}">Rentals</a>
     <a class="header-link" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/menu}">Admin</a>
     <span class="nav-auth">
+        <a class="header-link cart-link" sec:authorize="isAuthenticated()" th:href="@{/cart}" title="Cart" aria-label="Cart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span class="cart-badge" th:if="${cartCount != null and cartCount > 0}" th:text="${cartCount}"></span>
+        </a>
         <a class="header-link" sec:authorize="isAuthenticated()" th:href="@{/oauth2/account}">Profile</a>
         <a class="header-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">Log out</a>
         <a class="header-link" sec:authorize="!isAuthenticated()" th:href="@{/oauth2/authorization/keycloak}">Log in</a>

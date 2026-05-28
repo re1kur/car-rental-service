@@ -58,6 +58,9 @@
             </ul>
 
             <div th:if="${car.available}">
+                <div style="margin-bottom:14px;">
+                    <div th:replace="~{fragments/cart :: addButton(${car.id})}"></div>
+                </div>
                 <form sec:authorize="isAuthenticated()" method="post" th:action="@{/rentals/create}" class="edit-form">
                     <input type="hidden" th:value="${car.id}" name="carId">
                     <div class="form-group">

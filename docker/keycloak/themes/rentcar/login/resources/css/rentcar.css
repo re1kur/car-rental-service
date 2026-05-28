@@ -1,0 +1,110 @@
+/* RentCar — custom login theme. Цель: чтобы не выглядело как Keycloak. */
+
+html {
+    height: 100%;
+}
+
+body.login-pf,
+.login-pf body {
+    background: linear-gradient(135deg, #1f2937 0%, #2d3a4f 55%, #e8491d 160%) !important;
+    background-attachment: fixed !important;
+    font-family: "Segoe UI", Roboto, system-ui, -apple-system, Arial, sans-serif;
+}
+
+.login-pf-page {
+    padding-top: 70px;
+}
+
+/* Бренд вместо названия realm */
+#kc-header-wrapper {
+    color: #fff;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    text-transform: none;
+    padding: 12px 0 26px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Карточка формы */
+.card-pf {
+    border: none;
+    border-top: 5px solid #e8491d;
+    border-radius: 16px;
+    box-shadow: 0 22px 55px rgba(0, 0, 0, 0.4);
+    padding: 34px 30px;
+    max-width: 470px;
+    margin: 0 auto;
+    background: #ffffff;
+}
+
+#kc-page-title {
+    color: #1f2937;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+}
+
+.login-pf-header {
+    margin-bottom: 14px;
+}
+
+/* Поля ввода */
+.form-control {
+    border-radius: 10px;
+    padding: 11px 13px;
+    height: auto;
+    border: 1px solid #e5e7eb;
+    box-shadow: none;
+    font-size: 0.98rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #e8491d;
+    box-shadow: 0 0 0 3px rgba(232, 73, 29, 0.2);
+}
+
+label,
+.control-label {
+    color: #374151;
+    font-weight: 600;
+}
+
+/* Кнопка входа — фирменный оранжевый */
+.btn-primary {
+    background: #e8491d !important;
+    border-color: #e8491d !important;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 11px;
+    box-shadow: 0 6px 16px rgba(232, 73, 29, 0.35);
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background: #c63913 !important;
+    border-color: #c63913 !important;
+    transform: translateY(-1px);
+}
+
+a {
+    color: #e8491d;
+}
+
+a:hover {
+    color: #c63913;
+}
+
+/* Чекбокс «remember me» и опции */
+#kc-form-options {
+    color: #6b7280;
+}
+
+/* Алерты ошибок — мягче */
+.alert-error,
+.pf-c-alert.pf-m-danger {
+    border-radius: 10px;
+}

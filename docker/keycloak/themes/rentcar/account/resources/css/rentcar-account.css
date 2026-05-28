@@ -1,0 +1,53 @@
+/* RentCar — custom account console theme (PatternFly). Аддитивно поверх базы. */
+:root {
+    --pf-v5-global--primary-color--100: #e8491d;
+    --pf-v5-global--primary-color--200: #c63913;
+    --pf-v5-global--link--Color: #e8491d;
+    --pf-v5-global--link--Color--hover: #c63913;
+    --pf-v5-global--active-color--100: #e8491d;
+    --pf-global--primary-color--100: #e8491d;
+    --pf-global--primary-color--200: #c63913;
+}
+
+body {
+    background: linear-gradient(135deg, #1f2937 0%, #2d3a4f 55%, #e8491d 160%) !important;
+    background-attachment: fixed !important;
+}
+
+/* верхняя панель — тёмная под бренд */
+.pf-v5-c-masthead,
+.pf-c-page__header,
+header[class*="masthead"] {
+    background: #1f2937 !important;
+    border-bottom: 3px solid #e8491d !important;
+}
+
+/* контент на прозрачном, чтобы виден градиент, карточки белые */
+.pf-v5-c-page,
+.pf-v5-c-page__main,
+.pf-c-page,
+.pf-c-page__main {
+    background: transparent !important;
+}
+
+.pf-v5-c-card,
+.pf-c-card {
+    border-radius: 14px !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18) !important;
+}
+
+/* основные кнопки — оранжевые */
+.pf-v5-c-button.pf-m-primary,
+.pf-c-button.pf-m-primary {
+    background-color: #e8491d !important;
+    border-radius: 8px !important;
+}
+
+.pf-v5-c-button.pf-m-primary:hover,
+.pf-c-button.pf-m-primary:hover {
+    background-color: #c63913 !important;
+}
+
+a {
+    color: #e8491d;
+}

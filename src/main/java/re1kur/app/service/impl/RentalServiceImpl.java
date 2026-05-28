@@ -50,6 +50,15 @@ public class RentalServiceImpl implements RentalService {
         return rentalId;
     }
 
+    @Override
+    @Transactional
+    public void createAll(List<RentalPayload> payloads, OidcUser user) {
+        log.info("CHECKOUT: CREATE [{}] RENTALS", payloads.size());
+        for (RentalPayload payload : payloads) {
+            create(payload, user);
+        }
+    }
+
     private void checkConflicts(Car car, RentalPayload payload) {
         Integer carId = car.getId();
         if (!car.isAvailable()) {
