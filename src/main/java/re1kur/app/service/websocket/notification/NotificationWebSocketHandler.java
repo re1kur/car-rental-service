@@ -1,4 +1,4 @@
-package re1kur.app.websocket.notification;
+package re1kur.app.service.websocket.notification;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import re1kur.app.websocket.dto.WsEvent;
+import re1kur.app.dto.websocket.WsEvent;
 
 @Slf4j
 @Component

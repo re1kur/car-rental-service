@@ -1,4 +1,4 @@
-package re1kur.app.websocket.notification;
+package re1kur.app.service.websocket.notification;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -6,8 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import re1kur.app.websocket.dto.NotificationDto;
-import re1kur.app.websocket.dto.WsEvent;
+import re1kur.app.dto.websocket.NotificationDto;
+import re1kur.app.dto.websocket.WsEvent;
 
 import java.time.Instant;
 

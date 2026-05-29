@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import re1kur.app.dto.request.NotificationRequest;
-import re1kur.app.websocket.notification.NotificationService;
+import re1kur.app.service.websocket.notification.NotificationService;
 
 import java.util.Map;
 
