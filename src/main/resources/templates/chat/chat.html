@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat — RentCar</title>
+    <link rel="stylesheet" th:href="@{/css/styles-common.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-header.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-interactive.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-chat.css}">
+</head>
+<body>
+
+<header>
+    <div th:replace="~{fragments/header :: pages}"></div>
+</header>
+
+<div class="container">
+    <div class="section-head">
+        <div>
+            <h1>Chat</h1>
+            <p>Real-time rooms. <span data-me-name>connecting…</span></p>
+        </div>
+        <span class="chat-status" data-conn-status>connecting…</span>
+    </div>
+
+    <div class="chat-layout">
+        <aside class="chat-rooms">
+            <h3>Rooms</h3>
+            <ul data-rooms></ul>
+        </aside>
+
+        <main class="chat-main">
+            <div class="chat-messages" data-messages></div>
+            <div class="chat-typing" data-typing></div>
+            <form class="chat-input" data-send-form>
+                <input type="text" data-input placeholder="Type a message…" autocomplete="off" maxlength="2000">
+                <button class="btn" type="submit">Send</button>
+            </form>
+        </main>
+
+        <aside class="chat-online">
+            <h3>Online (<span data-online-count>0</span>)</h3>
+            <ul data-online></ul>
+        </aside>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/footer :: main-footer}"></footer>
+<script th:src="@{/js/notify.js}"></script>
+<script th:src="@{/js/chat.js}"></script>
+</body>
+</html>

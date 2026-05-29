@@ -67,8 +67,10 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/cars/*", "/makes/*").hasRole("ADMIN")
                         .requestMatchers("/admin", "/admin/**", "/rentals/users").hasRole("ADMIN")
                         .requestMatchers("/rentals/**", "/cart/**", "/oauth2/account").authenticated()
+                        .requestMatchers("/ws/**").permitAll()
                         .requestMatchers(HttpMethod.GET,
                                 "/",
+                                "/chat",
                                 "/cars", "/cars/**",
                                 "/makes", "/makes/", "/makes/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/**").authenticated()
