@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/db.changelog-mock.sql
   - include:
       file: db/changelog/db.changelog-chat.sql
+  - include:
+      file: db/changelog/db.changelog-push.sql

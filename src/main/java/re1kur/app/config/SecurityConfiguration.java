@@ -41,6 +41,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/cars/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/v1/notifications").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/push/broadcast").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/push/subscriptions").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/cars/**", "/api/v1/makes/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/register", "/api/v1/auth/login").permitAll()
                         .anyRequest().authenticated())
