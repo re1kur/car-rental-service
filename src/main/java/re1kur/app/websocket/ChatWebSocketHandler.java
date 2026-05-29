@@ -52,6 +52,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 "socketId", chatSession.socketId(),
                 "user", principal,
                 "rooms", roomIds()));
+        send(chatSession, "room_counts", Map.of("counts", registry.counts()));
     }
 
     @Override
@@ -104,6 +105,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             broadcast(room, "user_left", Map.of("room", room, "user", chatSession.principal()));
             broadcast(room, "online_users", Map.of("room", room, "users", registry.onlineUsers(room)));
         }
+        broadcastRoomCounts();
         log.info("WS disconnected: socketId=[{}] user=[{}] status=[{}]",
                 chatSession.socketId(), chatSession.principal().displayName(), status);
     }
@@ -137,6 +139,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         send(chatSession, "history", Map.of("room", room, "messages", history.recent(room)));
         broadcastExcept(room, "user_joined", Map.of("room", room, "user", chatSession.principal()), chatSession.socketId());
         broadcast(room, "online_users", Map.of("room", room, "users", registry.onlineUsers(room)));
+        broadcastRoomCounts();
     }
 
     private void onLeave(ChatUserSession chatSession, JsonNode data) {
@@ -148,6 +151,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         registry.leaveRoom(chatSession.socketId(), room);
         broadcast(room, "user_left", Map.of("room", room, "user", chatSession.principal()));
         broadcast(room, "online_users", Map.of("room", room, "users", registry.onlineUsers(room)));
+        broadcastRoomCounts();
     }
 
     private void onSend(ChatUserSession chatSession, JsonNode data) {
@@ -170,6 +174,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
         ChatMessageDto dto = history.save(room, chatSession.principal(), text);
         broadcast(room, "message", dto);
+        broadcastAll("room_activity", Map.of("room", room));
     }
 
     private void onTyping(ChatUserSession chatSession, JsonNode data) {
@@ -199,6 +204,16 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             return true;
         }
         return false;
+    }
+
+    private void broadcastRoomCounts() {
+        broadcastAll("room_counts", Map.of("counts", registry.counts()));
+    }
+
+    private void broadcastAll(String type, Object data) {
+        for (ChatUserSession session : registry.all()) {
+            send(session, type, data);
+        }
     }
 
     private void broadcast(String room, String type, Object data) {
