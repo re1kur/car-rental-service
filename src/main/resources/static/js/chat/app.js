@@ -7,6 +7,7 @@
         {id: 'cars', label: 'Cars'},
         {id: 'random', label: 'Random'}
     ];
+    const label = (id) => (ROOMS.find(r => r.id === id) || {label: id}).label;
 
     const messagesEl = document.querySelector('[data-messages]');
     const onlineEl = document.querySelector('[data-online]');
@@ -15,16 +16,19 @@
     const typingEl = document.querySelector('[data-typing]');
     const statusEl = document.querySelector('[data-conn-status]');
     const meNameEl = document.querySelector('[data-me-name]');
+    const roomTitleEl = document.querySelector('[data-room-title]');
+    const roomCountEl = document.querySelector('[data-room-count]');
     const form = document.querySelector('[data-send-form]');
     const input = document.querySelector('[data-input]');
 
-    let ws = null;
     let me = null;
     let currentRoom = 'general';
-    let reconnectDelay = 1000;
+    let lastStatus = null;
+    const unread = {};
+    const counts = {};
+    const typingUsers = new Map();
     let typingSent = false;
     let typingTimer = null;
-    const typingUsers = new Map();
 
     function esc(v) {
         if (v == null) {
@@ -45,18 +49,16 @@
         return isNaN(d) ? '' : d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
     }
 
-    function send(type, data) {
-        if (ws && ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({type: type, data: data}));
-        }
-    }
-
     function renderRooms() {
         roomsEl.innerHTML = '';
         ROOMS.forEach(function (room) {
             const li = document.createElement('li');
-            li.textContent = room.label;
             li.className = 'chat-room' + (room.id === currentRoom ? ' active' : '');
+            const unreadBadge = unread[room.id]
+                ? '<span class="chat-unread">' + unread[room.id] + '</span>' : '';
+            li.innerHTML = '<span class="chat-room-name">' + esc(room.label) + '</span>' +
+                '<span class="chat-room-meta">' + unreadBadge +
+                '<span class="chat-room-count" title="online">' + (counts[room.id] || 0) + '</span></span>';
             li.addEventListener('click', function () {
                 switchRoom(room.id);
             });
@@ -64,22 +66,34 @@
         });
     }
 
+    function renderHeader() {
+        roomTitleEl.textContent = label(currentRoom);
+        roomCountEl.textContent = (counts[currentRoom] || 0) + ' online';
+    }
+
     function switchRoom(roomId) {
         if (roomId === currentRoom) {
             return;
         }
-        send('leave_room', {room: currentRoom});
+        socket.send('leave_room', {room: currentRoom});
         currentRoom = roomId;
+        unread[roomId] = 0;
         messagesEl.innerHTML = '';
         onlineEl.innerHTML = '';
         onlineCountEl.textContent = '0';
         typingUsers.clear();
         renderTyping();
         renderRooms();
-        send('join_room', {room: currentRoom});
+        renderHeader();
+        socket.send('join_room', {room: currentRoom});
     }
 
-    function addMessage(msg) {
+    function nearBottom() {
+        return messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight < 60;
+    }
+
+    function addMessage(msg, forceScroll) {
+        const stick = forceScroll || nearBottom();
         const mine = me && msg.sender && msg.sender.userId === me.userId;
         const el = document.createElement('div');
         el.className = 'msg' + (mine ? ' mine' : '');
@@ -92,23 +106,31 @@
             '<div class="msg-text">' + esc(msg.text) + '</div>' +
             '</div>';
         messagesEl.appendChild(el);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
+        if (stick) {
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
     }
 
     function addSystem(text) {
+        const stick = nearBottom();
         const el = document.createElement('div');
         el.className = 'msg-system';
         el.textContent = text;
         messagesEl.appendChild(el);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
+        if (stick) {
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
     }
 
     function renderOnline(users) {
         onlineCountEl.textContent = users.length;
+        counts[currentRoom] = users.length;
+        renderHeader();
         onlineEl.innerHTML = '';
         users.forEach(function (u) {
             const li = document.createElement('li');
-            li.innerHTML = '<span class="msg-avatar">' + esc(initials(u.displayName)) + '</span>' +
+            li.innerHTML = '<span class="online-dot"></span>' +
+                '<span class="msg-avatar">' + esc(initials(u.displayName)) + '</span>' +
                 '<span>' + esc(u.displayName) + (u.guest ? ' <span class="msg-guest">guest</span>' : '') + '</span>';
             onlineEl.appendChild(li);
         });
@@ -130,13 +152,28 @@
         switch (event.type) {
             case 'connected':
                 me = data.user;
-                meNameEl.textContent = me.guest ? 'You are a guest (' + me.displayName + ')' : 'Signed in as ' + me.displayName;
-                send('join_room', {room: currentRoom});
+                meNameEl.textContent = me.guest
+                    ? 'You are a guest (' + me.displayName + ')'
+                    : 'Signed in as ' + me.displayName;
+                socket.send('join_room', {room: currentRoom});
+                break;
+            case 'room_counts':
+                Object.assign(counts, data.counts);
+                renderRooms();
+                renderHeader();
+                break;
+            case 'room_activity':
+                if (data.room !== currentRoom) {
+                    unread[data.room] = (unread[data.room] || 0) + 1;
+                    renderRooms();
+                }
                 break;
             case 'history':
                 if (data.room === currentRoom) {
                     messagesEl.innerHTML = '';
-                    data.messages.forEach(addMessage);
+                    data.messages.forEach(function (m) {
+                        addMessage(m, true);
+                    });
                 }
                 break;
             case 'message':
@@ -179,36 +216,29 @@
         }
     }
 
-    function connect() {
-        const proto = location.protocol === 'https:' ? 'wss' : 'ws';
-        ws = new WebSocket(proto + '://' + location.host + '/ws/chat');
-
-        ws.onopen = function () {
-            reconnectDelay = 1000;
+    function onStatus(status) {
+        if (status === 'online') {
             statusEl.textContent = 'online';
             statusEl.className = 'chat-status online';
-        };
-
-        ws.onmessage = function (frame) {
-            let event;
-            try {
-                event = JSON.parse(frame.data);
-            } catch (e) {
-                return;
+            if (lastStatus === 'offline') {
+                window.toast('Reconnected.', 'success');
             }
-            handle(event);
-        };
-
-        ws.onclose = function () {
+        } else {
             statusEl.textContent = 'reconnecting…';
             statusEl.className = 'chat-status offline';
-            setTimeout(connect, reconnectDelay);
-            reconnectDelay = Math.min(reconnectDelay * 2, 10000);
-        };
+            if (lastStatus === 'online') {
+                window.toast('Connection lost. Reconnecting…', 'error');
+            }
+        }
+        lastStatus = status;
+    }
 
-        ws.onerror = function () {
-            ws.close();
-        };
+    function stopTyping() {
+        clearTimeout(typingTimer);
+        if (typingSent) {
+            typingSent = false;
+            socket.send('typing', {room: currentRoom, isTyping: false});
+        }
     }
 
     form.addEventListener('submit', function (e) {
@@ -217,7 +247,7 @@
         if (!text) {
             return;
         }
-        send('send_message', {room: currentRoom, text: text});
+        socket.send('send_message', {room: currentRoom, text: text});
         input.value = '';
         stopTyping();
     });
@@ -225,20 +255,13 @@
     input.addEventListener('input', function () {
         if (!typingSent) {
             typingSent = true;
-            send('typing', {room: currentRoom, isTyping: true});
+            socket.send('typing', {room: currentRoom, isTyping: true});
         }
         clearTimeout(typingTimer);
         typingTimer = setTimeout(stopTyping, 1500);
     });
 
-    function stopTyping() {
-        clearTimeout(typingTimer);
-        if (typingSent) {
-            typingSent = false;
-            send('typing', {room: currentRoom, isTyping: false});
-        }
-    }
-
     renderRooms();
-    connect();
+    renderHeader();
+    const socket = window.ChatSocket('/ws/chat', {onEvent: handle, onStatus: onStatus});
 })();

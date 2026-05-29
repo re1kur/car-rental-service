@@ -30,6 +30,10 @@
         </aside>
 
         <main class="chat-main">
+            <div class="chat-room-header">
+                <h2 data-room-title>General</h2>
+                <span class="chat-room-online" data-room-count>0 online</span>
+            </div>
             <div class="chat-messages" data-messages></div>
             <div class="chat-typing" data-typing></div>
             <form class="chat-input" data-send-form>
@@ -47,6 +51,7 @@
 
 <footer th:replace="~{fragments/footer :: main-footer}"></footer>
 <script th:src="@{/js/notify.js}"></script>
-<script th:src="@{/js/chat.js}"></script>
+<script th:src="@{/js/chat/websocket.js}"></script>
+<script th:src="@{/js/chat/app.js}"></script>
 </body>
 </html>

@@ -70,4 +70,12 @@ public class ChatRegistry {
         }
         return new ArrayList<>(byUser.values());
     }
+
+    public Map<String, Integer> counts() {
+        Map<String, Integer> result = new LinkedHashMap<>();
+        for (ChatRoom room : ChatRoom.values()) {
+            result.put(room.id(), onlineUsers(room.id()).size());
+        }
+        return result;
+    }
 }
