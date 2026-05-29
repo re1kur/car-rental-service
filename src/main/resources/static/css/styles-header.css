@@ -83,6 +83,23 @@ header {
     display: block;
 }
 
+.nav-auth .icon-link {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    padding: 8px 10px;
+}
+
+.nav-auth .icon-link:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.icon-link svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
 .cart-badge {
     position: absolute;
     top: 2px;
