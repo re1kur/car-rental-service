@@ -17,7 +17,8 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
            "(m.id = :makeId OR :makeId IS NULL) AND " +
            "(c.year = :year OR :year IS NULL) AND " +
            "(c.carType = :carType OR :carType IS NULL) AND " +
-           "(c.engine = :engine OR :engine IS NULL)")
+           "(c.engine = :engine OR :engine IS NULL) " +
+           "ORDER BY c.id DESC")
     Page<Car> findAll(
             @Param("model") String model,
             @Param("makeId") Integer makeId,
