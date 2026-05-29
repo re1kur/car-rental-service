@@ -25,6 +25,7 @@ import re1kur.app.repository.car.CarInformationRepository;
 import re1kur.app.repository.car.CarRepository;
 import re1kur.app.service.make.MakeService;
 import re1kur.app.service.minio.MinioService;
+import re1kur.app.websocket.notification.NotificationService;
 
 import java.util.*;
 
@@ -38,6 +39,7 @@ public class CarServiceImpl implements CarService {
     private final MakeService makeService;
     private final CarInformationMapper infoMapper;
     private final CarInformationRepository infoRepo;
+    private final NotificationService notificationService;
 
 
     @Override
@@ -57,6 +59,11 @@ public class CarServiceImpl implements CarService {
         Car saved = repo.save(mapped);
 
         saveImagesAndInformation(payload, titlePayload, files, saved);
+
+        if (saved.isAvailable()) {
+            notificationService.broadcast("New car available",
+                    make.getName() + " " + saved.getModel(), "/cars/" + saved.getId());
+        }
 
         log.info("CREATED CAR [{}] BY USER [{}]", saved.getId(), logUser);
         return saved.getId();
