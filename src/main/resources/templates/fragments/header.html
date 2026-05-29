@@ -56,6 +56,28 @@
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
             </svg>
         </a>
+        <span class="notif-wrap">
+            <button class="header-link icon-link" type="button" data-notif-bell title="Notifications" aria-label="Notifications">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span class="notif-badge hidden" data-notif-badge></span>
+            </button>
+            <div class="notif-panel" data-notif-panel hidden>
+                <div class="notif-head">
+                    <strong>Notifications</strong>
+                    <button type="button" class="notif-toggle" data-notif-toggle>Subscribe</button>
+                </div>
+                <form class="notif-form" data-notif-form sec:authorize="hasRole('ADMIN')">
+                    <input type="text" name="title" placeholder="Title" maxlength="120" required>
+                    <input type="text" name="body" placeholder="Message" maxlength="500" required>
+                    <button type="submit">Broadcast</button>
+                </form>
+                <ul class="notif-list" data-notif-list></ul>
+            </div>
+        </span>
         <a class="header-link cart-link" sec:authorize="isAuthenticated()" th:href="@{/cart}" title="Cart" aria-label="Cart">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -70,6 +92,8 @@
         <a class="header-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">Log out</a>
         <a class="header-link" sec:authorize="!isAuthenticated()" th:href="@{/oauth2/authorization/keycloak}">Log in</a>
     </span>
+    <link rel="stylesheet" th:href="@{/css/styles-notifications.css}">
+    <script th:src="@{/js/notifications.js}"></script>
 </nav>
 </body>
 </html>
