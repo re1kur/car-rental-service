@@ -26,7 +26,7 @@ import re1kur.app.repository.car.CarRepository;
 import re1kur.app.service.make.MakeService;
 import re1kur.app.service.minio.MinioService;
 import re1kur.app.service.push.PushService;
-import re1kur.app.websocket.notification.NotificationService;
+import re1kur.app.service.websocket.notification.NotificationService;
 
 import java.util.*;
 

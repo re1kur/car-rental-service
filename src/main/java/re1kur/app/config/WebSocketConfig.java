@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import re1kur.app.websocket.ChatWebSocketHandler;
-import re1kur.app.websocket.HandshakeAuthInterceptor;
-import re1kur.app.websocket.notification.NotificationWebSocketHandler;
+import re1kur.app.service.websocket.ChatWebSocketHandler;
+import re1kur.app.service.websocket.HandshakeAuthInterceptor;
+import re1kur.app.service.websocket.notification.NotificationWebSocketHandler;
 
 @Configuration
 @EnableWebSocket

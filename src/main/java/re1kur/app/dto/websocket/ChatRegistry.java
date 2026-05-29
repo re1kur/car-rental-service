@@ -1,4 +1,4 @@
-package re1kur.app.websocket;
+package re1kur.app.dto.websocket;
 
 import org.springframework.stereotype.Component;
 

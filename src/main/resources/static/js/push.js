@@ -7,8 +7,10 @@
     }
 
     const FB_VERSION = '10.12.2';
+    const SW_SCOPE = '/firebase-cloud-messaging-push-scope';
     const cfg = window.__PUSH_CONFIG__;
     let messaging = null;
+    let swReg = null;
 
     if (!cfg || !cfg.enabled) {
         btn.disabled = true;
@@ -42,17 +44,34 @@
         await loadScript('https://www.gstatic.com/firebasejs/' + FB_VERSION + '/firebase-messaging-compat.js');
     }
 
+    function showLocal(title, body, url) {
+        if (!('Notification' in window) || Notification.permission !== 'granted') {
+            return;
+        }
+        const opts = {body: body || '', icon: '/img/car-placeholder.svg', data: {url: url || '/'}};
+        try {
+            if (swReg && swReg.showNotification) {
+                swReg.showNotification(title || 'RentCar', opts);
+            } else {
+                new Notification(title || 'RentCar', opts);
+            }
+        } catch (e) {
+            // ignore rendering errors
+        }
+    }
+
     async function initMessaging() {
         await ensureFirebase();
         if (!window.firebase.apps.length) {
             window.firebase.initializeApp(cfg.firebase);
         }
+        // Own scope so the FCM worker doesn't clash with the WebSocket-notification SW at '/'.
+        swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {scope: SW_SCOPE});
         messaging = window.firebase.messaging();
+        // Foreground delivery: render it ourselves (data-only messages don't auto-show).
         messaging.onMessage(function (payload) {
             const d = payload.data || {};
-            if ('Notification' in window && Notification.permission === 'granted') {
-                new Notification(d.title || 'RentCar', {body: d.body || '', icon: '/img/car-placeholder.svg'});
-            }
+            showLocal(d.title, d.body, d.url);
         });
     }
 
@@ -60,11 +79,11 @@
         try {
             const permission = await Notification.requestPermission();
             if (permission !== 'granted') {
-                alert('Notification permission denied.');
+                alert('Notification permission denied (check the lock icon → Permissions, and the OS notification settings).');
                 return;
             }
             await initMessaging();
-            const token = await messaging.getToken({vapidKey: cfg.vapidKey});
+            const token = await messaging.getToken({vapidKey: cfg.vapidKey, serviceWorkerRegistration: swReg});
             if (!token) {
                 alert('Could not obtain a push token.');
                 return;
@@ -118,4 +137,10 @@
             subscribe();
         }
     });
+
+    // Already subscribed on a fresh page load: re-attach the foreground handler.
+    if (subscribed) {
+        initMessaging().catch(function () {
+        });
+    }
 })();

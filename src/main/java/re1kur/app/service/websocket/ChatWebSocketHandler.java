@@ -1,4 +1,4 @@
-package re1kur.app.websocket;
+package re1kur.app.service.websocket;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,9 +11,8 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.ConcurrentWebSocketSessionDecorator;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import re1kur.app.dto.websocket.*;
 import re1kur.app.service.chat.ChatHistoryService;
-import re1kur.app.websocket.dto.ChatMessageDto;
-import re1kur.app.websocket.dto.WsEvent;
 
 import java.time.Instant;
 import java.util.ArrayList;

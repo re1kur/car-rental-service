@@ -1,4 +1,4 @@
-package re1kur.app.websocket.notification;
+package re1kur.app.service.websocket.notification;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;

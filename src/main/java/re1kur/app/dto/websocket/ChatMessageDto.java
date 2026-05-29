@@ -1,6 +1,4 @@
-package re1kur.app.websocket.dto;
-
-import re1kur.app.websocket.ChatPrincipal;
+package re1kur.app.dto.websocket;
 
 public record ChatMessageDto(
         Long id,
