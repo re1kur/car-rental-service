@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/styles-common.css}">
     <link rel="stylesheet" th:href="@{/css/styles-header.css}">
     <link rel="stylesheet" th:href="@{/css/styles-home.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-interactive.css}">
 </head>
 <body>
 
@@ -53,11 +54,14 @@
 
         <div class="card-grid">
             <div class="card" th:each="car : ${featured}">
-                <div class="card-media">
+                <div class="card-media quick-view-btn" th:attr="data-car-id=${car.id}" title="Quick view">
                     <img th:src="${car.titleImage != null} ? ${car.titleImage.url} : @{/img/car-placeholder.svg}"
                          th:alt="${car.make.name} + ' ' + ${car.model}">
                     <span class="card-price" th:if="${car.cost != null}"
                           th:text="'$' + ${car.cost} + '/day'"></span>
+                    <span class="qv-hint">Quick view</span>
+                    <button sec:authorize="isAuthenticated()" type="button" class="btn add-cart-btn add-fab"
+                            th:attr="data-car-id=${car.id}" title="Add to cart" aria-label="Add to cart">+</button>
                 </div>
                 <div class="card-body">
                     <h3 class="card-title">
@@ -71,7 +75,6 @@
                     </div>
                     <div class="card-actions">
                         <a class="btn" th:href="@{/cars/{id}(id=${car.id})}">View details</a>
-                        <div th:replace="~{fragments/cart :: addButton(${car.id})}"></div>
                     </div>
                 </div>
             </div>
@@ -81,5 +84,8 @@
 </div>
 
 <footer th:replace="~{fragments/footer :: main-footer}"></footer>
+<script th:src="@{/js/notify.js}"></script>
+<script th:src="@{/js/cart.js}"></script>
+<script th:src="@{/js/quick-view.js}"></script>
 </body>
 </html>

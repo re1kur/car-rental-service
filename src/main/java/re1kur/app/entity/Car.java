@@ -51,7 +51,7 @@ public class Car {
             inverseJoinColumns = @JoinColumn(name = "image_id"))
     private Collection<File> images;
 
-    @Column(insertable = false, columnDefinition = "DEFAULT FALSE")
+    @Column(name = "is_available", nullable = false)
     private boolean isAvailable;
 
     private Integer cost;

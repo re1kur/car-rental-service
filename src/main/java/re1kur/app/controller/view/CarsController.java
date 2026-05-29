@@ -1,0 +1,78 @@
+package re1kur.app.controller.view;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import re1kur.app.dto.view.CarView;
+import re1kur.app.dto.view.PageView;
+import re1kur.app.dto.filter.CarFilter;
+import re1kur.app.dto.payload.CarPayload;
+import re1kur.app.entity.CarType;
+import re1kur.app.entity.Engine;
+import re1kur.app.service.car.CarService;
+import re1kur.app.service.make.MakeService;
+
+@Slf4j
+@Controller
+@RequestMapping("/cars")
+@RequiredArgsConstructor
+public class CarsController {
+    private final CarService carService;
+    private final MakeService makeService;
+
+    @Value("${custom.pagination.size}")
+    private Integer pageSize;
+
+    @GetMapping
+    public String getCars(
+            Model model,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @ModelAttribute(name = "filter") CarFilter filter,
+            @AuthenticationPrincipal OidcUser user
+    ) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        PageView<CarView> pageView = carService.readAll(filter, pageable, user);
+
+        model.addAttribute("makes", makeService.readAll());
+        model.addAttribute("carTypes", CarType.values());
+        model.addAttribute("engines", Engine.values());
+        model.addAttribute("page", pageView);
+        model.addAttribute("filter", filter);
+
+        return "cars/list.html";
+    }
+
+    @GetMapping("/")
+    public String redirectSlash() {
+        return "redirect:/cars";
+    }
+
+    @GetMapping("/create")
+    public String getCreateCar(Model model) {
+        model.addAttribute("makes", makeService.readAll());
+        model.addAttribute("carTypes", CarType.values());
+        model.addAttribute("engines", Engine.values());
+        model.addAttribute("payload", CarPayload.builder().build());
+        return "cars/create.html";
+    }
+
+    @PostMapping("/create")
+    public String createCar(
+            @Valid @ModelAttribute CarPayload payload,
+            @RequestParam(value = "title", required = false) MultipartFile title,
+            @RequestParam(value = "file", required = false) MultipartFile[] files,
+            @AuthenticationPrincipal OidcUser user
+    ) {
+        Integer id = carService.create(payload, title, files, user);
+        return "redirect:/cars/%d".formatted(id);
+    }
+}

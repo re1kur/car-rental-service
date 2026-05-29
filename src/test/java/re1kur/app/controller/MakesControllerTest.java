@@ -4,26 +4,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.multipart.MultipartFile;
-import re1kur.app.core.dto.MakeDto;
-import re1kur.app.core.dto.PageDto;
-import re1kur.app.core.payload.MakePayload;
-import re1kur.app.service.MakeService;
+import re1kur.app.controller.view.MakesController;
+import re1kur.app.dto.view.MakeView;
+import re1kur.app.dto.view.PageView;
+import re1kur.app.dto.payload.MakePayload;
+import re1kur.app.service.make.MakeService;
 
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -48,8 +44,8 @@ class MakesControllerTest {
 
     @Test
     void getMakes() throws Exception {
-        List<MakeDto> mockContent = List.of(MakeDto.builder().id(1).build());
-        PageDto<MakeDto> mockPage = new PageDto<>(mockContent, 0, 1, 1, 0, 0, 0, 0);
+        List<MakeView> mockContent = List.of(MakeView.builder().id(1).build());
+        PageView<MakeView> mockPage = new PageView<>(mockContent, 0, 1, 1, 0, 0, 0, 0);
         String mockName = "name";
 
         when(makeService.readAllAsPage(any(String.class), any(Pageable.class), nullable(OidcUser.class)))

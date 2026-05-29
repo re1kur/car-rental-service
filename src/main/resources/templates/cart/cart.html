@@ -5,6 +5,7 @@
     <title>Cart — RentCar</title>
     <link rel="stylesheet" th:href="@{/css/styles-common.css}">
     <link rel="stylesheet" th:href="@{/css/styles-header.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-interactive.css}">
 </head>
 <body>
 
@@ -28,9 +29,9 @@
         Your cart is empty. <a th:href="@{/cars}">Browse cars</a>.
     </p>
 
-    <div th:unless="${#lists.isEmpty(lines)}">
+    <div th:unless="${#lists.isEmpty(lines)}" data-cart-root>
 
-        <div class="cart-item" th:each="line : ${lines}">
+        <div class="cart-item" th:each="line : ${lines}" th:attr="data-car-id=${line.car.id}">
             <div class="thumb">
                 <img th:src="${line.car.titleImage != null} ? ${line.car.titleImage.url} : @{/img/car-placeholder.svg}"
                      th:alt="${line.car.model}">
@@ -43,33 +44,37 @@
                 </h3>
                 <p class="card-meta">
                     <span th:text="'$' + ${line.car.cost} + ' / day'"></span>
-                    <span>·</span>
-                    <span th:text="${line.days} + ' day(s)'"></span>
                 </p>
 
-                <form class="dates" method="post" th:action="@{/cart/items/{id}(id=${line.car.id})}">
+                <div class="qty-stepper">
+                    <button type="button" class="btn btn-outline qty-btn" data-step="-1"
+                            aria-label="Decrease days">&minus;</button>
+                    <span class="qty" data-qty th:text="${line.days}">1</span>
+                    <span class="qty-unit">day(s)</span>
+                    <button type="button" class="btn btn-outline qty-btn" data-step="1"
+                            aria-label="Increase days">+</button>
+                </div>
+
+                <div class="dates">
                     <div>
                         <label>From</label>
-                        <input type="date" name="startDate" th:value="${line.startDate}" required>
+                        <input type="date" name="startDate" th:value="${line.startDate}">
                     </div>
                     <div>
                         <label>To</label>
-                        <input type="date" name="endDate" th:value="${line.endDate}" required>
+                        <input type="date" name="endDate" th:value="${line.endDate}">
                     </div>
-                    <button class="btn btn-outline" type="submit">Update dates</button>
-                </form>
+                </div>
             </div>
 
             <div class="right">
-                <div class="subtotal" th:text="'$' + ${line.subtotal}"></div>
-                <form method="post" th:action="@{/cart/remove/{id}(id=${line.car.id})}">
-                    <button class="btn" type="submit">Remove</button>
-                </form>
+                <div class="subtotal" data-subtotal th:text="'$' + ${line.subtotal}"></div>
+                <button class="btn" type="button" data-remove>Remove</button>
             </div>
         </div>
 
         <div class="cart-summary">
-            <span class="grand">Total: <span th:text="'$' + ${total}"></span></span>
+            <span class="grand">Total: <span data-total th:text="'$' + ${total}"></span></span>
             <form method="post" th:action="@{/cart/checkout}">
                 <button class="btn" type="submit">Checkout — book all</button>
             </form>
@@ -80,5 +85,7 @@
 </div>
 
 <footer th:replace="~{fragments/footer :: main-footer}"></footer>
+<script th:src="@{/js/notify.js}"></script>
+<script th:src="@{/js/cart.js}"></script>
 </body>
 </html>

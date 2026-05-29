@@ -102,6 +102,10 @@ header {
     box-sizing: border-box;
 }
 
+.cart-badge.hidden {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .navbar {
         padding: 10px 14px;
