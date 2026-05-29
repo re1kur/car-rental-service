@@ -39,6 +39,7 @@ public class SecurityConfiguration {
                 .securityMatcher("/api/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/cars/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/cars/**", "/api/v1/makes/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/register", "/api/v1/auth/login").permitAll()
                         .anyRequest().authenticated())
@@ -57,7 +58,7 @@ public class SecurityConfiguration {
         http
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/css/**", "/favicon.ico", "/error", "/error/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/error", "/error/**").permitAll()
                         .requestMatchers(
                                 "/cars/create",
                                 "/makes/create",

@@ -1,0 +1,133 @@
+package re1kur.app.service.rental;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import re1kur.app.dto.view.PageView;
+import re1kur.app.dto.view.RentalView;
+import re1kur.app.exception.CarIsNotAvailableException;
+import re1kur.app.exception.CarIsOccupiedException;
+import re1kur.app.exception.RentalNotFoundException;
+import re1kur.app.dto.filter.RentalAdminFilter;
+import re1kur.app.dto.filter.RentalFilter;
+import re1kur.app.dto.payload.RentalPayload;
+import re1kur.app.entity.Car;
+import re1kur.app.entity.Rental;
+import re1kur.app.mapper.rental.RentalMapper;
+import re1kur.app.repository.rental.RentalRepository;
+import re1kur.app.service.car.CarService;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class RentalServiceImpl implements RentalService {
+    private final RentalRepository rentalRepository;
+    private final RentalMapper rentalMapper;
+    private final CarService carService;
+
+    @Override
+    @Transactional
+    public UUID create(RentalPayload payload, OidcUser user) {
+        UUID userId = UUID.fromString(user.getUserInfo().getSubject());
+        log.info("CREATE RENTAL [{}] REQUEST BY USER [{}]", payload, userId);
+        Car car = carService.getById(payload.carId());
+        checkConflicts(car, payload);
+        Rental rental = rentalMapper.write(payload, car, userId);
+        Rental saved = rentalRepository.save(rental);
+
+        UUID rentalId = saved.getId();
+        log.info("RENTAL [{}] CREATED BY USER [{}]", rentalId, userId);
+        return rentalId;
+    }
+
+    @Override
+    @Transactional
+    public void createAll(List<RentalPayload> payloads, OidcUser user) {
+        log.info("CHECKOUT: CREATE [{}] RENTALS", payloads.size());
+        for (RentalPayload payload : payloads) {
+            create(payload, user);
+        }
+    }
+
+    private void checkConflicts(Car car, RentalPayload payload) {
+        Integer carId = car.getId();
+        if (!car.isAvailable()) {
+            throw new CarIsNotAvailableException("Car [%s] is not available for rent.".formatted(carId));
+        }
+
+        LocalDate startDate = payload.startDate();
+        LocalDate endDate = payload.endDate();
+        if (rentalRepository.existsByCarIdAndDate(carId, startDate, endDate))
+            throw new CarIsOccupiedException("Car [%s] is occupied between %s and %s".formatted(carId, startDate, endDate));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public RentalView readById(UUID rentalId, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("READ RENTAL [{}] REQUEST BY USER [{}]", rentalId, logUser);
+
+        return rentalRepository.findById(rentalId)
+                .map(rentalMapper::read)
+                .orElseThrow(() -> new RentalNotFoundException("Rental [%s] was not found.".formatted(rentalId)));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PageView<RentalView> readAllByUser(Pageable pageable, UUID userId, RentalFilter filter) {
+        log.info("READ USER'S RENTALS REQUEST BY USER [{}]", userId);
+        Integer carId = filter.carId();
+
+        LocalDate date = filter.date();
+
+        Page<Rental> page = date != null ? rentalRepository.findAllByUserIdAndDate(pageable, userId, carId, date) :
+                rentalRepository.findAllByUserId(pageable, userId, carId);
+        return rentalMapper.readPage(page);
+    }
+
+    @Override
+    public List<Integer> readCarIdsByUser(UUID userId) {
+        return rentalRepository.findAllCarIdsByUserId(userId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PageView<RentalView> readAll(Pageable pageable, RentalAdminFilter filter, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("READ RENTALS PAGE BY FILTER [{}] REQUEST BY USER [{}]", filter, logUser);
+
+        UUID userId = filter.userId();
+        Integer carId = filter.carId();
+
+        LocalDate localDate = filter.date();
+        Date date = localDate != null ? Date.valueOf(localDate) : null;
+
+        Page<Rental> page = date != null ? rentalRepository.findAllByUserIdAndCarIdAndDate(pageable, userId, carId, date) :
+                rentalRepository.findAllByUserIdAndCarId(pageable, userId, carId);
+        return rentalMapper
+                .readPage(page);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(UUID id, OidcUser user) {
+        String logUser = user == null ? "Anonymous" : user.getSubject();
+        log.info("DELETE RENTAL [{}] REQUEST BY USER [{}]", id, logUser);
+
+        if (!rentalRepository.existsById(id))
+            throw new RentalNotFoundException("Rental [%s] was not found.".formatted(id));
+
+        rentalRepository.deleteById(id);
+
+        log.info("DELETED RENTAL [{}] REQUEST BY USER [{}]", id, logUser);
+    }
+}

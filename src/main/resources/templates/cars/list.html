@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/styles-common.css}">
     <link rel="stylesheet" th:href="@{/css/styles-header.css}">
     <link rel="stylesheet" th:href="@{/css/styles-list.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-interactive.css}">
 </head>
 <body>
 
@@ -23,8 +24,11 @@
         <a sec:authorize="hasRole('ADMIN')" class="btn" th:href="@{/cars/create}">+ New car</a>
     </div>
 
+    <span sec:authorize="isAuthenticated()" data-authenticated hidden></span>
+    <span sec:authorize="hasRole('ADMIN')" data-admin hidden></span>
+
     <section class="filter-container">
-        <form th:action="@{/cars}" method="get" class="filter-form">
+        <form th:action="@{/cars}" method="get" class="filter-form" data-filter-form>
             <div class="form-group">
                 <label for="model">Model</label>
                 <input type="text" name="model" id="model" th:value="${filter.model}" class="form-control"
@@ -59,25 +63,39 @@
                 <input type="number" id="year" name="year" th:value="${filter.year}" class="form-control"
                        placeholder="Enter year">
             </div>
+            <div class="form-group" sec:authorize="hasRole('ADMIN')">
+                <label for="available">Availability</label>
+                <select id="available" name="available" class="form-control">
+                    <option value="">Any</option>
+                    <option value="true" th:selected="${filter.available != null and filter.available}">Available</option>
+                    <option value="false" th:selected="${filter.available != null and !filter.available}">Unavailable</option>
+                </select>
+            </div>
             <button type="submit">Find</button>
         </form>
     </section>
 
-    <p th:if="${page.content.empty}" class="empty">No cars found.</p>
+    <p class="empty" data-empty th:style="${page.content.empty} ? '' : 'display:none'">No cars found.</p>
 
-    <div class="card-grid" th:unless="${page.content.empty}">
-        <div class="card" th:each="car : ${page.content}">
-            <div class="card-media">
+    <div class="card-grid" data-car-grid>
+        <div class="card" data-car th:each="car : ${page.content}">
+            <div class="card-media quick-view-btn" th:attr="data-car-id=${car.id}" title="Quick view">
                 <img th:src="${car.titleImage != null} ? ${car.titleImage.url} : @{/img/car-placeholder.svg}"
                      th:alt="${car.make.name} + ' ' + ${car.model}">
                 <span class="card-price" th:if="${car.cost != null}"
                       th:text="'$' + ${car.cost} + '/day'"></span>
+                <span class="qv-hint">Quick view</span>
+                <button sec:authorize="isAuthenticated()" type="button" class="btn add-cart-btn add-fab"
+                        th:attr="data-car-id=${car.id}" title="Add to cart" aria-label="Add to cart">+</button>
             </div>
             <div class="card-body">
                 <h3 class="card-title">
                     <a th:href="@{/cars/{id}(id=${car.id})}"
                        th:text="${car.make.name} + ' ' + ${car.model}"></a>
                 </h3>
+                <div class="card-meta" th:if="${car.available != null and !car.available}">
+                    <span class="badge no" data-availability-badge>Not available</span>
+                </div>
                 <div class="card-meta">
                     <span class="tag" th:text="${car.carType.label}"></span>
                     <span class="tag" th:text="${car.year}"></span>
@@ -85,17 +103,21 @@
                 </div>
                 <div class="card-actions">
                     <a class="btn" th:href="@{/cars/{id}(id=${car.id})}">View details</a>
-                    <div th:replace="~{fragments/cart :: addButton(${car.id})}"></div>
+                    <button sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-outline btn-small"
+                            data-toggle-availability
+                            th:attr="data-car-id=${car.id},data-available=${car.available}"
+                            th:text="${car.available} ? 'Set unavailable' : 'Set available'"></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <nav class="pagination" th:if="${page.totalCount > 1}" aria-label="Pagination">
+    <nav class="pagination" data-pagination th:if="${page.totalCount > 1}" aria-label="Pagination">
         <a th:each="i : ${#numbers.sequence(0, page.totalCount - 1)}"
            th:href="@{/cars(page=${i}, model=${filter.model},
                           makeId=${filter.makeId}, year=${filter.year},
-                          carType=${filter.carType}, engine=${filter.engine})}"
+                          carType=${filter.carType}, engine=${filter.engine},
+                          available=${filter.available})}"
            class="page-link" th:classappend="${i == page.number} ? 'active' : ''"
            th:text="${i + 1}"></a>
     </nav>
@@ -103,5 +125,10 @@
 </div>
 
 <footer th:replace="~{fragments/footer :: main-footer}"></footer>
+<script th:src="@{/js/notify.js}"></script>
+<script th:src="@{/js/cart.js}"></script>
+<script th:src="@{/js/quick-view.js}"></script>
+<script th:src="@{/js/catalog.js}"></script>
+<script th:src="@{/js/car-admin.js}"></script>
 </body>
 </html>

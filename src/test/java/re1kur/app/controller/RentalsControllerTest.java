@@ -8,12 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import re1kur.app.core.dto.PageDto;
-import re1kur.app.core.dto.RentalDto;
-import re1kur.app.core.other.RentalAdminFilter;
-import re1kur.app.core.other.RentalFilter;
-import re1kur.app.core.payload.RentalPayload;
-import re1kur.app.service.RentalService;
+import re1kur.app.controller.view.RentalsController;
+import re1kur.app.dto.view.PageView;
+import re1kur.app.dto.view.RentalView;
+import re1kur.app.dto.filter.RentalAdminFilter;
+import re1kur.app.dto.filter.RentalFilter;
+import re1kur.app.dto.payload.RentalPayload;
+import re1kur.app.service.rental.RentalService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -41,8 +42,8 @@ class RentalsControllerTest {
     @Test
     void getRentalsByPrincipal() throws Exception {
         UUID userId = UUID.randomUUID();
-        RentalDto build = RentalDto.builder().id(UUID.randomUUID()).build();
-        PageDto<RentalDto> mockPage = new PageDto<>(List.of(build), 0, 5, 1, 0, 0, 0, 0);
+        RentalView build = RentalView.builder().id(UUID.randomUUID()).build();
+        PageView<RentalView> mockPage = new PageView<>(List.of(build), 0, 5, 1, 0, 0, 0, 0);
 
         when(rentalService.readAllByUser(any(Pageable.class), eq(userId), any(RentalFilter.class)))
                 .thenReturn(mockPage);
@@ -63,8 +64,8 @@ class RentalsControllerTest {
     @Test
     void getRentals() throws Exception {
         UUID userId = UUID.randomUUID();
-        RentalDto build = RentalDto.builder().id(UUID.randomUUID()).build();
-        PageDto<RentalDto> mockPage = new PageDto<>(List.of(build), 0, 5, 1, 0, 0, 0, 0);
+        RentalView build = RentalView.builder().id(UUID.randomUUID()).build();
+        PageView<RentalView> mockPage = new PageView<>(List.of(build), 0, 5, 1, 0, 0, 0, 0);
 
         when(rentalService.readAll(any(Pageable.class), any(RentalAdminFilter.class), any(OidcUser.class)))
                 .thenReturn(mockPage);
@@ -103,7 +104,7 @@ class RentalsControllerTest {
     void getProfile() throws Exception {
         UUID userId = UUID.randomUUID();
         UUID rentalId = UUID.randomUUID();
-        RentalDto mockDto = RentalDto.builder().id(rentalId).build();
+        RentalView mockDto = RentalView.builder().id(rentalId).build();
 
         when(rentalService.readById(eq(rentalId), any(OidcUser.class))).thenReturn(mockDto);
 

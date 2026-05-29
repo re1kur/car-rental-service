@@ -7,9 +7,10 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import re1kur.app.core.dto.MakeFullDto;
-import re1kur.app.core.payload.MakeUpdatePayload;
-import re1kur.app.service.MakeService;
+import re1kur.app.controller.view.MakeController;
+import re1kur.app.dto.view.MakeFullView;
+import re1kur.app.dto.payload.MakeUpdatePayload;
+import re1kur.app.service.make.MakeService;
 
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ class MakeControllerTest {
 
     @Test
     void getMakeProfile() throws Exception {
-        MakeFullDto mock = MakeFullDto.builder().id(makeId).build();
+        MakeFullView mock = MakeFullView.builder().id(makeId).build();
 
         when(makeService.read(eq(makeId), nullable(OidcUser.class)))
                 .thenReturn(mock);
@@ -49,7 +50,7 @@ class MakeControllerTest {
 
     @Test
     void getUpdateMake() throws Exception {
-        MakeFullDto mock = MakeFullDto.builder().id(makeId).name("name").build();
+        MakeFullView mock = MakeFullView.builder().id(makeId).name("name").build();
 
         when(makeService.read(eq(makeId), nullable(OidcUser.class)))
                 .thenReturn(mock);

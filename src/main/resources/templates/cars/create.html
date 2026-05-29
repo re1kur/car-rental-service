@@ -75,12 +75,22 @@
             </div>
 
             <div class="form-group">
-                <label for="cost">Seats:</label>
+                <label for="cost">Price per day ($):</label>
                 <input type="text"
                        name="cost"
                        id="cost"
-                       placeholder="10"
+                       placeholder="45"
                        th:value="${payload != null ? payload.cost : ''}">
+            </div>
+
+            <div class="form-group">
+                <label for="available">Available for rent:</label>
+                <select id="available" name="available" required>
+                    <option th:value="true"
+                            th:selected="${payload == null or payload.available == null or payload.available}">Yes</option>
+                    <option th:value="false"
+                            th:selected="${payload != null and payload.available == false}">No</option>
+                </select>
             </div>
         </section>
 

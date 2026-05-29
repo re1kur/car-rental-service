@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/styles-common.css}">
     <link rel="stylesheet" th:href="@{/css/styles-header.css}">
     <link rel="stylesheet" sec:authorize="isAuthenticated()" th:href="@{/css/styles-form.css}">
+    <link rel="stylesheet" th:href="@{/css/styles-interactive.css}">
 </head>
 <body>
 
@@ -18,25 +19,31 @@
     <div class="section-head">
         <div>
             <h1 th:text="${car.make.name} + ' ' + ${car.model}"></h1>
-            <span th:if="${car.available}" class="badge ok">Available</span>
-            <span th:unless="${car.available}" class="badge no">Not available</span>
+            <span class="badge" th:classappend="${car.available} ? 'ok' : 'no'"
+                  data-availability-badge
+                  th:text="${car.available} ? 'Available' : 'Not available'"></span>
         </div>
-        <a sec:authorize="hasRole('ADMIN')" class="btn btn-outline"
-           th:href="@{/cars/{id}/update(id=${car.id})}">Edit car</a>
+        <div sec:authorize="hasRole('ADMIN')" class="header-actions">
+            <button type="button" class="btn btn-outline" data-toggle-availability
+                    th:attr="data-car-id=${car.id},data-available=${car.available}"
+                    th:text="${car.available} ? 'Set unavailable' : 'Set available'"></button>
+            <a class="btn btn-outline" th:href="@{/cars/{id}/update(id=${car.id})}">Edit car</a>
+        </div>
     </div>
 
     <div class="product-layout">
 
         <div>
             <div class="main-image">
-                <img th:src="${car.titleImage != null} ? ${car.titleImage.url} : @{/img/car-placeholder.svg}"
+                <img class="zoomable"
+                     th:src="${car.titleImage != null} ? ${car.titleImage.url} : @{/img/car-placeholder.svg}"
                      th:alt="${car.make.name} + ' ' + ${car.model}">
             </div>
 
             <ul class="thumbs" th:if="${car.images != null and !#lists.isEmpty(car.images)}">
                 <li th:each="image : ${car.images}">
                     <div class="image-container">
-                        <img th:src="${image.url}" alt="Image">
+                        <img class="zoomable" th:src="${image.url}" th:attr="data-full=${image.url}" alt="Image">
                     </div>
                 </li>
             </ul>
@@ -61,7 +68,8 @@
                 <div style="margin-bottom:14px;">
                     <div th:replace="~{fragments/cart :: addButton(${car.id})}"></div>
                 </div>
-                <form sec:authorize="isAuthenticated()" method="post" th:action="@{/rentals/create}" class="edit-form">
+                <form sec:authorize="isAuthenticated()" method="post" th:action="@{/rentals/create}" class="edit-form"
+                      data-rent-form th:attr="data-day-price=${car.cost}">
                     <input type="hidden" th:value="${car.id}" name="carId">
                     <div class="form-group">
                         <label for="startDate">Start date</label>
@@ -73,6 +81,7 @@
                         <input type="date" name="endDate" id="endDate"
                                th:value="${payload != null ? payload.endDate : ''}" required>
                     </div>
+                    <p class="rent-total" data-rent-total></p>
                     <div class="form-actions">
                         <button type="submit">Rent now</button>
                     </div>
@@ -108,5 +117,10 @@
 </div>
 
 <footer th:replace="~{fragments/footer :: main-footer}"></footer>
+<script th:src="@{/js/notify.js}"></script>
+<script th:src="@{/js/cart.js}"></script>
+<script th:src="@{/js/lightbox.js}"></script>
+<script th:src="@{/js/rent-preview.js}"></script>
+<script th:src="@{/js/car-admin.js}"></script>
 </body>
 </html>

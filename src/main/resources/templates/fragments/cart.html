@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <body>
 
-<form th:fragment="addButton(carId)" sec:authorize="isAuthenticated()" method="post"
-      th:action="@{/cart/add/{id}(id=${carId})}" class="add-cart-form">
-    <button class="btn btn-outline" type="submit">+ Add to cart</button>
-</form>
+<button th:fragment="addButton(carId)" sec:authorize="isAuthenticated()" type="button"
+        class="btn btn-outline add-cart-btn" th:attr="data-car-id=${carId}">
+    + Add to cart
+</button>
 
 </body>
 </html>

@@ -12,7 +12,8 @@
 <header th:insert="fragments/header.html :: pages"></header>
 
 <div class="container edit-create-wrapper">
-    <form class="edit-form" method="post" th:action="@{/cars/{id}/update(id=${car.id})}">
+    <form class="edit-form" method="post" th:action="@{/cars/{id}/update(id=${car.id})}"
+          enctype="multipart/form-data">
         <h2>Common</h2>
         <section>
             <div class="form-group">
@@ -65,8 +66,8 @@
             </div>
 
             <div class="form-group">
-                <label for="cost">Seats:</label>
-                <input type="text" name="cost" id="cost" th:value="${car.cost}" placeholder="10">
+                <label for="cost">Price per day ($):</label>
+                <input type="text" name="cost" id="cost" th:value="${car.cost}" placeholder="45">
             </div>
 
             <div class="form-group">
@@ -166,6 +167,20 @@
                         Semi-automatic transmission
                     </option>
                 </select>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <h3>Add images</h3>
+
+            <div class="form-group labelFile">
+                <label for="title">New title image:</label>
+                <input type="file" name="title" id="title" accept="image/*">
+            </div>
+
+            <div class="form-group labelFile">
+                <label for="file">New gallery images:</label>
+                <input type="file" id="file" name="file" accept="image/*" multiple>
             </div>
         </section>
 
