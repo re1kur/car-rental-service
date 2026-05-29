@@ -41,6 +41,8 @@ services:
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      KEYCLOAK_ADMIN_NAME: ${KEYCLOAK_ADMIN_NAME}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_HOSTNAME: ${KC_HOSTNAME}
       KC_PROXY_HEADERS: xforwarded
       KC_HOSTNAME_STRICT: "false"
@@ -48,7 +50,13 @@ services:
       - ./docker/keycloak/init/realms:/tmp/realms
       - ./docker/keycloak/init/scripts/commands.sh:/tmp/scripts/commands.sh
       - ./docker/keycloak/themes:/opt/keycloak/themes
-    entrypoint: [ "sh", "/tmp/scripts/commands.sh" ]
+    entrypoint: [ "bash", "/tmp/scripts/commands.sh" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "test -f /tmp/kc-ready" ]
+      interval: 5s
+      timeout: 3s
+      retries: 60
+      start_period: 20s
     depends_on:
       - kc-postgres
     ports:
@@ -64,11 +72,13 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      KEYCLOAK_ADMIN_NAME: ${KEYCLOAK_ADMIN_NAME}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     depends_on:
       postgres:
         condition: service_healthy
       minio:
         condition: service_started
       keycloak:
-        condition: service_started
+        condition: service_healthy
     restart: on-failure
