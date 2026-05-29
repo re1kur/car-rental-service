@@ -6,9 +6,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import re1kur.app.entity.ChatMessage;
 import re1kur.app.repository.chat.ChatMessageRepository;
-import re1kur.app.websocket.ChatPrincipal;
-import re1kur.app.websocket.ChatRoom;
-import re1kur.app.websocket.dto.ChatMessageDto;
+import re1kur.app.dto.websocket.ChatPrincipal;
+import re1kur.app.dto.websocket.ChatRoom;
+import re1kur.app.dto.websocket.ChatMessageDto;
 
 import java.time.Instant;
 import java.util.ArrayDeque;

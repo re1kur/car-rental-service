@@ -1,4 +1,4 @@
-package re1kur.app.websocket;
+package re1kur.app.service.websocket;
 
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
+import re1kur.app.dto.websocket.ChatPrincipal;
 
 import java.security.Principal;
 import java.util.Map;
